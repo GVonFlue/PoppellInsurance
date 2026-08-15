@@ -97,7 +97,7 @@ than silently disappearing. Current markers:
 | Jotform URL | **Done.** `utm_id` stripped — those params were dashboard tracking and would have tagged every visitor to that campaign. |
 | Headshot | **Done.** Studio grey knocked out, replaced with brand blush. Source kept at `assets/brand/`. |
 | About copy | **Draft in place.** Contains zero biographical facts by design — approach only, so nothing can be wrong. Needs her approval or rewrite. |
-| **Office hours** | Still open — `agent.hours`, array of strings. Renders a NEEDS marker. |
+| Office hours | **Done.** Mon–Fri 8:30–5:30, weekends closed. Source: her Farmers page, 2026-08-15. |
 | **Domain** | Still open — `site.domain`. |
 | **Phone number** | Two conflicting numbers on file. See BRANDING-SWAP.md. |
 | **Email** | Still a carrier address that dies on transition. See BRANDING-SWAP.md. |

@@ -96,17 +96,12 @@ an hour.
 
 ## Part D — Before you send it to her
 
-**16.** Fill the last gap. `assets/js/config.js` → `agent.hours`:
+**16.** **No amber boxes.** Every field is filled — scroll the whole page once
+and confirm you see no dashed orange **NEEDS** markers anywhere. If one
+appears, the matching value in `assets/js/config.js` went back to `null`.
 
-```js
-hours: [
-  'Monday – Friday, 9:00 AM – 5:00 PM',
-  'Saturday by appointment'
-],
-```
-
-The amber **NEEDS OFFICE HOURS** box on the page disappears the moment this is
-set. Do not launch with it visible.
+Hours are set to Mon–Fri 8:30 AM – 5:30 PM, weekends closed, taken from her
+Farmers page. If she actually takes Saturday appointments, add that line.
 
 **17.** Resolve the two open decisions, both documented in
 `BRANDING-SWAP.md`:

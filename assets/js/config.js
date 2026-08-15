@@ -81,8 +81,13 @@ window.SITE = {
       mapUrl: 'https://maps.google.com/maps?cid=2630466317143634927'
     },
 
-    // NEEDS: office hours from the client. Farmers page has them blank.
-    hours: null,
+    // Source: her Farmers agent page, 2026-08-15. Saturday and Sunday both
+    // show Closed there. Confirm Saturday-by-appointment isn't a thing she
+    // actually does before this goes public — if it is, add it here.
+    hours: [
+      'Monday – Friday · 8:30 AM – 5:30 PM',
+      'Saturday & Sunday · Closed'
+    ],
 
     // DRAFT — for Alyssa to approve, edit, or replace.
     // Deliberately contains NO biographical facts: no years in business, no
