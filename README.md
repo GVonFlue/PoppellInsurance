@@ -9,8 +9,9 @@ vercel.json              cleanUrls, asset caching
 assets/
   css/styles.css
   js/config.js           ← every client + carrier fact lives here
-  js/main.js             ← hydration, ridgeline, scroll behaviour
-  brand/                 her banner + business card
+  js/main.js             ← hydration, artwork, motion
+  brand/                 her banner, card, and treated headshot
+GO-LIVE.md               19 steps to GitHub + Vercel + domain
 BRANDING-SWAP.md         read this before the carrier change
 ```
 
@@ -46,14 +47,36 @@ rules and stars — the same `rule / mark / rule` rhythm her business card uses
 between coverage items. It draws itself stroke by stroke as each section
 enters view, so the structure of the page is the skyline she works under.
 
-Everything else stays quiet: one accent colour, hairline grid on the coverage
-cards, no shadows, no gradients.
+**The portrait is an arch, not a rectangle.** The rounded doorway shape runs
+through adobe and mission architecture across the Front Range, and it puts her
+photo in her own region's vocabulary rather than in a stock headshot box. The
+sun from her banner turns slowly behind it on a 90-second cycle.
+
+**Coverage is editorial rows, not a card grid.** Four cards in a row is the
+most templated pattern on the web. Full-width rows with oversized display type
+read like a printed index, and the icon draws itself when the reader enters
+the row, so the artwork responds to a person rather than sitting there.
 
 ## Motion
 
-Page-load hero settle, scroll-triggered reveals, hero parallax at 0.22x,
-ridgeline stroke draw, card hover with the heart beating once. All of it is
-disabled under `prefers-reduced-motion`.
+| Where | What |
+|---|---|
+| Hero headline | Each word rides up out of its own mask, staggered 45ms |
+| Hero banner | Settles from 1.06 scale on load, then parallaxes at 0.22x |
+| Creed band | Infinite marquee, pauses on hover |
+| Coverage rows | Tint sweeps from the left, clay rule grows, label shifts, icon strokes redraw on every entry |
+| Ridgeline | Peaks draw, then pines, then the heart fades in; the flanking rules scale out from the centre |
+| Arch | Clips upward from its own base; sun turns continuously behind |
+| Signature | "Protect what matters." writes itself left to right |
+| Buttons | Clay fill wipes up from the bottom edge |
+
+All of it is disabled under `prefers-reduced-motion` — verified, not assumed.
+
+**One trap worth knowing.** The signature's reveal clip lives on an inner
+`<span>`, never on the `<p>` the IntersectionObserver watches. A fully
+clipped element reports zero intersection area, so it can never trigger the
+class that would unclip it. That deadlock cost a debugging pass; don't
+reintroduce it by moving the clip up a level.
 
 ## Quality floor
 
@@ -69,19 +92,18 @@ disabled under `prefers-reduced-motion`.
 Anything unverified renders a visible amber **NEEDS** marker on the page rather
 than silently disappearing. Current markers:
 
-| Item | Where |
+| Item | Status |
 |---|---|
-| **Jotform URL** | `jotformUrl` — paste the form URL, not the embed script |
-| **About copy** — 2–3 paragraphs in her voice | `agent.bio` (array of strings) |
-| **Headshot** | `agent.portrait` — don't hotlink the Farmers CDN copy |
-| **Office hours** | `agent.hours` (array of strings) |
-| **Domain** | `site.domain` |
-| **Phone number** | two conflicting numbers on file — see BRANDING-SWAP.md |
-| **Email** | currently a carrier address that dies on transition |
+| Jotform URL | **Done.** `utm_id` stripped — those params were dashboard tracking and would have tagged every visitor to that campaign. |
+| Headshot | **Done.** Studio grey knocked out, replaced with brand blush. Source kept at `assets/brand/`. |
+| About copy | **Draft in place.** Contains zero biographical facts by design — approach only, so nothing can be wrong. Needs her approval or rewrite. |
+| **Office hours** | Still open — `agent.hours`, array of strings. Renders a NEEDS marker. |
+| **Domain** | Still open — `site.domain`. |
+| **Phone number** | Two conflicting numbers on file. See BRANDING-SWAP.md. |
+| **Email** | Still a carrier address that dies on transition. See BRANDING-SWAP.md. |
 
 Her Farmers About section is carrier boilerplate with Education, Awards and
-Licenses all blank, so there is nothing there worth reusing. The bio has to
-come from her.
+Licenses all blank, so there was nothing there worth reusing.
 
 ## Not in V1
 

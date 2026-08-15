@@ -84,13 +84,20 @@ window.SITE = {
     // NEEDS: office hours from the client. Farmers page has them blank.
     hours: null,
 
-    // NEEDS: 2–3 paragraphs in her own voice. Her Farmers About section is
-    // carrier boilerplate — nothing there is worth reusing.
-    bio: null,
+    // DRAFT — for Alyssa to approve, edit, or replace.
+    // Deliberately contains NO biographical facts: no years in business, no
+    // hometown, no family, no education, no awards. Everything here is about
+    // approach only, so nothing can be wrong. Once she sends real details,
+    // this should be rewritten in her actual voice.
+    bio: [
+      'Most people buy insurance once, file it away, and never look at it again until something goes wrong. That is usually the worst possible time to find out what a policy actually covers.',
+      'I work the other way around. We go through what you own, what you owe, and who depends on you, and I tell you plainly where you are covered and where you are exposed. Sometimes that means adding coverage. Sometimes it means telling you that you are paying for something you do not need.',
+      'When you call this office, you get me. Not a queue, not a different rep every time, not someone reading your file for the first time.'
+    ],
 
-    // NEEDS: a real headshot. The Farmers-hosted one is on their CDN and
-    // should not be hotlinked from a site she'll take with her.
-    portrait: null,
+    // Studio grey backdrop knocked out and replaced with the brand blush
+    // so she sits on the page rather than in a grey box.
+    portrait: '/assets/brand/alyssa-poppell.jpg',
 
     social: {
       facebook: null,
@@ -133,10 +140,10 @@ window.SITE = {
   /* ---------------------------------------------------------------------
      QUOTE FORM
      ------------------------------------------------------------------ */
-  // NEEDS: Jotform URL. Paste the FORM URL (not the full embed <script>),
-  // e.g. 'https://form.jotform.com/240000000000000'
-  // Until this is set, the section renders a labelled placeholder.
-  jotformUrl: null,
+  // utm_id stripped from the URL she supplied — those params were from the
+  // Jotform dashboard link, not the form itself, and would have logged every
+  // site visitor as arriving from that campaign.
+  jotformUrl: 'https://form.jotform.com/261545367737063',
 
   /* ---------------------------------------------------------------------
      SITE META
