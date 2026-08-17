@@ -15,6 +15,27 @@ GO-LIVE.md               19 steps to GitHub + Vercel + domain
 BRANDING-SWAP.md         read this before the carrier change
 ```
 
+## Caching — why `vercel.json` looks the way it does
+
+This site has **no build step**, so filenames never change. There is no
+`app.a3f9c2.js`; `config.js` is always `config.js`. That makes long immutable
+caching actively dangerous on code files — a returning visitor would keep the
+old copy and never see a deploy.
+
+| Path | Policy | Why |
+|---|---|---|
+| `/assets/brand/*` | 1 year, immutable | Images genuinely don't change under the same name |
+| `/assets/css/*`, `/assets/js/*` | `max-age=0, must-revalidate` | Stable filenames — must be rechecked every load |
+| `*.html` | `max-age=0, must-revalidate` | Entry point; must always be fresh |
+
+Belt and braces: `index.html` loads its CSS and JS with a `?v=` query string.
+Bump it on every CSS or JS change. See GO-LIVE.md.
+
+**Do not add comment keys to `vercel.json`.** JSON has no comments, and
+Vercel validates the file against a strict schema that rejects unknown
+properties — a stray `"comment"` fails the whole deploy with
+`headers[0] should NOT have additional property`. Notes go here instead.
+
 ## Deploy
 
 1. New GitHub repo, push this folder.

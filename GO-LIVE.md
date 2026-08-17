@@ -161,3 +161,4 @@ If a change still does not show up: hard refresh with **Cmd+Shift+R**.
 | **Deploy succeeded but the page looks unchanged** | Cached CSS/JS. Bump `?v=` in `index.html` and hard refresh (Cmd+Shift+R). |
 | **Some content updated, some didn't** | Classic partial cache. `index.html` refreshed but `config.js` or `main.js` did not. Same fix as above. |
 | Domain will not verify | Old A or CNAME records at the registrar. Delete them. |
+| **Build Failed: `vercel.json` schema validation failed** | An unknown key in `vercel.json`. Vercel rejects anything outside its schema — including `"comment"`, since JSON has no comments. Remove the offending key. The error message names the exact path, e.g. `headers[0]`. |
