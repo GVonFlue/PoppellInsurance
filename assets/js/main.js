@@ -75,11 +75,17 @@
       : needs('office hours');
   }
 
-  var bio = $('[data-bio]');
-  if (bio) {
-    bio.innerHTML = A.bio
-      ? A.bio.map(function (p) { return '<p>' + p + '</p>'; }).join('')
-      : '<p>' + needs('about copy \u2014 2\u20133 paragraphs in her own voice') + '</p>';
+  var about = $('[data-about]');
+  if (about) {
+    about.innerHTML = S.about
+      ? S.about.map(function (p) { return '<p>' + p + '</p>'; }).join('')
+      : '<p>' + needs('about copy \u2014 a real paragraph in her voice') + '</p>';
+  }
+
+  var codes = $('[data-agency-codes]');
+  if (codes) {
+    if (C.agencyCodes) { codes.textContent = 'Agency ' + C.agencyCodes; }
+    else { codes.remove(); }
   }
 
   var port = $('[data-portrait]');
@@ -148,6 +154,46 @@
         row.classList.add('is-drawing');
       });
     });
+  }
+
+  /* ══════════════════════════════════════════ 2b. SPECIALTY */
+
+  var spec = $('[data-specialty]');
+  if (spec && S.specialty) {
+    spec.innerHTML = S.specialty.map(function (s, i) {
+      return '<article class="spec__item reveal" data-d="' + (i + 1) + '">' +
+        '<h3 class="spec__label">' + s.label + '</h3>' +
+        '<p class="spec__body">' + s.body + '</p>' +
+      '</article>';
+    }).join('');
+  }
+
+  /* ══════════════════════════════════════════ 2c. TEAM
+     A direct line per person is the whole argument of the page, so a
+     missing title fails loudly — a name floating above a phone number
+     with no role is worse than an obvious gap. */
+
+  var crew = $('[data-team]');
+  if (crew && S.team) {
+    crew.innerHTML = S.team.map(function (m, i) {
+      var tel = m.phone ? 'tel:+1' + m.phone.replace(/\D/g, '') : null;
+      return '' +
+      '<article class="mate reveal" data-d="' + (i + 1) + '">' +
+        '<div class="mate__arch">' +
+          (m.portrait
+            ? '<img src="' + m.portrait + '" alt="' + m.name + '" width="800" height="800" loading="lazy">'
+            : '<span class="mate__ph">' + needs('headshot') + '</span>') +
+        '</div>' +
+        '<h3 class="mate__name">' + m.name + '</h3>' +
+        '<p class="mate__title">' + (m.title || needs('job title')) + '</p>' +
+        (tel
+          ? '<a class="mate__tel" href="' + tel + '">' + m.phone + '</a>'
+          : '<span class="mate__tel">' + needs('direct line') + '</span>') +
+        (m.email
+          ? '<a class="mate__mail" href="mailto:' + m.email + '">' + m.email + '</a>'
+          : '') +
+      '</article>';
+    }).join('');
   }
 
   /* ══════════════════════════════════════════ 3. MARQUEE

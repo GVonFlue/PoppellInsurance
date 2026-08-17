@@ -92,6 +92,11 @@ reintroduce it by moving the clip up a level.
 Anything unverified renders a visible amber **NEEDS** marker on the page rather
 than silently disappearing. Current markers:
 
+**v2 (Aug 17)** — team framing replaces one-agent framing, Meet the Team
+section added with a published direct line per person, specialty band added
+(umbrella / recreational / condo & renters), coverage headline changed to
+"Protect what's important to you.", verified carrier data wired in.
+
 | Item | Status |
 |---|---|
 | Jotform URL | **Done.** `utm_id` stripped — those params were dashboard tracking and would have tagged every visitor to that campaign. |
@@ -105,8 +110,45 @@ than silently disappearing. Current markers:
 Her Farmers About section is carrier boilerplate with Education, Awards and
 Licenses all blank, so there was nothing there worth reusing.
 
+## Compliance holds — read before adding anything
+
+She is a **captive agent**. Three constraints are load-bearing:
+
+1. **Financial services are deliberately absent.** She is appointed for the
+   carrier's securities arm. FINRA advertising rules generally require
+   broker-dealer principal pre-approval before publication — stricter than
+   insurance marketing. Nothing on this site references financial or
+   investment services. Do not add any until her BD approves specific copy.
+2. **No comparative or savings claims.** No "best rates", no "we shop the
+   market", no "save up to". The carrier's own savings claims carry survey
+   methodology footnotes; an agent site cannot make them.
+3. **No carrier logo, and no lifted carrier copy.** `carrier.logo` stays
+   `null` until Alyssa supplies the carrier's agent marketing guidelines.
+   Their product copy is version-controlled and carries form numbers — every
+   word on this site is original.
+
 ## Not in V1
 
 Coverage sub-pages, blog, testimonials/reviews, LocalBusiness JSON-LD,
-sitemap, OG image, analytics. All straightforward additions once the content
-gaps above are closed.
+sitemap, OG image, analytics, anything financial-services. All but the last
+are straightforward additions once the content gaps above are closed.
+
+## Open with Alyssa
+
+1. Carrier agent website/marketing guidelines — does the site need approval?
+2. Is she a registered rep? Does anything need broker-dealer sign-off?
+3. **Phone reconciliation.** Four numbers now exist: her direct line
+   (719-657-1212), Charlene's, Jean's, the number printed on her **business
+   card** (719-306-1894, not on the team list), and the one her carrier page
+   publishes (719-563-9712). The card is physically in circulation. Also
+   worth updating the carrier profile and Google listing to match the site —
+   a name/address/phone mismatch across listings weakens local search.
+4. **Email.** Three carrier-domain addresses are now published and will be
+   indexed. All three die on transition. A domain with three forwarding
+   addresses fixes this permanently.
+5. Last names and job titles for Charlene and Jean; headshots for both.
+6. Confirm the specialty list — it is inferred from her appointments, not
+   her words.
+7. A real paragraph in her voice for About. Her carrier bio is the identical
+   boilerplate every agent on that platform gets, and her Education,
+   Licenses and Awards fields are all empty.

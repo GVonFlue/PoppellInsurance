@@ -119,7 +119,7 @@ a{ color:inherit; }
   text-transform:uppercase; color:var(--sage); margin-top:.28rem;
 }
 
-.hdr__nav{ display:flex; gap:2rem; }
+.hdr__nav{ display:flex; gap:1.6rem; }
 .hdr__nav a{
   text-decoration:none; font-size:.78rem;
   letter-spacing:.16em; text-transform:uppercase;
@@ -316,6 +316,101 @@ a{ color:inherit; }
   color:var(--clay); margin:.3rem 0 0;
 }
 .row__body{ margin:0; color:var(--sage-deep); font-size:.97rem; }
+
+/* ─────────────────────────────────────────────────── SPECIALTY BAND
+   A sage field breaks the cream run and gives the page a second dark beat
+   between the marquee and the footer, so the specialty coverage reads as a
+   different order of thing rather than four more rows. */
+
+.band{
+  background:var(--sage-deep);
+  color:var(--paper);
+  padding:clamp(3.5rem,7vw,6rem) 0;
+  margin-top:clamp(4rem,8vw,7rem);
+}
+.eyebrow--inv{ color:var(--blush); }
+.eyebrow--inv .star{ color:var(--clay-light); }
+.h2--inv{ color:var(--paper); margin-bottom:clamp(2.5rem,5vw,3.5rem); }
+
+.spec{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:1px;
+  background:rgba(245,241,236,.2);
+  border-block:1px solid rgba(245,241,236,.2);
+}
+.spec__item{
+  background:var(--sage-deep);
+  padding:2rem 1.6rem 2.2rem;
+  transition:background .45s var(--ease);
+}
+.spec__item:hover{ background:#454C40; }
+.spec__label{
+  font-family:var(--disp); font-weight:600;
+  font-size:1.45rem; letter-spacing:.01em;
+  margin:0 0 .9rem; color:var(--paper);
+}
+.spec__body{ margin:0; font-size:.95rem; color:rgba(245,241,236,.78); }
+
+/* ─────────────────────────────────────────────────── TEAM
+   The arch again, at a third the size. Repeating the shape rather than
+   inventing a second frame keeps the page reading as one object. */
+
+.crew{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:clamp(1.75rem,4vw,3rem);
+}
+
+.mate{ text-align:center; }
+
+.mate__arch{
+  aspect-ratio:1/1.14;
+  border-radius:999px 999px 6px 6px;
+  overflow:hidden;
+  background:var(--blush);
+  border:1px solid var(--hair);
+  display:grid; place-items:center;
+  margin-bottom:1.2rem;
+}
+.mate__arch img{
+  width:100%; height:100%;
+  object-fit:cover; object-position:50% 26%;
+  transform:scale(1.03);
+  transition:transform 1.2s var(--ease-out);
+}
+.mate:hover .mate__arch img{ transform:scale(1.08); }
+.mate__ph{ padding:1rem; }
+
+.mate__name{
+  font-family:var(--disp); font-weight:600;
+  font-size:1.3rem; margin:0 0 .25rem;
+}
+.mate__title{
+  font-size:.68rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--sage); margin:0 0 1rem;
+}
+.mate__tel{
+  display:inline-block;
+  font-family:var(--disp); font-size:1.3rem;
+  text-decoration:none; color:var(--ink);
+  border-bottom:1px solid var(--hair);
+  padding-bottom:2px;
+  transition:color .3s var(--ease), border-color .3s var(--ease);
+}
+.mate__tel:hover{ color:var(--clay); border-bottom-color:var(--clay); }
+.mate__mail{
+  display:block; margin-top:.7rem;
+  font-size:.78rem; color:var(--sage-deep);
+  text-decoration:none; word-break:break-all;
+  transition:color .3s var(--ease);
+}
+.mate__mail:hover{ color:var(--clay); }
+
+.contact__note{
+  margin:1.1rem 0 0; font-size:.9rem; color:var(--sage-deep);
+}
+.contact__note a{ color:var(--clay); }
 
 /* ─────────────────────────────────────────────────── RIDGELINE
    Signature. Her logo's mountains, flanked by the rule/star/rule rhythm
@@ -540,11 +635,22 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
 /* Touch targets: inline links get real hit area on coarse pointers
    without changing how they look on desktop. */
 @media (pointer:coarse){
-  .hdr__nav a, .mnav a, .mail, address a{ padding-block:.7rem; display:inline-block; }
+  .hdr__nav a, .mnav a, .mail, address a,
+  .mate__tel, .mate__mail, .contact__note a{ padding-block:.7rem; display:inline-block; }
   .hdr__mark{ padding-block:.35rem; }
 }
 
 /* ─────────────────────────────────────────────────── RESPONSIVE */
+
+@media (max-width:900px){
+  .crew{ grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1.5rem; }
+}
+
+/* One card per row on phones, but cap the arch so three people don't turn
+   into three screens of scrolling. */
+@media (max-width:620px){
+  .mate__arch{ max-width:228px; margin-inline:auto; margin-bottom:1rem; }
+}
 
 @media (max-width:980px){
   .about{ grid-template-columns:1fr; }
