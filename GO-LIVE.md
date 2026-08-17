@@ -124,8 +124,30 @@ is unlisted and fine to share for approval.
 ## Updating it later
 
 Edit the file on GitHub, commit, and Vercel redeploys in about 20 seconds.
-For almost everything you will ever change — phone, email, hours, bio,
+For almost everything you will ever change — phones, emails, hours, team,
 coverage copy, disclosures, carrier — the file is `assets/js/config.js`.
+
+### After ANY change to CSS or JS, bump the version string
+
+At the bottom and top of `index.html`:
+
+```html
+<link rel="stylesheet" href="/assets/css/styles.css?v=2">
+<script src="/assets/js/config.js?v=2"></script>
+<script src="/assets/js/main.js?v=2"></script>
+```
+
+Change all three `?v=2` to `?v=3`, then `?v=4`, and so on.
+
+**Why this matters.** These filenames never change — there is no build step
+producing hashed names like `app.a3f9c2.js`. Without a new query string, a
+browser that already has `config.js` may keep serving its old copy and your
+deploy simply will not appear. The `vercel.json` cache headers now force
+revalidation, so this is belt and braces — but bump it anyway. It costs three
+characters and it is the difference between "the deploy worked" and an hour
+of confusion.
+
+If a change still does not show up: hard refresh with **Cmd+Shift+R**.
 
 ## If something breaks
 
@@ -136,4 +158,6 @@ coverage copy, disclosures, carrier — the file is `assets/js/config.js`.
 | Deploy fails | A build command is set. Clear it, set framework to Other. |
 | Quote form is blank | Check the Jotform is published and not in draft. |
 | Fonts look wrong | Bodoni Moda and Parisienne load from Google Fonts. Blocked networks fall back to a system serif — not a bug in the site. |
+| **Deploy succeeded but the page looks unchanged** | Cached CSS/JS. Bump `?v=` in `index.html` and hard refresh (Cmd+Shift+R). |
+| **Some content updated, some didn't** | Classic partial cache. `index.html` refreshed but `config.js` or `main.js` did not. Same fix as above. |
 | Domain will not verify | Old A or CNAME records at the registrar. Delete them. |

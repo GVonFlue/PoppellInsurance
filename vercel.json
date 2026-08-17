@@ -3,9 +3,23 @@
   "trailingSlash": false,
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "comment": "Brand images never change content under the same filename, so a long immutable cache is safe here.",
+      "source": "/assets/brand/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "comment": "CSS and JS have NO content hash on this site — the filenames are stable across every deploy. They must revalidate on each load or a deploy will never reach a returning visitor. Do not put immutable here.",
+      "source": "/assets/(css|js)/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }
   ]
