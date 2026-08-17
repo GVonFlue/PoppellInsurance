@@ -1,0 +1,6 @@
+# Poppell Insurance Agency
+User-agent: *
+Allow: /
+
+# Add the sitemap line once the custom domain is live, e.g.
+# Sitemap: https://poppellinsurance.com/sitemap.xml

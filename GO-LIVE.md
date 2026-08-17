@@ -69,6 +69,19 @@ build command on a static site will fail the deploy.
 
 ## Part C — Domain
 
+**11a. SEO files that need the domain.** Three edits, all one line each:
+
+- `index.html` — uncomment the `<link rel="canonical">` in `<head>` and set it
+- `sitemap.xml` — replace `REPLACE-WITH-DOMAIN` with the real domain
+- `robots.txt` — uncomment the `Sitemap:` line and set it
+- `assets/js/config.js` — set `site.domain` (no protocol, no trailing slash).
+  This injects absolute Open Graph URLs and the JSON-LD `url`/`@id`.
+
+**11b.** After the domain resolves: add the property in **Google Search
+Console** and **Bing Webmaster Tools**, and submit `sitemap.xml` in both.
+Also run the homepage through Google's **Rich Results Test** to confirm the
+`InsuranceAgency` structured data is picked up.
+
 **11.** Buy the domain if you have not. `poppellinsurance.com` or
 `poppellinsuranceagency.com`. Keep her name in it — that is the whole point of
 building this before the carrier change.

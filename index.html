@@ -3,22 +3,113 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Poppell Insurance Agency — Colorado Springs</title>
-<meta name="description" content="Poppell Insurance Agency in Colorado Springs. Property, auto, life, business and umbrella coverage from a local team where every person has a direct line.">
+
+<title>Insurance in Colorado Springs, CO — Poppell Insurance Agency</title>
+<meta name="description" content="Home, auto, life, business and umbrella insurance in Colorado Springs. A local team where every person publishes a direct line. Poppell Insurance Agency, 611 N Weber St.">
+
+<!-- CANONICAL — uncomment and set once the domain is live. Leaving a wrong
+     canonical in place is worse than having none, so it ships commented.
+<link rel="canonical" href="https://REPLACE-WITH-DOMAIN/">
+-->
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Poppell Insurance Agency — Colorado Springs">
-<meta property="og:description" content="Local service. Real relationships. Reliable protection.">
+<meta property="og:site_name" content="Poppell Insurance Agency">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Insurance in Colorado Springs, CO — Poppell Insurance Agency">
+<meta property="og:description" content="Home, auto, life, business and umbrella insurance in Colorado Springs. A local team where every person publishes a direct line.">
 <meta property="og:image" content="/assets/brand/poppell-banner.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Insurance in Colorado Springs, CO — Poppell Insurance Agency">
+<meta name="twitter:description" content="Home, auto, life, business and umbrella insurance in Colorado Springs. A local team where every person publishes a direct line.">
+<meta name="twitter:image" content="/assets/brand/poppell-banner.jpg">
+
+<meta name="geo.region" content="US-CO">
+<meta name="geo.placename" content="Colorado Springs">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Jost:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
 
-<!-- ?v= bumps on every content change. Belt and braces against a stale
-     cache: a new query string is a new URL, so a browser holding an old copy
-     is forced to refetch even if it was previously told to cache long. -->
-<link rel="stylesheet" href="/assets/css/styles.css?v=2">
+<link rel="stylesheet" href="/assets/css/styles.css?v=3">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     STRUCTURED DATA
+     Static on purpose. Citation scrapers and most non-Google crawlers do
+     not execute JavaScript, and her name/address/phone is exactly what
+     they exist to harvest. This must be in the served HTML.
+
+     NOTE: no `geo` block. Precise coordinates were not supplied and
+     inventing them would be worse than omitting them — search engines
+     geocode from `address` and `hasMap` anyway.
+
+     `url` and `@id` are injected by main.js once site.domain is set.
+     ════════════════════════════════════════════════════════════════════ -->
+<script type="application/ld+json" id="ld-business">
+{
+  "@context": "https://schema.org",
+  "@type": "InsuranceAgency",
+  "name": "Poppell Insurance Agency",
+  "description": "Independent local insurance agency in Colorado Springs, Colorado offering home, auto, life, business, umbrella, recreational, condo and renters coverage.",
+  "image": "/assets/brand/poppell-banner.jpg",
+  "telephone": "+1-719-657-1212",
+  "email": "apoppell@farmersagent.com",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "611 N Weber St., Ste. 202",
+    "addressLocality": "Colorado Springs",
+    "addressRegion": "CO",
+    "postalCode": "80903",
+    "addressCountry": "US"
+  },
+  "hasMap": "https://maps.google.com/maps?cid=2630466317143634927",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:30",
+      "closes": "17:30"
+    }
+  ],
+  "areaServed": [
+    { "@type": "City", "name": "Colorado Springs" },
+    { "@type": "AdministrativeArea", "name": "El Paso County, Colorado" },
+    { "@type": "State", "name": "Colorado" }
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Alyssa L Poppell",
+    "jobTitle": "Owner",
+    "telephone": "+1-719-657-1212",
+    "email": "apoppell@farmersagent.com",
+    "image": "/assets/brand/alyssa-poppell.jpg"
+  },
+  "employee": [
+    { "@type": "Person", "name": "Alyssa L Poppell", "jobTitle": "Owner", "telephone": "+1-719-657-1212" },
+    { "@type": "Person", "name": "Charlene", "telephone": "+1-719-679-5050" },
+    { "@type": "Person", "name": "Jean", "telephone": "+1-719-657-1201" }
+  ],
+  "knowsAbout": [
+    "Homeowners insurance", "Renters insurance", "Condo insurance",
+    "Auto insurance", "Motorcycle insurance", "Life insurance",
+    "Business insurance", "Commercial auto insurance", "Workers compensation insurance",
+    "Umbrella insurance", "Boat insurance", "RV insurance"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Insurance coverage",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Home and property insurance in Colorado Springs" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Auto insurance in Colorado Springs" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Life insurance in Colorado Springs" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Business insurance in Colorado Springs" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Umbrella insurance in Colorado Springs" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Recreational vehicle and boat insurance in Colorado Springs" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Condo and renters insurance in Colorado Springs" } }
+    ]
+  }
+}
+</script>
 </head>
 <body>
 
@@ -37,9 +128,9 @@
       <a href="#team">Team</a>
       <a href="#quote">Quote</a>
     </nav>
-    <a class="hdr__cta" data-tel href="#">
+    <a class="hdr__cta" href="tel:+17196571212">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg>
-      <span data-phone>—</span>
+      <span>719-657-1212</span>
     </a>
     <button class="hdr__burger" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Open menu">
       <span></span><span></span>
@@ -51,7 +142,7 @@
     <a href="#team">Team</a>
     <a href="#about">About</a>
     <a href="#quote">Get a quote</a>
-    <a data-tel href="#" data-phone-label>Call</a>
+    <a href="tel:+17196571212">Call 719-657-1212</a>
   </nav>
 </header>
 
@@ -61,15 +152,16 @@
   <section class="hero" id="hero">
     <div class="hero__art" id="heroArt">
       <img src="/assets/brand/poppell-banner.jpg"
-           alt="Poppell Insurance Agency — Protect what matters. Property, auto, life and business coverage."
+           alt="Poppell Insurance Agency, Colorado Springs — Protect what matters. Property, auto, life and business insurance."
            width="1942" height="809" fetchpriority="high">
     </div>
 
     <div class="hero__body">
-      <h1 class="hero__h1" data-split>Insurance you can <em>actually get someone</em> on the phone about.</h1>
+      <h1 class="hero__h1" data-split>Colorado Springs insurance you can <em>actually get someone</em> on the phone about.</h1>
       <p class="hero__lede reveal" data-d="2">
-        A local team in Colorado Springs, direct lines to real people, and a
-        straight answer about what your policy actually does.
+        Poppell Insurance Agency covers homes, vehicles, families and businesses
+        across Colorado Springs and the Front Range. A local team, direct lines
+        to real people, and a straight answer about what your policy actually does.
       </p>
       <div class="hero__acts reveal" data-d="3">
         <a class="btn btn--solid" href="#quote">Get a quote</a>
@@ -80,7 +172,7 @@
 
   <!-- ══════════════════ MARQUEE — her creed, running -->
   <div class="marquee" aria-hidden="true"><div class="marquee__track" data-marquee></div></div>
-  <p class="sr-only" data-creed>—</p>
+  <p class="sr-only">Local service. Real relationships. Reliable protection.</p>
 
   <!-- ══════════════════════════════════════════════════════ COVERAGE -->
   <section class="sec" id="coverage">
@@ -90,10 +182,50 @@
         <h2 class="h2 reveal" data-d="1">Protect what's<br>important to you.</h2>
         <p class="sec__lede reveal" data-d="2">
           Most people find out what their policy does at the worst possible
-          moment. The point of sitting down together is that you already know.
+          moment. The point of sitting down together in our Colorado Springs
+          office is that you already know.
         </p>
       </div>
-      <div class="rows" data-coverage></div>
+
+      <div class="rows">
+
+        <article class="row reveal">
+          <div class="row__icon" data-icon="property"></div>
+          <div class="row__head">
+            <h3 class="row__label">Property</h3>
+            <p class="row__lede">Home, condo, renters and landlord insurance</p>
+          </div>
+          <div class="row__copy"><p class="row__body">Your house is likely the largest thing you own, and the coverage on it is usually the least examined. We go through what is actually protected, what is not, and where the gap sits between the two.</p></div>
+        </article>
+
+        <article class="row reveal">
+          <div class="row__icon" data-icon="auto"></div>
+          <div class="row__head">
+            <h3 class="row__label">Auto</h3>
+            <p class="row__lede">Cars, trucks, motorcycles, RVs and boats</p>
+          </div>
+          <div class="row__copy"><p class="row__body">Liability limits, deductibles, uninsured motorist coverage. Plain answers on what each one does, and an honest read on whether you are carrying too much or not nearly enough.</p></div>
+        </article>
+
+        <article class="row reveal">
+          <div class="row__icon" data-icon="life"></div>
+          <div class="row__head">
+            <h3 class="row__label">Life</h3>
+            <p class="row__lede">Term, whole and universal life insurance</p>
+          </div>
+          <div class="row__copy"><p class="row__body">The one people put off. A short conversation now about who depends on your income, and what happens to them if it stops, is worth more than a policy you never got around to buying.</p></div>
+        </article>
+
+        <article class="row reveal">
+          <div class="row__icon" data-icon="business"></div>
+          <div class="row__head">
+            <h3 class="row__label">Business</h3>
+            <p class="row__lede">Liability, commercial auto, property, workers&rsquo; comp</p>
+          </div>
+          <div class="row__copy"><p class="row__body">You know your operation better than any insurer does. Our job is to translate it into coverage that holds up when something goes sideways, without paying for protection you will never use.</p></div>
+        </article>
+
+      </div>
     </div>
   </section>
 
@@ -102,7 +234,21 @@
     <div class="wrap">
       <p class="eyebrow eyebrow--inv reveal"><span class="star">&#10022;</span> Beyond the basics</p>
       <h2 class="h2 h2--inv reveal" data-d="1">The coverage most<br>people never ask about.</h2>
-      <div class="spec" data-specialty></div>
+
+      <div class="spec">
+        <article class="spec__item reveal" data-d="1">
+          <h3 class="spec__label">Umbrella insurance</h3>
+          <p class="spec__body">Liability limits on a home or auto policy stop somewhere. An umbrella picks up above them and covers what you have built and what you are still going to earn.</p>
+        </article>
+        <article class="spec__item reveal" data-d="2">
+          <h3 class="spec__label">Recreational</h3>
+          <p class="spec__body">Boats, ATVs, RVs, motor homes, personal watercraft, motorcycles. The things that spend most of the year parked and are rarely covered the way owners assume.</p>
+        </article>
+        <article class="spec__item reveal" data-d="3">
+          <h3 class="spec__label">Condo &amp; renters</h3>
+          <p class="spec__body">The building is insured. Everything inside it is your problem. Renters coverage in particular costs less than most people guess and is the easiest gap in this list to close.</p>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -117,7 +263,40 @@
           that person's desk. Insurance agencies almost never publish these.
         </p>
       </div>
-      <div class="crew" data-team></div>
+
+      <div class="crew">
+
+        <article class="mate reveal" data-d="1">
+          <div class="mate__arch">
+            <img src="/assets/brand/alyssa-poppell.jpg" alt="Alyssa L Poppell, Owner of Poppell Insurance Agency in Colorado Springs" width="800" height="800" loading="lazy">
+          </div>
+          <h3 class="mate__name">Alyssa L Poppell</h3>
+          <p class="mate__title">Owner</p>
+          <a class="mate__tel" href="tel:+17196571212">719-657-1212</a>
+          <a class="mate__mail" href="mailto:apoppell@farmersagent.com">apoppell@farmersagent.com</a>
+        </article>
+
+        <article class="mate reveal" data-d="2">
+          <div class="mate__arch">
+            <span class="mate__ph"><span class="needs">Needs headshot</span></span>
+          </div>
+          <h3 class="mate__name">Charlene</h3>
+          <p class="mate__title"><span class="needs">Needs job title</span></p>
+          <a class="mate__tel" href="tel:+17196795050">719-679-5050</a>
+          <a class="mate__mail" href="mailto:Charlene.apoppell@farmersagent.com">Charlene.apoppell@farmersagent.com</a>
+        </article>
+
+        <article class="mate reveal" data-d="3">
+          <div class="mate__arch">
+            <span class="mate__ph"><span class="needs">Needs headshot</span></span>
+          </div>
+          <h3 class="mate__name">Jean</h3>
+          <p class="mate__title"><span class="needs">Needs job title</span></p>
+          <a class="mate__tel" href="tel:+17196571201">719-657-1201</a>
+          <a class="mate__mail" href="mailto:Jean.apoppell@farmersagent.com">Jean.apoppell@farmersagent.com</a>
+        </article>
+
+      </div>
     </div>
     <div class="ridge" data-ridge aria-hidden="true"></div>
   </section>
@@ -129,24 +308,34 @@
       <figure class="arch reveal">
         <div class="arch__sun" data-sun aria-hidden="true"></div>
         <div class="arch__frame">
-          <div class="arch__img" data-portrait></div>
+          <div class="arch__img">
+            <img src="/assets/brand/alyssa-poppell.jpg" alt="Alyssa L Poppell, Owner of Poppell Insurance Agency" width="800" height="800" loading="lazy">
+          </div>
         </div>
         <figcaption class="arch__cap">
-          <span data-agent-name>—</span><i class="dot">&#10022;</i><span data-agent-title>—</span>
+          <span>Alyssa Poppell</span><i class="dot">&#10022;</i><span>Owner</span>
         </figcaption>
       </figure>
 
       <div class="about__txt">
         <p class="eyebrow reveal"><span class="star">&#10022;</span> Who you're working with</p>
         <h2 class="h2 reveal" data-d="1">The team,<br>not the call center.</h2>
-        <div class="prose reveal" data-d="2" data-about></div>
-        <p class="signature" data-sign><span data-tagline>—</span></p>
+        <div class="prose reveal" data-d="2">
+          <p>Most people buy insurance once, file it away, and never look at it again until something goes wrong. That is usually the worst possible time to find out what a policy actually covers.</p>
+          <p>We work the other way around. We go through what you own, what you owe, and who depends on you, then tell you plainly where you are covered and where you are exposed. Sometimes that means adding coverage. Sometimes it means telling you that you are paying for something you do not need.</p>
+          <p>And when you call our Colorado Springs office, you reach the person you meant to reach. Every one of us has a direct line published on this page. No queue, no routing, no explaining your file from the beginning to somebody new.</p>
+        </div>
+        <p class="signature" data-sign><span>Protect what matters.</span></p>
       </div>
 
     </div>
 
     <div class="wrap">
-      <ul class="creed" data-creed-list></ul>
+      <ul class="creed">
+        <li>Local service.</li>
+        <li>Real relationships.</li>
+        <li>Reliable protection.</li>
+      </ul>
     </div>
     <div class="ridge" data-ridge aria-hidden="true"></div>
   </section>
@@ -169,17 +358,25 @@
     <div class="wrap contact">
       <div class="contact__lead reveal">
         <p class="lbl">The office</p>
-        <a class="phone" data-tel href="#"><span data-phone>—</span></a>
+        <a class="phone" href="tel:+17196571212">719-657-1212</a>
         <p class="contact__note">Or call anyone on the team direct — <a href="#team">see the numbers</a>.</p>
       </div>
       <div class="contact__grid">
         <div class="reveal" data-d="1">
           <p class="lbl">Office</p>
-          <address data-address></address>
+          <address>
+            Poppell Insurance Agency<br>
+            611 N Weber St., Ste. 202<br>
+            Colorado Springs, CO 80903<br>
+            <a href="https://maps.google.com/maps?cid=2630466317143634927" target="_blank" rel="noopener">Get directions</a>
+          </address>
         </div>
         <div class="reveal" data-d="2">
           <p class="lbl">Hours</p>
-          <div data-hours></div>
+          <div>
+            <div>Monday – Friday · 8:30 AM – 5:30 PM</div>
+            <div>Saturday &amp; Sunday · Closed</div>
+          </div>
         </div>
       </div>
     </div>
@@ -193,21 +390,21 @@
     <div class="ftr__top">
       <div>
         <p class="ftr__mark">Poppell <em>Insurance Agency</em></p>
-        <p class="ftr__script" data-tagline>—</p>
+        <p class="ftr__script">Protect what matters.</p>
       </div>
       <div class="ftr__meta">
-        <p><span data-agent-legal>—</span> &middot; License #<span data-license>—</span></p>
-        <p data-licensed-in>—</p>
+        <p>Alyssa L Poppell &middot; License #640903</p>
+        <p>Licensed in Colorado</p>
         <p data-agency-codes></p>
         <div data-carrier-logo></div>
       </div>
     </div>
     <div class="ftr__legal" data-disclosures></div>
-    <p class="ftr__copy">&copy; <span data-year>—</span> Poppell Insurance Agency. All rights reserved.</p>
+    <p class="ftr__copy">&copy; <span data-year>2026</span> Poppell Insurance Agency. All rights reserved.</p>
   </div>
 </footer>
 
-<script src="/assets/js/config.js?v=2"></script>
-<script src="/assets/js/main.js?v=2"></script>
+<script src="/assets/js/config.js?v=3"></script>
+<script src="/assets/js/main.js?v=3"></script>
 </body>
 </html>

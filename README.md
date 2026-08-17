@@ -15,6 +15,57 @@ GO-LIVE.md               19 steps to GitHub + Vercel + domain
 BRANDING-SWAP.md         read this before the carrier change
 ```
 
+## SEO — what's in and what isn't
+
+**Content is static HTML.** It used to be generated at runtime from
+`config.js`. That made the carrier swap a one-file edit, but the served
+document was an empty shell — Google renders JS on a delayed second pass, and
+most citation scrapers, directory crawlers and social bots never run it at
+all. NAP data is exactly what those exist to harvest. A non-JS fetch of this
+page now returns **691 words** including every phone number, the full
+address, all team members and every coverage term.
+
+**In place:**
+
+| Item | Detail |
+|---|---|
+| `InsuranceAgency` JSON-LD | Static in `<head>`. NAP, hours, `areaServed`, `hasMap` via the Google CID, three employees, 7-item offer catalog, `knowsAbout` |
+| Title & description | Service and city front-loaded, not brand-first |
+| H1 | Carries "Colorado Springs insurance" naturally |
+| Section copy | Location and service terms woven into ledes, not stuffed |
+| Open Graph + Twitter | Full set; absolute URLs injected once `site.domain` is set |
+| `robots.txt` | Allows all |
+| `sitemap.xml` | Template — **contains `REPLACE-WITH-DOMAIN`, must be edited before submitting** |
+| Semantics | One H1, `<address>`, `<article>`, real heading hierarchy |
+
+**Deliberately omitted:** a `geo` block. Precise coordinates were never
+supplied and inventing them is worse than omitting them — search engines
+geocode from `address` and `hasMap`.
+
+**Still missing, in priority order:**
+
+1. **Service pages.** One page ranks for roughly one query. Local insurance
+   is won with service-plus-city pages: home, auto, life, business, umbrella,
+   renters. Six real pages. This is the largest remaining gap.
+2. **Canonical.** Commented out in `index.html` — uncomment once the domain
+   is live.
+3. **Search Console + Bing Webmaster.** Submit the sitemap.
+4. **NAP reconciliation.** See below. This is off-site and it outranks
+   everything above.
+
+### The thing that matters more than this website
+
+For local insurance the map pack drives most calls, and that is her **Google
+Business Profile**, not this page. The site supports the profile; it does not
+replace it.
+
+Her name/address/phone is currently inconsistent across the web: the site
+publishes 719-657-1212, her business card says 719-306-1894, her carrier
+agent page publishes 719-563-9712. Search engines cross-reference these and
+mismatches reduce confidence in the listing. **Reconciling the phone number
+across her Google profile, carrier page and printed material will move her
+ranking more than anything else on this list.**
+
 ## Caching — why `vercel.json` looks the way it does
 
 This site has **no build step**, so filenames never change. There is no
