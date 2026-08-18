@@ -463,14 +463,25 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
   border:1px solid var(--hair);
   display:grid; place-items:center;
   margin-bottom:1.2rem;
+  transition:transform .7s var(--ease-out), border-color .7s var(--ease-out);
 }
+.mate:hover .mate__arch,
+.mate:focus-within .mate__arch{
+  transform:translateY(-7px);
+  border-color:var(--clay-light);
+}
+.mate__name{ transition:color .45s var(--ease); }
+.mate:hover .mate__name{ color:var(--clay); }
 .mate__arch img{
   width:100%; height:100%;
   object-fit:cover; object-position:50% 26%;
-  transform:scale(1.03);
-  transition:transform 1.2s var(--ease-out);
+  transform:scale(1);
+  transform-origin:50% 30%;
+  transition:transform .7s var(--ease-out);
+  will-change:transform;
 }
-.mate:hover .mate__arch img{ transform:scale(1.08); }
+.mate:hover .mate__arch img,
+.mate:focus-within .mate__arch img{ transform:scale(1.11); }
 .mate__ph{ padding:1rem; }
 
 .mate__name{
@@ -572,7 +583,9 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
   border:1px solid var(--hair);
   /* the arch reveals upward from its own base on scroll-in */
   clip-path:inset(100% 0 0 0);
-  transition:clip-path 1.3s var(--ease-out);
+  transition:clip-path 1.3s var(--ease-out),
+             transform .8s var(--ease-out),
+             border-color .8s var(--ease-out);
 }
 .reveal.is-in .arch__frame,
 .arch.is-in .arch__frame{ clip-path:inset(0 0 0 0); }
@@ -581,10 +594,24 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
 .arch__img img{
   width:100%; height:100%;
   object-fit:cover; object-position:50% 26%;
-  transform:scale(1.04);
-  transition:transform 1.4s var(--ease-out);
+  transform:scale(1);
+  transform-origin:50% 30%;
+  transition:transform .8s var(--ease-out);
+  will-change:transform;
 }
-.arch:hover .arch__img img{ transform:scale(1.09); }
+.arch:hover .arch__img img,
+.arch:focus-within .arch__img img{ transform:scale(1.12); }
+
+/* The frame itself lifts a little so the whole thing reads as coming
+   toward you, not just the photo growing inside a static box. */
+.arch__frame{ transition:clip-path 1.3s var(--ease-out),
+                          transform .8s var(--ease-out),
+                          border-color .8s var(--ease-out); }
+.arch:hover .arch__frame,
+.arch:focus-within .arch__frame{
+  transform:translateY(-8px);
+  border-color:var(--clay-light);
+}
 .arch__img .needs{ margin:2rem; }
 
 .arch__cap{
@@ -647,6 +674,22 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
   color:var(--sage); font-size:.85rem; letter-spacing:.14em; text-transform:uppercase;
 }
 .formwrap.is-loading .formwrap__wait{ display:flex; }
+
+/* Slow / failed embed messaging. Both sit around the iframe; neither
+   replaces it, so a late-arriving form still renders. */
+.formwrap__slow,
+.formwrap__alt{
+  margin:0; padding:.9rem 1.1rem;
+  font-size:.85rem; color:var(--sage-deep);
+  background:var(--paper-lift);
+  border-bottom:1px solid var(--hair);
+}
+.formwrap__alt{
+  border-bottom:0; border-top:1px solid var(--hair);
+  text-align:center; color:var(--sage);
+  font-size:.8rem;
+}
+.formwrap__slow a, .formwrap__alt a{ color:var(--clay); }
 .formwrap .ph{ text-align:center; }
 .formwrap .ph p{ margin:.9rem 0 0; color:var(--sage); font-size:.9rem; }
 .formwrap .ph a{ color:var(--clay); }
@@ -793,6 +836,19 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
   .ridge__peaks .glyph, .ridge__star{ opacity:1; }
   .ridge__rule{ transform:none; }
   .arch__frame{ clip-path:none; }
+
+  /* Hover transforms need selectors that actually outrank the :hover
+     rules. A plain `.arch__img img{transform:none}` loses on specificity
+     and silently does nothing — it looked correct and wasn't. */
+  .arch:hover .arch__img img,
+  .arch:focus-within .arch__img img,
+  .mate:hover .mate__arch img,
+  .mate:focus-within .mate__arch img{ transform:scale(1); }
+
+  .arch:hover .arch__frame,
+  .arch:focus-within .arch__frame,
+  .mate:hover .mate__arch,
+  .mate:focus-within .mate__arch{ transform:none; }
   .signature span{ clip-path:none; }
   .marquee__track{ animation:none; }
   .arch__sun svg{ animation:none; }

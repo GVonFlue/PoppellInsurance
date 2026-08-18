@@ -170,6 +170,7 @@ If a change still does not show up: hard refresh with **Cmd+Shift+R**.
 | Page loads unstyled | `assets/` did not upload. Check the repo file tree. |
 | Deploy fails | A build command is set. Clear it, set framework to Other. |
 | Quote form is blank | Check the Jotform is published and not in draft. |
+| **Quote form shows a "trouble with the form" message** | The iframe didn't finish loading. The embed is never destroyed, so it will still appear if it arrives late. Test by opening the form URL directly in a tab: **loads there but not embedded** → a browser extension or content blocker is stalling the request, or the form disallows embedding. **Doesn't load there either** → the form is unpublished, in draft, or the ID is wrong. |
 | Fonts look wrong | Bodoni Moda and Parisienne load from Google Fonts. Blocked networks fall back to a system serif — not a bug in the site. |
 | **Deploy succeeded but the page looks unchanged** | Cached CSS/JS. Bump `?v=` in `index.html` and hard refresh (Cmd+Shift+R). |
 | **Some content updated, some didn't** | Classic partial cache. `index.html` refreshed but `config.js` or `main.js` did not. Same fix as above. |

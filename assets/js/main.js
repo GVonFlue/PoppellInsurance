@@ -160,22 +160,49 @@
   if (jf) {
     if (S.jotformUrl) {
       jf.classList.add('is-loading');
-      jf.innerHTML = '<p class="formwrap__wait">Loading the quote form\u2026</p>' +
+      jf.innerHTML =
+        '<p class="formwrap__wait">Loading the quote form\u2026</p>' +
         '<iframe title="Request an insurance quote" src="' + S.jotformUrl +
-        '" height="760" scrolling="no" allow="geolocation; microphone; camera"></iframe>';
+        '" height="760" scrolling="no" allow="geolocation; microphone; camera"></iframe>' +
+        '<p class="formwrap__alt">Trouble with the form? ' +
+        '<a href="' + S.jotformUrl + '" target="_blank" rel="noopener">Open it in a new tab</a>' +
+        ' or call <a href="tel:+17195639712">719-563-9712</a>.</p>';
 
-      jf.querySelector('iframe').addEventListener('load', function () {
+      var frame = jf.querySelector('iframe');
+      var revealed = false;
+
+      // NEVER destroy the iframe. An earlier version replaced it after a
+      // timeout, which meant a merely-slow form was killed before it could
+      // appear. The timers below only ever reveal or annotate.
+      function reveal() {
+        if (revealed) { return; }
+        revealed = true;
         jf.classList.remove('is-loading');
+        var w = jf.querySelector('.formwrap__wait');
+        if (w) { w.remove(); }
+      }
+
+      frame.addEventListener('load', function () {
+        reveal();
+        clearTimeout(slowTimer);
+        var n = jf.querySelector('.formwrap__slow');
+        if (n) { n.remove(); }
       });
-      // If the embed never loads, fall back to the phone rather than
-      // leaving a dead box on the page.
-      setTimeout(function () {
-        if (!jf.classList.contains('is-loading')) { return; }
-        jf.innerHTML = '<div class="ph"><p>The quote form is not loading right now. ' +
-          'Call <a href="tel:+17195639712">719-563-9712</a> and we will take it ' +
-          'over the phone.</p></div>';
-        jf.classList.remove('is-loading');
-      }, 8000);
+
+      // Show it regardless after 4s so a slow form renders progressively
+      // instead of sitting behind a spinner.
+      setTimeout(reveal, 4000);
+
+      // Non-destructive nudge if it is really dragging.
+      var slowTimer = setTimeout(function () {
+        if (jf.querySelector('.formwrap__slow')) { return; }
+        var d = document.createElement('p');
+        d.className = 'formwrap__slow';
+        d.innerHTML = 'This is taking longer than it should. You can ' +
+          '<a href="' + S.jotformUrl + '" target="_blank" rel="noopener">open the form in a new tab</a>' +
+          ' or call <a href="tel:+17195639712">719-563-9712</a> and we will take it over the phone.';
+        jf.insertBefore(d, jf.firstChild);
+      }, 12000);
 
       window.addEventListener('message', function (e) {
         if (typeof e.data !== 'string' || e.data.indexOf('setHeight') === -1) { return; }
