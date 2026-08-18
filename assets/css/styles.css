@@ -161,11 +161,62 @@ a{ color:inherit; }
 
 .hero{ padding-top:5.5rem; }
 
-.hero__art{ overflow:hidden; }
+.hero__art{ overflow:hidden; position:relative; }
+.hero__art picture{ display:block; position:relative; z-index:1; }
 .hero__art img{
   width:100%; transform:scale(1.06); opacity:0;
   animation:heroSettle 1.6s .15s var(--ease-out) forwards;
   will-change:transform,opacity;
+}
+
+/* ── SKY (behind the artwork) ─────────────────────────────────────── */
+.hero__sky{
+  position:absolute; inset:-8% -6%; z-index:0;
+  pointer-events:none;
+  will-change:transform;
+}
+.hero__sky svg{ width:100%; height:100%; display:block; }
+
+/* Her banner already contains a sun. This is the glow around it. */
+.sky__glow{
+  transform-origin:center;
+  animation:glowBreathe 11s ease-in-out infinite;
+}
+@keyframes glowBreathe{
+  0%,100%{ opacity:.45; transform:scale(1); }
+  50%    { opacity:.75; transform:scale(1.05); }
+}
+
+/* Birds cross the sky on long loops. Her banner has birds in it already —
+   these are drawn to match and actually fly. */
+.bird{ fill:none; stroke:var(--sage-soft); stroke-width:2.2; stroke-linecap:round; opacity:.65; }
+.bird-g{ animation:flyAcross linear infinite; }
+@keyframes flyAcross{
+  from{ transform:translate3d(-14%,0,0); }
+  to  { transform:translate3d(118%,0,0); }
+}
+.bird-flap{ animation:flap 1.1s ease-in-out infinite; transform-origin:center; }
+@keyframes flap{
+  0%,100%{ transform:scaleY(1); }
+  50%    { transform:scaleY(.45); }
+}
+
+/* ── MOTES (in front) ─────────────────────────────────────────────── */
+.hero__motes{
+  position:absolute; inset:0; z-index:2;
+  pointer-events:none; overflow:hidden;
+  will-change:transform;
+}
+.mote{
+  position:absolute; border-radius:50%;
+  background:var(--clay-light); opacity:0;
+  animation:drift linear infinite;
+}
+@keyframes drift{
+  0%  { opacity:0; transform:translate3d(0,0,0); }
+  12% { opacity:.5; }
+  80% { opacity:.35; }
+  100%{ opacity:0; transform:translate3d(38px,-90px,0); }
 }
 @keyframes heroSettle{ to{ transform:scale(1); opacity:1; } }
 
@@ -851,5 +902,8 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
   .mate:focus-within .mate__arch{ transform:none; }
   .signature span{ clip-path:none; }
   .marquee__track{ animation:none; }
+  .sky__glow, .bird-g, .bird-flap, .mote{ animation:none; }
+  .mote{ opacity:0; }
+  .hero__sky, .hero__motes{ transform:none !important; }
   .arch__sun svg{ animation:none; }
 }

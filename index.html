@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Jost:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/assets/css/styles.css?v=7">
+<link rel="stylesheet" href="/assets/css/styles.css?v=8">
 
 <!-- ════════════════════════════════════════════════════════════════════
      STRUCTURED DATA
@@ -156,9 +156,19 @@
   <!-- ══════════════════════════════════════════════════════ HERO -->
   <section class="hero" id="hero">
     <div class="hero__art" id="heroArt">
-      <img src="/assets/brand/poppell-banner.jpg"
-           alt="Poppell Insurance Agency, Colorado — Protect what matters. Property, auto, life and business insurance."
-           width="1942" height="809" fetchpriority="high">
+      <!-- The sky lives BEHIND her artwork. The banner .webp has its cream
+           ground keyed to transparent, so the sun glow, the drifting
+           ridgeline and the birds show through where the sky used to be.
+           Her logo lockup is never split or distorted — it stays one image.
+           The .jpg fallback is opaque, which simply hides the sky layer. -->
+      <div class="hero__sky" data-sky aria-hidden="true"></div>
+      <picture>
+        <source srcset="/assets/brand/poppell-banner.webp" type="image/webp">
+        <img src="/assets/brand/poppell-banner.jpg"
+             alt="Poppell Insurance Agency, Colorado — Protect what matters. Property, auto, life and business insurance."
+             width="1942" height="809" fetchpriority="high">
+      </picture>
+      <div class="hero__motes" data-motes aria-hidden="true"></div>
     </div>
 
     <div class="hero__body">
@@ -501,7 +511,7 @@
   </div>
 </footer>
 
-<script src="/assets/js/config.js?v=7"></script>
-<script src="/assets/js/main.js?v=7"></script>
+<script src="/assets/js/config.js?v=8"></script>
+<script src="/assets/js/main.js?v=8"></script>
 </body>
 </html>

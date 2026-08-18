@@ -15,6 +15,39 @@ GO-LIVE.md               19 steps to GitHub + Vercel + domain
 CARRIERS.md         carrier list, adding carriers, compliance holds
 ```
 
+## The living hero — how it works
+
+Her banner ships twice:
+
+| File | Ground | Role |
+|---|---|---|
+| `poppell-banner.webp` | **cream keyed to transparent** | primary |
+| `poppell-banner.jpg` | opaque cream | fallback |
+
+Keying the cream lets an animated sky sit **behind** her artwork: a sun glow
+breathing on an 11-second cycle where her painted sun already is, and three
+flocks of birds crossing on 78/96/116-second loops. Drifting motes sit in
+front. Over the page's cream the composite is pixel-indistinguishable from
+the original JPEG — the key is forgiving precisely because the background it
+keys against is the same cream the page is painted in.
+
+**The artwork is never cut apart.** The whole banner stays one image. Slicing
+the cactus from the wordmark from the mountains would break the logo lockup
+the moment the layers moved at different rates, and soft watercolour edges
+would halo. Only the environment moves; her lockup is the anchor.
+
+Three parallax rates on scroll — sky 0.10, artwork 0.22, motes 0.34 — plus a
+few pixels of pointer parallax behind `(hover:hover) and (pointer:fine)`. The
+artwork deliberately moves *less* than the sky and motes.
+
+All of it off under `prefers-reduced-motion` — verified, motes render zero
+elements rather than sitting invisible.
+
+**Still worth doing, needs her design files:** the four coverage-row icons are
+my line drawings, not hers. Her banner has a hand-drawn house, pickup,
+heart-wreath and boots. Extract those four as transparent PNGs and the rows
+use her actual illustrations.
+
 ## SEO — what's in and what isn't
 
 **Content is static HTML.** It used to be generated at runtime from

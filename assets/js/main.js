@@ -246,6 +246,67 @@
     });
   });
 
+  /* ══════════════════════════════════════════ 4b. LIVING SKY
+     Her banner's cream ground is keyed transparent in the .webp, so these
+     layers read as sky behind her artwork. The artwork itself is never cut
+     apart — the logo lockup stays one image and is never distorted. */
+
+  var sky = $('[data-sky]');
+  if (sky) {
+    // Sun glow sits where her painted sun already is, ~93% across, ~23% down.
+    var birds = '';
+    // Scale is in viewBox units on a 200-wide canvas — a bird at scale 1
+    // would be 7% of the hero's width. These are distant birds.
+    var flock = [
+      { y: 13, s: 0.22, dur: 78,  delay: 0 },
+      { y:  9, s: 0.16, dur: 96,  delay: -26 },
+      { y: 18, s: 0.13, dur: 116, delay: -54 }
+    ];
+    flock.forEach(function (b) {
+      birds +=
+        '<g class="bird-g" style="animation-duration:' + b.dur + 's;' +
+        'animation-delay:' + b.delay + 's">' +
+          '<g transform="translate(0,' + b.y + ') scale(' + b.s + ')">' +
+            '<g class="bird-flap" style="animation-delay:' + (b.delay / 7) + 's">' +
+              '<path class="bird" d="M0 4 L3.4 0 L6.8 4"/>' +
+              '<path class="bird" d="M9 6.4 L11.6 3.2 L14.2 6.4"/>' +
+            '</g>' +
+          '</g>' +
+        '</g>';
+    });
+
+    sky.innerHTML =
+      '<svg viewBox="0 0 200 84" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">' +
+        '<defs>' +
+          '<radialGradient id="sunGlow">' +
+            '<stop offset="0%"  stop-color="#E8C7A6" stop-opacity=".85"/>' +
+            '<stop offset="55%" stop-color="#E8C7A6" stop-opacity=".28"/>' +
+            '<stop offset="100%" stop-color="#E8C7A6" stop-opacity="0"/>' +
+          '</radialGradient>' +
+        '</defs>' +
+        '<circle class="sky__glow" cx="186" cy="19" r="26" fill="url(#sunGlow)"/>' +
+        // No second ridgeline. Her banner already has a mountain range and
+        // a competing one behind the wordmark reads as a stray line, not depth.
+        birds +
+      '</svg>';
+  }
+
+  /* ── drifting motes, in front of the artwork */
+  var motes = $('[data-motes]');
+  if (motes && !REDUCED) {
+    var m = '';
+    for (var k = 0; k < 16; k++) {
+      var sz = (1.5 + Math.random() * 2.4).toFixed(1);
+      m += '<span class="mote" style="' +
+        'left:' + (Math.random() * 100).toFixed(1) + '%;' +
+        'top:' + (35 + Math.random() * 60).toFixed(1) + '%;' +
+        'width:' + sz + 'px;height:' + sz + 'px;' +
+        'animation-duration:' + (9 + Math.random() * 11).toFixed(1) + 's;' +
+        'animation-delay:' + (-Math.random() * 18).toFixed(1) + 's"></span>';
+    }
+    motes.innerHTML = m;
+  }
+
   /* ══════════════════════════════════════════ 5. MARQUEE
      Her creed set running, straight off the bottom rule of her card.
      Duplicated so the -50% translate loops seamlessly. The accessible copy
@@ -378,19 +439,37 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
-  /* ── hero parallax: the banner drifts at 0.22x while the copy holds still */
-  var art = $('#heroArt img');
-  if (art && !REDUCED) {
-    var ticking = false;
+  /* ── hero depth
+     Three rates on scroll, plus a few pixels of pointer parallax on
+     devices that actually have a pointer. The banner moves LEAST of the
+     three — her artwork is the anchor; the environment moves around it. */
+  var art    = $('#heroArt img');
+  var skyEl  = $('[data-sky]');
+  var moteEl = $('[data-motes]');
+
+  if (!REDUCED && (art || skyEl)) {
+    var sY = 0, pX = 0, pY = 0, queued = false;
+
+    function place() {
+      queued = false;
+      if (skyEl)  { skyEl.style.transform  = 'translate3d(' + (pX * -14) + 'px,' + (sY * 0.10 + pY * -8) + 'px,0)'; }
+      if (art)    { art.style.transform    = 'translate3d(' + (pX * 4)   + 'px,' + (sY * 0.22 + pY * 3) + 'px,0)'; }
+      if (moteEl) { moteEl.style.transform = 'translate3d(' + (pX * 22)  + 'px,' + (sY * 0.34 + pY * 12) + 'px,0)'; }
+    }
+    function schedule() { if (!queued) { queued = true; requestAnimationFrame(place); } }
+
     window.addEventListener('scroll', function () {
-      if (ticking) { return; }
-      ticking = true;
-      requestAnimationFrame(function () {
-        var y = Math.min(window.scrollY, 700);
-        art.style.transform = 'translate3d(0,' + (y * 0.22) + 'px,0)';
-        ticking = false;
-      });
+      sY = Math.min(window.scrollY, 700);
+      schedule();
     }, { passive: true });
+
+    if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+      window.addEventListener('mousemove', function (e) {
+        pX = (e.clientX / window.innerWidth) - 0.5;
+        pY = (e.clientY / window.innerHeight) - 0.5;
+        schedule();
+      }, { passive: true });
+    }
   }
 
   /* ── mobile nav */
