@@ -1,72 +1,124 @@
-# Poppell Insurance Agency — V1
+# Poppell Insurance Agency
 
-Personal-brand site for Alyssa Poppell, Colorado Springs. Static HTML, no build
-step, no dependencies. GitHub → Vercel, same pattern as GetProyTech.
+Personal-brand site for Alyssa Poppell, Colorado Springs. 12 static pages,
+built from `src/` by a Node script Vercel runs on deploy. Two serverless
+functions. No framework, no client-side routing, no hydration.
 
 ```
-index.html
-vercel.json              cleanUrls, asset caching
-assets/
-  css/styles.css
-  js/config.js           ← every client + carrier fact lives here
-  js/main.js             ← hydration, artwork, motion
-  brand/                 her banner, card, and treated headshot
-GO-LIVE.md               19 steps to GitHub + Vercel + domain
-CARRIERS.md         carrier list, adding carriers, compliance holds
+build/build.js        renders every page into the repo root
+src/site.js           nav, agent facts, team — change once, every page updates
+src/content.js        coverage copy, incl. the Colorado-specific sections
+src/partials/         shell (head/header/footer/contact) + the Ally widget
+api/chat.js           Ally. Anthropic tool-use loop, server-side key
+api/lead.js           one delivery path for every capture surface
+deploy/poppell-leads.gs   Apps Script: Sheet + email. Paste whole, never merge
+assets/               css, js, brand images
+*.html                BUILD OUTPUT — never edit these by hand
 ```
 
-## The living hero — how it works
+**Never edit the HTML files.** They are generated. Edit `src/` and run
+`node build/build.js`.
 
-Her banner ships as three files:
+## Pages
 
-| File | What it is |
+`/` · `/coverage` · `/team` · `/about` · `/contact` · `/home-insurance` ·
+`/auto-insurance` · `/life-insurance` · `/business-insurance` ·
+`/umbrella-insurance` · `/renters-insurance` · `/recreational-insurance`
+
+Each service page carries Colorado-specific substance — hail and roof
+depreciation, wildfire scoring, HOA master-policy seams — because a page that
+restates the homepage blurb is a thin doorway page and search engines treat it
+as one.
+
+## Ally — the chat assistant
+
+Named for Alyssa, and because an ally is what an agent is supposed to be.
+Sits after the coverage section on the homepage; the nav link scrolls to it.
+
+The section is deliberately the loudest on the page — a warm blush field
+with paper grain and a rising sun, and Alyssa cut out to transparency
+standing behind the panel from the top right. The panel edge is tuned to
+land at her collar: cutting a face at the mouth reads as a mistake rather
+than a crop.
+
+**Ally never claims to be Alyssa.** A persistent, non-dismissible line under
+the widget says she is an AI assistant, not a licensed agent. Alyssa is a
+licensed producer — a visitor who believes they are talking to her and acts on
+something wrong is a real exposure.
+
+**Hard prohibitions, in the system prompt and re-stated in the tool result:**
+no premiums or prices, no statement that anything is or is not covered, no
+claims advice, no binding coverage, no comparative or savings claims, nothing
+touching securities or financial services, no legal or tax advice, no implying
+licensure outside Colorado, no discussing anyone's existing policy, no
+characterising who lives anywhere. When a question crosses a line she refuses
+completely and hands off — a half-answer on coverage is worse than none.
+
+**Capture is a hybrid, and the split is the point.** The model decides *when*
+someone has agreed to be contacted and calls `request_contact_details`. That
+tool's schema deliberately has **no name, phone or email fields** — the site
+then collects those itself with a plain JavaScript step machine, validating
+each one before moving on.
+
+Why: a model that drops a digit from a phone number or tidies an email into
+something that doesn't exist produces a lead that looks fine and can never be
+contacted. It never touches those values, so it can't. It passes only the
+context the conversation actually gave it — interest and a note.
+
+While capture is running, the visitor's typing **never reaches the model at
+all.** Their contact details have no business in a prompt.
+
+Pattern follows Ask Chris / Ace. She answers the question first, offers a
+follow-up only after genuinely helping, and if declined drops it entirely.
+
+**Chips are dynamic.** The model appends `CHIPS: a | b | c` and the server
+strips it out. Parsed defensively — a missing or mangled line falls back to
+the client's own defaults rather than showing anything broken.
+
+**With no `ANTHROPIC_API_KEY` set she says so honestly** and gives the office
+number. She never pretends to be thinking.
+
+`node /tmp/test-chat.js` style harness: 27 assertions covering the tool loop,
+every prohibition, the disconnected path, and thread bounding.
+
+## Environment variables (Vercel → Settings → Environment Variables)
+
+| Key | Effect if missing |
 |---|---|
-| `hero-plate.webp` | cream keyed transparent, upper-left planting removed |
-| `hero-sway.webp` | the cactus, pampas and upper florals, on transparency |
-| `poppell-banner.jpg` | untouched original — fallback for no-WebP browsers |
+| `ANTHROPIC_API_KEY` | Ally says she isn't connected and gives the phone number |
+| `SHEETS_WEBHOOK_URL` | Leads log to Vercel only — **a net, not a floor** |
 
-Keying the cream lets an animated sky sit **behind** her artwork: a sun glow
-breathing on an 11-second cycle where her painted sun already is, and three
-flocks of birds crossing on 78/96/116-second loops. Drifting motes sit in
-front. Over the page's cream the composite is pixel-indistinguishable from
-the original JPEG — the key is forgiving precisely because the background it
-keys against is the same cream the page is painted in.
+## Lead flow
 
-### The wind sway, and why it's a shear
+Ally → `/api/lead` → Apps Script → **Sheet first**, then email.
+Sheet: *Poppell Insurance — Website Leads*, in her client folder.
+`1uuUN91pnZ-v_3oF4hkeZWFDFXubiR3AUR2S7sHCWB00`
 
-The planting is cut out and sways. The cut runs at y=470, **above the sage
-band**, so the region behind it was pure sky — nothing had to be
+A failed email never fails the write. Losing a notification is recoverable;
+losing the lead is not. The visitor is never shown a delivery failure.
+
+## Stacking panels
+
+Hero → Coverage → Ally → Specialty scroll over one another, then normal flow.
+Desktop only, and off under `prefers-reduced-motion`.
+
+Wrapped in `.stack` — that container is load-bearing. `position:sticky` is
+scoped to its nearest scrolling ancestor, so without it the last panel stays
+stuck and paints over every section below for the rest of the page. That bug
+was caught in testing, not in review.
+
+## The living hero
+
+Three files: `hero-plate.webp` (cream keyed transparent, planting removed),
+`hero-sway.webp` (the cactus and pampas), `poppell-banner.jpg` (untouched
+fallback). Sun glow, birds and motes animate in the transparent sky.
+
+The planting is **sheared, never translated** — `skewX` about an origin on the
+seam means displacement is exactly zero at the cut and grows with height, so
+the join cannot show. The cut runs above the sage band, so nothing had to be
 reconstructed.
 
-The layer is **sheared, never translated.** `skewX` about a transform-origin
-on the seam means horizontal displacement is exactly zero at the cut and
-grows linearly with height. The join physically cannot show. It is also how
-wind actually bends a plant: the base holds, the tips move.
-
-**This was the second attempt.** The first tried to lift the whole cluster,
-band and all, and clone band texture in behind it. That failed — every
-candidate donor column in the band contains an icon, a label, or the creed
-line, so the reconstruction dragged the word "LIFE" into the hole. There is
-no clean 356px of band anywhere in the image. Cutting above the band avoids
-the problem entirely instead of solving it badly.
-
-**The logo lockup is never split.** The wordmark, her mountain range and the
-script stay welded into the plate. Separating them and moving them at
-different rates would pull the mark apart the instant anything scrolled.
-
-Three parallax rates on scroll — sky 0.10, artwork 0.22, motes 0.34 — plus a
-few pixels of pointer parallax behind `(hover:hover) and (pointer:fine)`. The
-artwork deliberately moves *less* than the sky and motes.
-
-All of it off under `prefers-reduced-motion` — verified, motes render zero
-elements rather than sitting invisible.
-
-**What still needs her design files:** the right-side pines could sway with
-the same shear, but they're embedded in photographic mountains with no clean
-seam. And the four coverage-row icons are
-my line drawings, not hers. Her banner has a hand-drawn house, pickup,
-heart-wreath and boots. Extract those four as transparent PNGs and the rows
-use her actual illustrations.
+The logo lockup is never split.
 
 ## SEO — what's in and what isn't
 

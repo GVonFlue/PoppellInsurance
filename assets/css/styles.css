@@ -931,3 +931,341 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
   .hero__sky, .hero__motes{ transform:none !important; }
   .arch__sun svg{ animation:none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   STACKING PANELS
+   Hero → Coverage → Ally → Specialty scroll over one another, then the page
+   returns to normal flow. Stacking everything makes a long page feel
+   seasick and breaks anchor navigation, so it stops after four.
+
+   Each panel is sticky at top:0 with a rising z-index, so the next one
+   slides up over the last. Panels need an opaque background or you see
+   through the stack.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@supports (position: sticky) {
+  @media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+    /* The wrapper scopes the stickiness. Without it every panel stays stuck
+       to the top for the whole document and the last one paints over the
+       rest of the page. */
+    .stack{ position:relative; }
+    .panel{
+      position:sticky; top:0;
+      background:var(--paper);
+      min-height:100vh;
+      display:flex; flex-direction:column; justify-content:center;
+    }
+    .panel#hero{ z-index:1; justify-content:flex-start; }
+    .panel#coverage{ z-index:2; box-shadow:0 -28px 40px -28px rgba(47,53,43,.14); }
+    .panel#ally{ z-index:3; box-shadow:0 -28px 40px -28px rgba(47,53,43,.14); }
+    .panel#specialty{ z-index:4; box-shadow:0 -28px 40px -28px rgba(47,53,43,.18); }
+    .panel#specialty{ background:var(--sage-deep); }
+    /* Panels are opaque or you see straight through the stack. */
+    .panel > *{ position:relative; }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ALLY
+   The one loud section. Everything around it is quiet cream; this is a warm
+   blush field with a rising sun behind her and the panel overlapping her.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ally{
+  position:relative; isolation:isolate;
+  padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem);
+  overflow:hidden;
+  background:var(--paper);
+}
+
+/* ── the field behind everything ── */
+.ally__field{ position:absolute; inset:0; z-index:0; pointer-events:none; }
+.ally__field::before{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(120% 90% at 78% 18%, rgba(233,218,203,.95) 0%, rgba(233,218,203,.45) 42%, rgba(245,241,236,0) 72%),
+    linear-gradient(180deg, var(--paper-lift) 0%, var(--paper) 68%);
+}
+/* Paper grain. Her identity is printed on card stock; the site should not be
+   perfectly flat. Inline SVG turbulence — no image request. */
+.ally__grain{
+  position:absolute; inset:0; opacity:.5; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+}
+.ally__sun{
+  position:absolute; right:6%; top:-6%;
+  width:min(46vw,540px); aspect-ratio:1;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(224,175,128,.42) 0%, rgba(224,175,128,.16) 52%, rgba(224,175,128,0) 72%);
+  animation:allySun 14s ease-in-out infinite;
+}
+@keyframes allySun{
+  0%,100%{ transform:scale(1) translateY(0); opacity:.85; }
+  50%    { transform:scale(1.06) translateY(-10px); opacity:1; }
+}
+/* concentric rings, drawn by JS to match the ridgeline language */
+.ally__sun svg{ position:absolute; inset:0; width:100%; height:100%; }
+.ally__sun circle{ fill:none; stroke:var(--clay-light); opacity:.35; }
+.ally__sun path{ stroke:var(--clay-light); opacity:.3; }
+
+/* ── layout ── */
+.ally__grid{
+  position:relative; z-index:1;
+  display:grid;
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(2rem,5vw,4.5rem);
+  align-items:center;
+}
+.ally__intro .h2{ font-size:clamp(2.3rem,4.8vw,3.6rem); }
+.ally__pts{ list-style:none; margin:1.8rem 0 0; padding:0; }
+.ally__pts li{
+  position:relative; padding:.6rem 0 .6rem 1.7rem;
+  color:var(--sage-deep); font-size:.95rem;
+  border-bottom:1px solid rgba(169,123,82,.22);
+}
+.ally__pts li::before{
+  content:'\2726'; position:absolute; left:0; top:.65rem;
+  color:var(--clay); font-size:.7rem;
+}
+
+/* ── the stage: her, then the panel over her ── */
+/* Room above the panel for her to rise into. The panel edge must land at the
+   collar — cutting a face at the mouth reads as a mistake, not a crop. */
+.ally__stage{ position:relative; padding-top:clamp(150px,20vw,252px); }
+
+.ally__her{
+  position:absolute; z-index:0;
+  right:3%; top:0;
+  width:min(56%,348px); height:auto;
+  filter:drop-shadow(0 20px 40px rgba(47,53,43,.22));
+  transform:translateY(0);
+  animation:allyFloat 9s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes allyFloat{
+  0%,100%{ transform:translateY(0); }
+  50%    { transform:translateY(-9px); }
+}
+
+.ally__box{
+  position:relative; z-index:2;
+  border:1px solid var(--hair);
+  border-radius:22px;
+  background:var(--paper-lift);
+  overflow:hidden;
+  box-shadow:0 30px 60px -30px rgba(47,53,43,.4);
+}
+
+.ally__bar{
+  display:flex; align-items:center; gap:1rem;
+  padding:.95rem 1.15rem;
+  background:var(--sage-deep); color:var(--paper);
+}
+.ally__id{ display:flex; flex-direction:column; margin-right:auto; min-width:0; }
+.ally__name{ font-family:var(--disp); font-weight:600; font-size:1.12rem; line-height:1.1; letter-spacing:.02em; }
+.ally__role{
+  display:flex; align-items:center; gap:.45rem; margin-top:.25rem;
+  font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--blush);
+}
+.ally__live{
+  width:6px; height:6px; border-radius:50%; background:#7FC79B; flex:0 0 6px;
+  animation:livePulse 2.4s ease-in-out infinite;
+}
+@keyframes livePulse{ 0%,100%{opacity:.45} 50%{opacity:1} }
+
+.ally__human{
+  flex:0 0 auto; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--paper); text-decoration:none;
+  border:1px solid rgba(245,241,236,.4); border-radius:999px;
+  padding:.5rem .9rem; transition:background .3s var(--ease);
+}
+.ally__human:hover{ background:rgba(245,241,236,.16); }
+
+.ally__log{
+  padding:1.25rem; min-height:230px; max-height:44vh; overflow-y:auto;
+  display:flex; flex-direction:column; gap:.85rem; scrollbar-width:thin;
+}
+.msg{ max-width:84%; font-size:.95rem; animation:msgIn .4s var(--ease-out) both; }
+@keyframes msgIn{ from{ opacity:0; transform:translateY(8px); } }
+.msg p{ margin:0 0 .5rem; } .msg p:last-child{ margin-bottom:0; }
+.msg a{ color:var(--clay); }
+.msg--ally{
+  align-self:flex-start; background:var(--paper);
+  border:1px solid var(--hair); border-radius:4px 16px 16px 16px;
+  padding:.8rem 1rem; color:var(--sage-deep);
+}
+.msg--you{
+  align-self:flex-end; background:var(--sage); color:var(--paper-lift);
+  border-radius:16px 4px 16px 16px; padding:.8rem 1rem;
+}
+.dots{ display:inline-flex; gap:5px; padding:.15rem 0; }
+.dots i{ width:6px; height:6px; border-radius:50%; background:var(--sage-soft);
+  animation:blink 1.3s ease-in-out infinite; }
+.dots i:nth-child(2){ animation-delay:.18s; }
+.dots i:nth-child(3){ animation-delay:.36s; }
+@keyframes blink{ 0%,80%,100%{opacity:.25} 40%{opacity:1} }
+
+.ally__chips{ display:flex; flex-wrap:wrap; gap:.5rem; padding:0 1.25rem 1rem; }
+.chip{
+  font:inherit; font-size:.8rem; cursor:pointer;
+  background:var(--paper); color:var(--sage-deep);
+  border:1px solid var(--hair); border-radius:999px;
+  padding:.5rem .9rem; text-align:left;
+  animation:msgIn .35s var(--ease-out) both;
+  transition:border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.chip:hover{ border-color:var(--clay); color:var(--clay); transform:translateY(-1px); }
+
+.ally__form{ display:flex; gap:.6rem; padding:0 1.25rem 1rem; }
+.ally__input{
+  flex:1; font:inherit; font-size:.95rem;
+  padding:.8rem 1rem; min-height:48px;
+  border:1px solid var(--hair); border-radius:999px;
+  background:var(--paper); color:var(--ink);
+}
+.ally__input::placeholder{ color:var(--sage-soft); }
+.ally__send{
+  flex:0 0 48px; width:48px; height:48px; cursor:pointer;
+  border:0; border-radius:50%; background:var(--ink); color:var(--paper);
+  display:grid; place-items:center;
+  transition:background .3s var(--ease), transform .3s var(--ease);
+}
+.ally__send:hover{ background:var(--clay); transform:translateY(-1px) scale(1.04); }
+.ally__send svg{ width:18px; height:18px; fill:currentColor; }
+
+.ally__fine{
+  margin:0; padding:.9rem 1.25rem 1.1rem;
+  border-top:1px solid var(--hair);
+  font-size:.72rem; line-height:1.55; color:var(--sage);
+}
+.ally__fine a{ color:var(--clay); }
+
+@media (max-width:1000px){
+  .ally__grid{ grid-template-columns:1fr; }
+  /* Above the panel rather than behind it — at this width she would sit on
+     top of the messages. */
+  .ally__stage{ padding-top:clamp(140px,30vw,210px); }
+  .ally__her{ right:3%; top:0; width:min(46%,260px); }
+}
+@media (max-width:560px){
+  .ally__stage{ padding-top:146px; }
+  .ally__her{ width:186px; right:2%; }
+  .ally__human{ display:none; }
+  .ally__log{ max-height:none; min-height:190px; }
+  .msg{ max-width:92%; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ally__sun, .ally__her, .ally__live, .dots i{ animation:none; }
+  .msg, .chip{ animation:none; }
+}
+
+/* nav chat link */
+.hdr__chat{
+  display:inline-flex; align-items:center; gap:.45rem;
+  color:var(--clay) !important; font-weight:500;
+}
+.hdr__chatdot{
+  width:6px; height:6px; border-radius:50%; background:var(--clay);
+  animation:pulseDot 2.4s ease-in-out infinite;
+}
+@keyframes pulseDot{ 0%,100%{opacity:.35; transform:scale(1)} 50%{opacity:1; transform:scale(1.35)} }
+.hdr__chat::after{ background:var(--clay) !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INTERIOR PAGES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.lede-sec{ padding:clamp(7rem,12vw,10rem) 0 clamp(2rem,4vw,3rem); }
+.crumbs{
+  font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--sage); margin-bottom:1.4rem;
+}
+.crumbs a{ color:var(--sage); text-decoration:none; }
+.crumbs a:hover{ color:var(--clay); }
+.crumbs span[aria-current]{ color:var(--clay); }
+
+.h1{
+  font-family:var(--disp); font-weight:600;
+  font-size:clamp(2.3rem,5.4vw,4rem); line-height:1.04;
+  letter-spacing:-.02em; margin:0 0 1.2rem; max-width:18ch;
+}
+.lede-sec__intro{ max-width:56ch; font-size:1.1rem; color:var(--sage-deep); margin:0; }
+.lede-sec__acts{ display:flex; gap:.9rem; flex-wrap:wrap; margin-top:2rem; }
+
+.article__h{
+  font-family:var(--disp); font-weight:600;
+  font-size:clamp(1.45rem,2.7vw,2rem); line-height:1.15;
+  margin:2.6rem 0 1rem;
+}
+.article__h:first-child{ margin-top:0; }
+.article p{ color:var(--sage-deep); margin:0 0 1.1rem; font-size:1.02rem; }
+
+.ticks{ list-style:none; margin:0; padding:0; }
+.ticks li{
+  position:relative; padding:.7rem 0 .7rem 1.9rem;
+  border-bottom:1px solid var(--hair); color:var(--sage-deep); font-size:.97rem;
+}
+.ticks li::before{
+  content:'\2726'; position:absolute; left:0; top:.75rem;
+  color:var(--clay); font-size:.72rem;
+}
+
+.callout{
+  margin:2.6rem 0 0; padding:1.4rem 1.5rem;
+  border-left:2px solid var(--clay); background:var(--paper-lift);
+}
+.callout p{ margin:0; font-size:.95rem; }
+.callout a{ color:var(--clay); }
+
+.tiles{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1px;
+  background:var(--hair); border:1px solid var(--hair); }
+.tile{
+  background:var(--paper); padding:1.4rem 1.3rem; min-height:88px;
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  text-decoration:none; color:inherit;
+  transition:background .4s var(--ease);
+}
+.tile:hover{ background:var(--paper-lift); }
+.tile__label{ font-family:var(--disp); font-size:1.1rem; font-weight:600; }
+.tile__go{ color:var(--clay); transition:transform .4s var(--ease-out); }
+.tile:hover .tile__go{ transform:translateX(5px); }
+
+/* rows and spec items are links now */
+a.row{ text-decoration:none; color:inherit; }
+.row__go{
+  position:absolute; right:0; top:50%; transform:translateY(-50%);
+  color:var(--clay); opacity:0; transition:opacity .4s var(--ease), transform .4s var(--ease-out);
+  z-index:1;
+}
+a.row:hover .row__go{ opacity:1; transform:translateY(-50%) translateX(-4px); }
+a.spec__item{ text-decoration:none; color:inherit; position:relative; display:block; }
+.spec__go{
+  display:inline-block; margin-top:1rem; color:var(--clay-light);
+  transition:transform .4s var(--ease-out);
+}
+a.spec__item:hover .spec__go{ transform:translateX(5px); }
+
+.ftr__meta a{ color:var(--blush); text-decoration:none; }
+.ftr__meta a:hover{ color:var(--paper); }
+
+@media (max-width:860px){
+  .ally__log{ max-height:none; min-height:180px; }
+  .msg{ max-width:92%; }
+  .ally__human{ display:none; }
+  .lede-sec{ padding-top:6rem; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .dots i, .hdr__chatdot{ animation:none; }
+}
+
+/* Live status dot on the Ally header — she is genuinely always up, and the
+   dot says so without claiming a human is watching. */
+.ally__role{ display:flex; align-items:center; gap:.45rem; }
+.ally__live{
+  width:6px; height:6px; border-radius:50%; background:#7FC79B; flex:0 0 6px;
+  animation:livePulse 2.4s ease-in-out infinite;
+}
+@keyframes livePulse{ 0%,100%{opacity:.45} 50%{opacity:1} }
+@media (prefers-reduced-motion:reduce){ .ally__live{ animation:none; opacity:1; } }
