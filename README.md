@@ -71,6 +71,29 @@ all.** Their contact details have no business in a prompt.
 Pattern follows Ask Chris / Ace. She answers the question first, offers a
 follow-up only after genuinely helping, and if declined drops it entirely.
 
+**The phone number is a last resort, not a first response.** Asked to speak
+to a person, she offers a callback before she offers the number. Handing out
+a number instead of taking details means the office never learns who wanted
+them, and most people never make the call — the lead is simply gone. The
+number is already in the header, the "Talk to a person" button, and the fine
+print, so nobody who wants it is short of ways to find it.
+
+She gives it immediately in four cases only: they ask for it outright, they
+turn down the callback, it's urgent (accident, loss, claim in progress), or
+she has already offered once in that conversation.
+
+**She can do exactly one thing and the prompt says so at length.** Her only
+action is `request_contact_details`. She cannot leave a note, pass a message,
+tell Alyssa anything, log, forward, book or check. She was caught in testing
+replying *"Done — that's logged with a note"* to a visitor who asked her to
+pass something on; nothing was logged, and the visitor walked away believing
+their message had landed. That is a lost lead plus a broken promise, and it
+does not throw an error, so only reading transcripts catches it.
+
+A request to leave a note is now treated as what it is — someone asking to be
+contacted. She offers to pass their details along *with* the message, and the
+message goes into the notes field.
+
 **Chips are dynamic.** The model appends `CHIPS: a | b | c` and the server
 strips it out. Parsed defensively — a missing or mangled line falls back to
 the client's own defaults rather than showing anything broken.
@@ -78,8 +101,33 @@ the client's own defaults rather than showing anything broken.
 **With no `ANTHROPIC_API_KEY` set she says so honestly** and gives the office
 number. She never pretends to be thinking.
 
-`node /tmp/test-chat.js` style harness: 27 assertions covering the tool loop,
-every prohibition, the disconnected path, and thread bounding.
+```
+npm test        # 52 assertions, no framework
+npm run build   # renders every page from src/
+```
+
+The suite drives both handlers directly against a mock Anthropic endpoint and
+a mock Apps Script. It exists because the expensive failures here are the
+silent ones — a lead that reports delivered and isn't, a model inventing a
+price, a bot handing out a phone number instead of taking details. None of
+those throw.
+
+## Short viewports
+
+Everything was authored against a 900px viewport and overflowed on a 13"
+MacBook (~800px) and a smaller laptop (~700px). That matters most for pinned
+panels: a pinned panel only ever shows its top 100vh, so overflow is not
+below the fold, it is unreachable.
+
+Three breakpoints, measured rather than guessed:
+
+| Height | What happens |
+|---|---|
+| ≤900px | type, padding and arches compress |
+| ≤780px | compress further, arches go shorter than square |
+| ≤660px | **stacking is dropped entirely** — a clipped pinned panel is far worse than no effect |
+
+Verified fitting at 1440×900, 1440×800, 1512×824 and 1280×700.
 
 ## Abuse and cost limits
 

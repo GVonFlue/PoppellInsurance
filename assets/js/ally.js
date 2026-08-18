@@ -12,7 +12,7 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
   var PHONE = '719-563-9712', TEL = '+17195639712';
-  var GREETING = "Hi — I'm Ally. Ask me about home, auto, life, business or umbrella coverage and I'll give you a straight answer. If you'd rather talk to a person, say so and I'll point you at the office.";
+  var GREETING = "Hi — I'm Ally. Ask me about home, auto, life, business or umbrella coverage and I'll give you a straight answer. If you'd rather talk to a person, say so and I'll take your details so someone can reach out.";
   var CHIPS = [
     'What does umbrella insurance actually do?',
     'What should I bring to a policy review?',

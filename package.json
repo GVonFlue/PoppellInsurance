@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "test": "node test/api.test.js"
   }
 }

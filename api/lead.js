@@ -14,7 +14,7 @@
 const leadHits = new Map();
 function limited(req) {
   const now = Date.now();
-  const f = req.headers['x-forwarded-for'];
+  const f = (req.headers || {})['x-forwarded-for'];
   const ip = (Array.isArray(f) ? f[0] : String(f || '')).split(',')[0].trim() || 'unknown';
   const list = (leadHits.get(ip) || []).filter(t => now - t < 3600e3);
   if (list.length >= 6) { leadHits.set(ip, list); return true; }   // 6 leads/hour/IP
@@ -23,7 +23,8 @@ function limited(req) {
   return false;
 }
 function badOrigin(req) {
-  const o = req.headers.origin || req.headers.referer || '';
+  const h = req.headers || {};
+  const o = h.origin || h.referer || '';
   if (!o) { return false; }
   try {
     const h = new URL(o).hostname;

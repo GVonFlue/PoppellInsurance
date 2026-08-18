@@ -1291,3 +1291,81 @@ a.spec__item:hover .spec__go{ transform:translateX(5px); }
 }
 @keyframes livePulse{ 0%,100%{opacity:.45} 50%{opacity:1} }
 @media (prefers-reduced-motion:reduce){ .ally__live{ animation:none; opacity:1; } }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SHORT VIEWPORTS — laptops
+   A 13" MacBook is ~800px of viewport, a smaller laptop ~700px. Every
+   section was authored against 900px and overflowed on both, which matters
+   most for the pinned panels: a pinned panel only ever shows its top 100vh,
+   so anything past that is not merely below the fold, it is unreachable.
+
+   These rules compress type, padding and the arch portraits until each
+   section fits. Measured, not guessed.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-height: 900px) and (min-width: 861px) {
+  .sec{ padding-top:clamp(2.5rem,5vh,4rem); }
+  .sec__head{ margin-bottom:clamp(1.25rem,2.5vh,2rem); }
+  .h2{ font-size:clamp(1.9rem,3.4vw,2.7rem); }
+  .sec__lede{ font-size:1rem; }
+
+  /* Coverage rows are the tallest block on the page. */
+  .row{ padding:clamp(.9rem,1.8vh,1.5rem) 0; }
+  .row__label{ font-size:clamp(1.3rem,2.2vw,1.75rem); }
+  .row__body{ font-size:.92rem; }
+  .row__icon svg{ width:56px; }
+
+  /* Ally */
+  .ally{ padding:clamp(2rem,4vh,3.5rem) 0 clamp(1.75rem,3vh,3rem); }
+  .ally__intro .h2{ font-size:clamp(2rem,3.6vw,2.9rem); }
+  .ally__pts{ margin-top:1.1rem; }
+  .ally__pts li{ padding:.45rem 0 .45rem 1.7rem; font-size:.9rem; }
+  .ally__stage{ padding-top:clamp(96px,14vh,180px); }
+  .ally__her{ width:min(46%,268px); }
+  .ally__log{ min-height:150px; max-height:34vh; }
+  .ally__fine{ font-size:.68rem; padding:.7rem 1.25rem .85rem; }
+
+  /* Team arches were 390px tall before a single line of text. */
+  .crew{ gap:clamp(1.25rem,3vw,2.25rem); }
+  .mate__arch{ aspect-ratio:1/1; margin-bottom:.85rem; }
+  .mate__name{ font-size:1.15rem; }
+  .mate__title{ margin-bottom:.65rem; }
+  .mate__tel{ font-size:1.15rem; }
+  .mate__mail{ font-size:.72rem; margin-top:.5rem; }
+
+  .band{ padding:clamp(2.5rem,5vh,4rem) 0; margin-top:clamp(2.5rem,5vh,4.5rem); }
+  .spec__item{ padding:1.4rem 1.3rem 1.6rem; }
+  .spec__body{ font-size:.9rem; }
+
+  .arch{ max-width:290px; }
+  .creed li{ padding:1.1rem 1.4rem 1.1rem 2.4rem; font-size:1rem; }
+}
+
+/* Tighter still under 780px of viewport. */
+@media (max-height: 780px) and (min-width: 861px) {
+  .h2{ font-size:clamp(1.7rem,3vw,2.3rem); }
+  .row{ padding:.8rem 0; }
+  .row__label{ font-size:1.35rem; }
+  .row__lede{ font-size:.66rem; }
+  .row__body{ font-size:.88rem; }
+  .sec__lede{ font-size:.94rem; }
+  .ally__stage{ padding-top:clamp(84px,12vh,140px); }
+  .ally__her{ width:min(40%,228px); }
+  .ally__log{ min-height:130px; max-height:30vh; }
+  .ally__pts li{ font-size:.86rem; padding:.35rem 0 .35rem 1.6rem; }
+  .mate__arch{ aspect-ratio:1/.86; margin-bottom:.7rem; }
+  .crew{ grid-template-columns:repeat(3,1fr); }
+  .mate__name{ font-size:1.08rem; }
+  .mate__tel{ font-size:1.08rem; }
+  .mate__mail{ margin-top:.4rem; }
+}
+
+/* Below ~660px of viewport height there is nothing left to compress without
+   making it unreadable. Stacking is dropped and the page scrolls normally —
+   a clipped pinned panel is far worse than no effect. */
+@media (max-height: 660px) {
+  .stack .panel{
+    position:static; min-height:0; padding-bottom:0; box-shadow:none;
+  }
+  .stack__last{ box-shadow:none; }
+}
