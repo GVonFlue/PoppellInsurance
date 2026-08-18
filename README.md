@@ -37,9 +37,17 @@ Sits after the coverage section on the homepage; the nav link scrolls to it.
 
 The section is deliberately the loudest on the page — a warm blush field
 with paper grain and a rising sun, and Alyssa cut out to transparency
-standing behind the panel from the top right. The panel edge is tuned to
-land at her collar: cutting a face at the mouth reads as a mistake rather
-than a crop.
+standing behind the panel from the top right. **How much of her shows is a ratio of her own size, never of the viewport.**
+Percentage padding resolves against the containing block's width, and her
+width is a percentage of that same width, so one multiplier
+(`padding-top: calc(var(--her) * 0.72)`) fixes the crop everywhere. Resize her
+by changing `--her` alone and both values move together.
+
+An earlier version tied the padding to `vh`. The laptop rules then shrank her
+on one scale and the padding on another, and the panel edge slid back up to
+her eyes — she was peeking over the top like a meme. Measured across nine
+viewports from 1920×1200 to 390×844: the visible fraction now holds between
+0.81 and 0.85, which is collar level.
 
 **Ally never claims to be Alyssa.** A persistent, non-dismissible line under
 the widget says she is an AI assistant, not a licensed agent. Alyssa is a

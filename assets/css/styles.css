@@ -1051,14 +1051,27 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
 }
 
 /* ── the stage: her, then the panel over her ── */
-/* Room above the panel for her to rise into. The panel edge must land at the
-   collar — cutting a face at the mouth reads as a mistake, not a crop. */
-.ally__stage{ position:relative; padding-top:clamp(150px,20vw,252px); }
+/* HOW MUCH OF HER SHOWS IS A RATIO OF HER OWN SIZE, NEVER OF THE VIEWPORT.
+   Percentage padding resolves against the containing block's WIDTH, and her
+   width is also a percentage of that width — so one multiplier fixes the crop
+   at every screen size. Her source is 950x908, so height ≈ width × 0.956;
+   showing 0.72 of her width means showing ~75% of her, which lands the panel
+   edge at the collar.
+
+   Resize her by changing --her alone. Both values move together and the crop
+   cannot drift. An earlier version tied the padding to vh, so the laptop
+   rules shrank her on one scale and the padding on another and the panel edge
+   slid back up to her eyes. */
+.ally__stage{
+  position:relative;
+  --her:56%;
+  padding-top:calc(var(--her) * 0.72);
+}
 
 .ally__her{
   position:absolute; z-index:0;
   right:3%; top:0;
-  width:min(56%,348px); height:auto;
+  width:var(--her); height:auto;
   filter:drop-shadow(0 20px 40px rgba(47,53,43,.22));
   transform:translateY(0);
   animation:allyFloat 9s ease-in-out infinite;
@@ -1166,12 +1179,14 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
   .ally__grid{ grid-template-columns:1fr; }
   /* Above the panel rather than behind it — at this width she would sit on
      top of the messages. */
-  .ally__stage{ padding-top:clamp(140px,30vw,210px); }
-  .ally__her{ right:3%; top:0; width:min(46%,260px); }
+  /* One column now, so the stage is the full width — she needs to be a much
+     smaller share of it. The crop ratio takes care of itself. */
+  .ally__stage{ --her:30%; }
+  .ally__her{ right:3%; top:0; }
 }
 @media (max-width:560px){
-  .ally__stage{ padding-top:146px; }
-  .ally__her{ width:186px; right:2%; }
+  .ally__stage{ --her:46%; }
+  .ally__her{ right:2%; }
   .ally__human{ display:none; }
   .ally__log{ max-height:none; min-height:190px; }
   .msg{ max-width:92%; }
@@ -1320,8 +1335,7 @@ a.spec__item:hover .spec__go{ transform:translateX(5px); }
   .ally__intro .h2{ font-size:clamp(2rem,3.6vw,2.9rem); }
   .ally__pts{ margin-top:1.1rem; }
   .ally__pts li{ padding:.45rem 0 .45rem 1.7rem; font-size:.9rem; }
-  .ally__stage{ padding-top:clamp(96px,14vh,180px); }
-  .ally__her{ width:min(46%,268px); }
+  .ally__stage{ --her:46%; }
   .ally__log{ min-height:150px; max-height:34vh; }
   .ally__fine{ font-size:.68rem; padding:.7rem 1.25rem .85rem; }
 
@@ -1349,8 +1363,7 @@ a.spec__item:hover .spec__go{ transform:translateX(5px); }
   .row__lede{ font-size:.66rem; }
   .row__body{ font-size:.88rem; }
   .sec__lede{ font-size:.94rem; }
-  .ally__stage{ padding-top:clamp(84px,12vh,140px); }
-  .ally__her{ width:min(40%,228px); }
+  .ally__stage{ --her:38%; }
   .ally__log{ min-height:130px; max-height:30vh; }
   .ally__pts li{ font-size:.86rem; padding:.35rem 0 .35rem 1.6rem; }
   .mate__arch{ aspect-ratio:1/.86; margin-bottom:.7rem; }
