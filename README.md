@@ -81,6 +81,35 @@ number. She never pretends to be thinking.
 `node /tmp/test-chat.js` style harness: 27 assertions covering the tool loop,
 every prohibition, the disconnected path, and thread bounding.
 
+## Abuse and cost limits
+
+Layered, cheapest check first, so a scripted abuser is rejected before
+anything reaches Anthropic.
+
+| Layer | Limit | Where |
+|---|---|---|
+| Origin allowlist | Only this site's own pages | `/api/chat`, `/api/lead` |
+| Per-IP burst | 8 messages / minute | `/api/chat` |
+| Per-IP hourly | 40 messages / hour | `/api/chat` |
+| Instance breaker | 600 requests / hour, everyone | `/api/chat` |
+| Conversation cap | 30 assistant turns, then hand off | `/api/chat` |
+| Message length | 500 chars, truncated server-side | `/api/chat` |
+| Reply length | `max_tokens: 700` | `/api/chat` |
+| Context window | last 24 turns only | `/api/chat` |
+| Lead spam | 6 leads / hour / IP, silently dropped | `/api/lead` |
+
+**Be clear about what this is.** Serverless functions scale across instances
+and these counters live in instance memory, so they are best-effort. They
+stop casual scraping, a stuck loop, and one machine hammering the endpoint.
+They cannot stop a distributed attack.
+
+**The only hard ceiling is the spend limit in the Anthropic Console.** Set it.
+Everything above reduces the odds; that one makes the worst case finite.
+
+Context length matters more than request count for cost — a long thread costs
+far more per message than a short one, which is why the turn cap and the
+24-turn window exist.
+
 ## Environment variables (Vercel → Settings → Environment Variables)
 
 | Key | Effect if missing |
@@ -99,13 +128,29 @@ losing the lead is not. The visitor is never shown a delivery failure.
 
 ## Stacking panels
 
-Hero → Coverage → Ally → Specialty scroll over one another, then normal flow.
-Desktop only, and off under `prefers-reduced-motion`.
+Coverage → Ally → Specialty scroll over one another, then normal flow.
+Desktop only (>860px), off under `prefers-reduced-motion`.
 
-Wrapped in `.stack` — that container is load-bearing. `position:sticky` is
-scoped to its nearest scrolling ancestor, so without it the last panel stays
-stuck and paints over every section below for the rest of the page. That bug
-was caught in testing, not in review.
+**`--dwell` is the whole feel of it.** Each panel occupies `100vh + dwell` of
+document height but only ever shows its top 100vh, because it is pinned. The
+next panel's top edge sits at the bottom of that box, so you get `dwell` worth
+of scrolling with the panel pinned and nothing sliding over it before the
+handover starts. Currently 62vh — about 70% of a screen between handovers.
+Set it to 0 and the next panel starts covering the instant you touch the
+wheel, which reads as far too aggressive. One value, in `.stack`.
+
+**The hero is deliberately not a panel.** Its content runs ~1230px tall at a
+900px viewport, and a pinned panel only ever shows its top 100vh — which cut
+off the lede and both CTA buttons. It scrolls normally with its parallax and
+Coverage slides up over it.
+
+Two bugs found by measuring rather than looking:
+- `.stack` is load-bearing. `position:sticky` scopes to its nearest scrolling
+  ancestor; without the wrapper the last panel stays stuck and paints over
+  every section below for the rest of the page.
+- The sticky rules are written `.stack .panel`, not `.panel`. At equal
+  specificity the later `.ally { position:relative }` was silently winning and
+  Ally was never sticky at all.
 
 ## The living hero
 

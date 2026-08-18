@@ -17,6 +17,73 @@
    message with the office number. It never pretends to be thinking.
    ==========================================================================*/
 
+/* ── ABUSE LIMITS ────────────────────────────────────────────────────────
+   These are layered on purpose, cheapest check first, so a scripted abuser
+   is rejected before anything reaches Anthropic.
+
+   BE CLEAR ABOUT WHAT THIS IS: serverless functions scale across instances
+   and these counters live in instance memory, so they are best-effort. They
+   stop casual scraping, a stuck loop, and someone hammering the endpoint
+   from one machine. They cannot stop a distributed attack.
+   THE ONLY HARD CEILING IS THE SPEND LIMIT IN THE ANTHROPIC CONSOLE.
+   Set it. See README.
+   ---------------------------------------------------------------------- */
+const LIMITS = {
+  perMinute:     8,      // messages from one IP in 60s
+  perHour:       40,     // messages from one IP in 60m
+  instanceHour:  600,    // total across everyone on this instance in 60m
+  maxTurns:      30,     // assistant turns in one conversation
+  maxChars:      500,    // per message
+  maxTokens:     700     // per reply
+};
+
+// ip -> [timestamps]. Pruned on every read, so it cannot grow unbounded.
+const hits = new Map();
+let instanceWindow = { start: Date.now(), n: 0 };
+
+function clientIp(req) {
+  const f = req.headers['x-forwarded-for'];
+  return (Array.isArray(f) ? f[0] : String(f || '')).split(',')[0].trim()
+    || req.headers['x-real-ip'] || 'unknown';
+}
+
+function rateLimited(req) {
+  const now = Date.now();
+
+  // instance-wide circuit breaker
+  if (now - instanceWindow.start > 3600e3) { instanceWindow = { start: now, n: 0 }; }
+  if (++instanceWindow.n > LIMITS.instanceHour) { return 'instance'; }
+
+  const ip = clientIp(req);
+  const list = (hits.get(ip) || []).filter(t => now - t < 3600e3);
+  if (list.length >= LIMITS.perHour) { hits.set(ip, list); return 'hour'; }
+  if (list.filter(t => now - t < 60e3).length >= LIMITS.perMinute) {
+    hits.set(ip, list); return 'minute';
+  }
+  list.push(now);
+  hits.set(ip, list);
+
+  // keep the map small
+  if (hits.size > 5000) {
+    for (const [k, v] of hits) {
+      if (!v.length || now - v[v.length - 1] > 3600e3) { hits.delete(k); }
+      if (hits.size <= 3000) { break; }
+    }
+  }
+  return null;
+}
+
+/* Only our own pages may call this. Blocks the trivial curl case outright. */
+function badOrigin(req) {
+  const o = req.headers.origin || req.headers.referer || '';
+  if (!o) { return false; }              // same-origin fetches may omit it
+  try {
+    const h = new URL(o).hostname;
+    return !(h === 'localhost' || h === '127.0.0.1' ||
+             h.endsWith('.vercel.app') || h.endsWith('poppellinsurance.com'));
+  } catch (e) { return true; }
+}
+
 const OFFICE_PHONE = '719-563-9712';
 const OFFICE_TEL   = '+17195639712';
 const AGENCY       = 'Poppell Insurance Agency';
@@ -99,6 +166,18 @@ function notConnected(res) {
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') { return res.status(405).json({ error: 'Method not allowed' }); }
 
+  if (badOrigin(req)) { return res.status(403).json({ error: 'Forbidden' }); }
+
+  const limited = rateLimited(req);
+  if (limited) {
+    return res.status(429).json({
+      reply: limited === 'instance'
+        ? `We're getting a lot of traffic right now. Call ${OFFICE_PHONE} and you'll get a person straight away.`
+        : `That's a lot of questions in a short time. Give it a minute — or call ${OFFICE_PHONE} and skip the wait.`,
+      capture: null, chips: []
+    });
+  }
+
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) { return notConnected(res); }
 
@@ -109,10 +188,21 @@ module.exports = async function handler(req, res) {
   } catch (e) { messages = null; }
   if (!messages || !messages.length) { return res.status(400).json({ error: 'Bad request' }); }
 
-  // Bound the thread. A runaway context is a runaway bill.
+  // Hard stop on conversation length. Someone looping the endpoint with a
+  // growing thread is the expensive failure mode, because cost scales with
+  // context, not just with request count.
+  const turns = messages.filter(m => m.role === 'assistant').length;
+  if (turns > LIMITS.maxTurns) {
+    return res.status(200).json({
+      reply: `We've covered a lot here — at this point a real conversation will get you further. Call ${OFFICE_PHONE}.`,
+      capture: null, chips: []
+    });
+  }
+
+  // Bound the context window itself. A runaway context is a runaway bill.
   messages = messages.slice(-24).map(m => ({
     role: m.role === 'assistant' ? 'assistant' : 'user',
-    content: typeof m.content === 'string' ? m.content.slice(0, 2000) : m.content
+    content: typeof m.content === 'string' ? m.content.slice(0, LIMITS.maxChars) : m.content
   }));
 
   const call = (msgs) => fetch('https://api.anthropic.com/v1/messages', {
@@ -124,7 +214,7 @@ module.exports = async function handler(req, res) {
     },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 700,
+      max_tokens: LIMITS.maxTokens,
       system: SYSTEM,
       tools: TOOLS,
       messages: msgs

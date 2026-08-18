@@ -9,8 +9,35 @@
    because telling them "something went wrong" loses the lead entirely.
    ==========================================================================*/
 
+/* Same abuse posture as /api/chat. This one writes to her Google Sheet, so
+   an open endpoint is a spam-the-spreadsheet problem as well as a cost one. */
+const leadHits = new Map();
+function limited(req) {
+  const now = Date.now();
+  const f = req.headers['x-forwarded-for'];
+  const ip = (Array.isArray(f) ? f[0] : String(f || '')).split(',')[0].trim() || 'unknown';
+  const list = (leadHits.get(ip) || []).filter(t => now - t < 3600e3);
+  if (list.length >= 6) { leadHits.set(ip, list); return true; }   // 6 leads/hour/IP
+  list.push(now); leadHits.set(ip, list);
+  if (leadHits.size > 5000) { leadHits.clear(); }
+  return false;
+}
+function badOrigin(req) {
+  const o = req.headers.origin || req.headers.referer || '';
+  if (!o) { return false; }
+  try {
+    const h = new URL(o).hostname;
+    return !(h === 'localhost' || h === '127.0.0.1' ||
+             h.endsWith('.vercel.app') || h.endsWith('poppellinsurance.com'));
+  } catch (e) { return true; }
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') { return res.status(405).json({ error: 'Method not allowed' }); }
+  if (badOrigin(req)) { return res.status(403).json({ ok: false }); }
+  // Silently accept and drop. Telling a spammer they were blocked just tells
+  // them to change tactics.
+  if (limited(req)) { return res.status(200).json({ ok: true, delivered: false }); }
 
   let lead;
   try {

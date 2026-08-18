@@ -153,12 +153,11 @@ function ridge() { return `    <div class="ridge" data-ridge aria-hidden="true">
 /* ── HOME ─────────────────────────────────────────────────────────────── */
 function home() {
   const body = `
-  <!-- STACK. Four panels scroll up over one another, then normal flow.
-       The wrapper is load-bearing: position:sticky is scoped to its nearest
-       scrolling ancestor, so without it the last panel stays stuck and
-       paints over every section below for the rest of the page. -->
-  <div class="stack">
-  <section class="hero panel" id="hero">
+  <!-- The hero is NOT in the stack. Its content runs taller than a viewport
+       at most desktop sizes, and a pinned panel only ever shows its top
+       100vh — which cut off the lede and both CTA buttons. It scrolls
+       normally with its parallax instead, and Coverage slides up over it. -->
+  <section class="hero" id="hero">
     <div class="hero__art" id="heroArt">
       <div class="hero__sky" data-sky aria-hidden="true"></div>
       <div class="hero__scene" id="heroScene">
@@ -194,6 +193,7 @@ function home() {
   <div class="marquee" aria-hidden="true"><div class="marquee__track" data-marquee></div></div>
   <p class="sr-only">${AGENT.creed}</p>
 
+  <div class="stack">
   <section class="sec panel" id="coverage">
     <div class="wrap">
       <div class="sec__head">

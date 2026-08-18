@@ -949,19 +949,31 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
        to the top for the whole document and the last one paints over the
        rest of the page. */
     .stack{ position:relative; }
-    .panel{
+
+    /* DWELL is the whole feel of this effect. A panel occupies
+       100vh + dwell of document height but only ever shows its top 100vh,
+       because it is pinned. The next panel's top edge sits at the bottom of
+       that box, so you get `dwell` worth of free scrolling — panel pinned,
+       nothing sliding over it — before the handover begins.
+       Butt the panels together (dwell:0) and the next one starts covering
+       the instant you touch the wheel, which reads as far too aggressive. */
+    .stack{ --dwell:62vh; }
+    /* Scoped to .stack so it outranks component rules that set their own
+       position later in the file — .ally sets position:relative and at equal
+       specificity the later rule was silently winning. */
+    .stack .panel{
       position:sticky; top:0;
       background:var(--paper);
-      min-height:100vh;
+      min-height:calc(100vh + var(--dwell));
+      padding-bottom:var(--dwell);   /* border-box, so content still gets 100vh */
       display:flex; flex-direction:column; justify-content:center;
     }
-    .panel#hero{ z-index:1; justify-content:flex-start; }
-    .panel#coverage{ z-index:2; box-shadow:0 -28px 40px -28px rgba(47,53,43,.14); }
-    .panel#ally{ z-index:3; box-shadow:0 -28px 40px -28px rgba(47,53,43,.14); }
-    .panel#specialty{ z-index:4; box-shadow:0 -28px 40px -28px rgba(47,53,43,.18); }
-    .panel#specialty{ background:var(--sage-deep); }
+    .stack .panel#coverage{ z-index:1; box-shadow:0 -30px 44px -30px rgba(47,53,43,.16); }
+    .stack .panel#ally{ z-index:2; box-shadow:0 -30px 44px -30px rgba(47,53,43,.16); }
+    .stack .panel#specialty{ z-index:3; box-shadow:0 -30px 44px -30px rgba(47,53,43,.2); }
+    .stack .panel#specialty{ background:var(--sage-deep); }
     /* Panels are opaque or you see straight through the stack. */
-    .panel > *{ position:relative; }
+    .stack .panel > *{ position:relative; }
   }
 }
 
