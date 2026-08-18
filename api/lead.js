@@ -32,7 +32,49 @@ function badOrigin(req) {
   } catch (e) { return true; }
 }
 
+/* GET /api/lead is a diagnostic. It reports whether the webhook is
+   configured and what the Apps Script actually answers, so a silent delivery
+   failure can be told apart from a missing env var or a permissions problem.
+   It sends no lead data and reveals no secrets — only the hostname. */
+async function diagnose(res) {
+  const url = process.env.SHEETS_WEBHOOK_URL;
+  if (!url) {
+    return res.status(200).json({
+      configured: false,
+      problem: 'SHEETS_WEBHOOK_URL is not set on this deployment.',
+      fix: 'Vercel > Settings > Environment Variables, then REDEPLOY. Env vars only apply at build time.'
+    });
+  }
+  let host = 'unparseable';
+  try { host = new URL(url).host; } catch (e) {}
+  const out = { configured: true, host: host, endsWithExec: /\/exec\/?$/.test(url) };
+  if (!out.endsWithExec) {
+    out.problem = 'The URL does not end in /exec. A /dev URL only works while signed in as you.';
+  }
+  try {
+    const r = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const text = (await r.text()).slice(0, 400);
+    out.status = r.status;
+    try {
+      const j = JSON.parse(text);
+      out.scriptReplied = j;
+      out.verdict = j && j.ok
+        ? 'Apps Script is reachable and responding. TEST_MODE is ' + (j.testMode ? 'ON.' : 'OFF.')
+        : 'Reached something, but it is not the lead receiver.';
+    } catch (e) {
+      out.rawStart = text.slice(0, 200);
+      out.verdict = /<html|accounts\.google|Sign in/i.test(text)
+        ? 'Google returned a sign-in page. The web app Access is not set to "Anyone" — redeploy with that changed.'
+        : 'Reached the URL but the reply was not JSON. Wrong URL, or the deployment is stale.';
+    }
+  } catch (e) {
+    out.verdict = 'Could not reach the URL at all: ' + String(e);
+  }
+  return res.status(200).json(out);
+}
+
 module.exports = async function handler(req, res) {
+  if (req.method === 'GET') { return diagnose(res); }
   if (req.method !== 'POST') { return res.status(405).json({ error: 'Method not allowed' }); }
   if (badOrigin(req)) { return res.status(403).json({ ok: false }); }
   // Silently accept and drop. Telling a spammer they were blocked just tells
@@ -68,18 +110,32 @@ module.exports = async function handler(req, res) {
 
   try {
     const ctl = new AbortController();
-    const t = setTimeout(() => ctl.abort(), 8000);
+    const t = setTimeout(() => ctl.abort(), 9000);
     const r = await fetch(url, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      // Apps Script answers /exec with a 302 to googleusercontent.com. Node
+      // follows it, but a 302 turns a POST into a GET and drops the body —
+      // so doPost would never run and doGet would answer instead. Posting
+      // as text/plain avoids a CORS preflight and Apps Script still reads
+      // e.postData.contents exactly the same way.
+      headers: { 'content-type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload),
+      redirect: 'follow',
       signal: ctl.signal
     });
     clearTimeout(t);
-    if (!r.ok) { console.log('LEAD delivery non-200:', r.status, JSON.stringify(payload)); }
-    return res.status(200).json({ ok: true, delivered: r.ok });
+    const text = (await r.text()).slice(0, 500);
+
+    // A 200 is NOT proof of delivery. A Google sign-in page is also a 200.
+    // Only the script's own {ok:true} counts.
+    let ok = false, note = text.slice(0, 200);
+    try { const j = JSON.parse(text); ok = !!j.ok; note = JSON.stringify(j).slice(0, 200); }
+    catch (e) { ok = false; }
+
+    if (!ok) { console.log('LEAD NOT DELIVERED', r.status, note, JSON.stringify(payload)); }
+    return res.status(200).json({ ok: true, delivered: ok, note: ok ? undefined : note });
   } catch (e) {
-    console.log('LEAD delivery failed:', JSON.stringify(payload));
-    return res.status(200).json({ ok: true, delivered: false });
+    console.log('LEAD delivery failed:', String(e), JSON.stringify(payload));
+    return res.status(200).json({ ok: true, delivered: false, note: String(e) });
   }
 };

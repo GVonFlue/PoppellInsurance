@@ -132,7 +132,14 @@
           source: 'Poppell — Ally chat',
           summary: summary, page: location.pathname
         } })
-      }).catch(function () {});
+      }).then(function (r) { return r.json(); })
+        .then(function (j) {
+          // Visible to whoever has devtools open, never to the visitor.
+          if (j && j.delivered) { console.info('[Ally] lead delivered to the Sheet'); }
+          else { console.warn('[Ally] LEAD NOT DELIVERED —', (j && j.note) || 'no detail',
+                              '\nRun GET /api/lead in a tab to diagnose.'); }
+        })
+        .catch(function (e) { console.warn('[Ally] lead post failed', e); });
     }
 
     /* ── routing ── */

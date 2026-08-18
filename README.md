@@ -117,6 +117,27 @@ far more per message than a short one, which is why the turn cap and the
 | `ANTHROPIC_API_KEY` | Ally says she isn't connected and gives the phone number |
 | `SHEETS_WEBHOOK_URL` | Leads log to Vercel only — **a net, not a floor** |
 
+## Diagnosing a lead that never arrived
+
+`/api/lead` swallows delivery failures on purpose — a visitor must never see
+an error — which also means a broken pipe is silent. Two ways to see it:
+
+1. **Open `https://<site>/api/lead` in a browser tab.** A GET is a diagnostic.
+   It reports whether the env var is set, whether the URL ends in `/exec`,
+   and what Apps Script actually replies, including whether `TEST_MODE` is on.
+2. **Open devtools before chatting.** Ally logs
+   `[Ally] lead delivered to the Sheet` or `[Ally] LEAD NOT DELIVERED` with
+   the reason.
+
+**A 200 is not proof of delivery.** A Google sign-in page is also a 200 — if
+the web app's Access is not set to *Anyone*, Google answers with a login page
+and the old code counted that as success. Only the script's own `{ok:true}`
+counts now.
+
+**The POST goes as `text/plain`.** Apps Script reads `e.postData.contents`
+identically, and it avoids a CORS preflight. `redirect: 'follow'` is explicit
+because `/exec` answers with a 302.
+
 ## Lead flow
 
 Ally → `/api/lead` → Apps Script → **Sheet first**, then email.
