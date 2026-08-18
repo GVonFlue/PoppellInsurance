@@ -6,7 +6,9 @@
    served document for crawlers that do not execute JavaScript.
 
    What remains here:
-     1. Carrier hydration  — disclosures, agency codes, logo (swap-time only)
+     1. Carrier hydration  — disclosures from every carrier she represents
+     1b. Customer actions  — payment/claims link-outs, with safe fallbacks
+     1c. Reviews           — off until switched on in config
      2. Domain injection   — url/@id into JSON-LD, absolute OG URLs
      3. Jotform embed
      4. Signature artwork  — ridgeline, arch sun, coverage icons
@@ -16,7 +18,6 @@
   'use strict';
 
   var S = window.SITE || {};
-  var C = S.carrier || {};
 
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $  = function (s, r) { return (r || document).querySelector(s); };
@@ -24,30 +25,96 @@
 
   function needs(field) { return '<span class="needs">Needs ' + field + '</span>'; }
 
-  /* ══════════════════════════════════════════ 1. CARRIER */
+  /* ══════════════════════════════════════════ 1. CARRIERS
+     Disclosures from every carrier she represents, concatenated in array
+     order. Adding a carrier is a config edit; nothing here changes. */
 
-  var codes = $('[data-agency-codes]');
-  if (codes) {
-    if (C.agencyCodes) { codes.textContent = 'Agency ' + C.agencyCodes; }
-    else { codes.remove(); }
-  }
+  var CARRIERS = (S.carriers && S.carriers.length) ? S.carriers : [];
 
   var clogo = $('[data-carrier-logo]');
-  if (clogo && C.logo) {
-    clogo.innerHTML = '<img src="' + C.logo + '" alt="' + (C.name || '') + '" loading="lazy">';
+  if (clogo) {
+    var logos = CARRIERS.filter(function (c) { return c.logo; });
+    if (logos.length) {
+      clogo.innerHTML = logos.map(function (c) {
+        return '<img src="' + c.logo + '" alt="' + (c.name || '') + '" loading="lazy">';
+      }).join('');
+    }
   }
 
   // Disclosures fail loudly. A legal block that quietly collapses to nothing
   // is how a licensee gets in trouble.
   var dis = $('[data-disclosures]');
   if (dis) {
-    dis.innerHTML = (C.disclosures && C.disclosures.length)
-      ? C.disclosures.map(function (p) { return '<p>' + p + '</p>'; }).join('')
+    var paras = CARRIERS.reduce(function (acc, c) {
+      return acc.concat(c.disclosures || []);
+    }, []);
+    dis.innerHTML = paras.length
+      ? paras.map(function (p) { return '<p>' + p + '</p>'; }).join('')
       : '<p>' + needs('carrier disclosures') + '</p>';
   }
 
   var yr = $('[data-year]');
   if (yr && S.site && S.site.year) { yr.textContent = String(S.site.year); }
+
+  /* ══════════════════════════════════════════ 1b. CUSTOMER ACTIONS
+     Payment and claims route to the carrier's own systems and are never
+     rebuilt here. With no URL yet, each tile degrades to a phone link so a
+     customer is never stranded, and carries a NEEDS marker so the section
+     cannot quietly ship half-finished. */
+
+  var CUST = S.customer || {};
+  var custPhone = (CUST.fallbackPhone || '').replace(/\D/g, '');
+
+  [['payment', CUST.paymentUrl, 'carrier payment URL', 'Pay online'],
+   ['claims',  CUST.claimsUrl,  'carrier claims URL',  'Start a claim']
+  ].forEach(function (cfg) {
+    var el = $('[data-svc="' + cfg[0] + '"]');
+    if (!el) { return; }
+    var label = el.querySelector('.svc__label');
+    var labelText = label ? label.textContent : '';
+
+    if (cfg[1]) {
+      var a = document.createElement('a');
+      a.className = el.className;
+      a.setAttribute('href', cfg[1]);
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener');
+      a.innerHTML = '<span class="svc__label">' + labelText + '</span>' +
+                    '<span class="svc__meta">' + cfg[3] + '</span>';
+      el.parentNode.replaceChild(a, el);
+    } else {
+      el.innerHTML = '<span class="svc__label">' + labelText + '</span>' +
+        (custPhone
+          ? '<span class="svc__meta"><a href="tel:+1' + custPhone + '">Call ' +
+            CUST.fallbackPhone + '</a></span>'
+          : '') +
+        '<span class="svc__needs">' + needs(cfg[2]) + '</span>';
+    }
+  });
+
+  /* ══════════════════════════════════════════ 1c. REVIEWS
+     Renders nothing at all unless switched on in config and populated. */
+
+  var rv = $('[data-reviews]');
+  var RV = S.reviews || {};
+  if (rv && RV.enabled && RV.items && RV.items.length) {
+    rv.removeAttribute('hidden');
+    rv.innerHTML =
+      '<div class="wrap">' +
+        '<p class="eyebrow reveal"><span class="star">\u2726</span> Reviews</p>' +
+        '<h2 class="h2 reveal" data-d="1">' + (RV.heading || 'What clients say') + '</h2>' +
+        '<div class="revs">' +
+          RV.items.map(function (r, i) {
+            return '<figure class="rev reveal" data-d="' + ((i % 3) + 1) + '">' +
+              '<blockquote class="rev__q">' + r.quote + '</blockquote>' +
+              '<figcaption class="rev__a">' + r.author +
+                (r.context ? '<span class="rev__c">' + r.context + '</span>' : '') +
+              '</figcaption>' +
+            '</figure>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+  }
 
   /* ══════════════════════════════════════════ 2. DOMAIN
      Absolute URLs matter for Open Graph (relative image paths are ignored
@@ -105,7 +172,7 @@
       setTimeout(function () {
         if (!jf.classList.contains('is-loading')) { return; }
         jf.innerHTML = '<div class="ph"><p>The quote form is not loading right now. ' +
-          'Call <a href="tel:+17196571212">719-657-1212</a> and we will take it ' +
+          'Call <a href="tel:+17195639712">719-563-9712</a> and we will take it ' +
           'over the phone.</p></div>';
         jf.classList.remove('is-loading');
       }, 8000);

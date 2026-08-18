@@ -317,6 +317,97 @@ a{ color:inherit; }
 }
 .row__body{ margin:0; color:var(--sage-deep); font-size:.97rem; }
 
+/* ─────────────────────────────────────────────────── HERO REACH LINE */
+
+.hero__reach{
+  max-width:46ch; margin:-.6rem auto 2.2rem;
+  font-size:.78rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--clay);
+}
+
+/* ─────────────────────────────────────────────────── HOW WE MEET */
+
+.howmeet{
+  display:inline-flex; align-items:center; gap:.6rem;
+  margin:-1.6rem 0 2.4rem;
+  padding:.55rem 1.1rem;
+  border:1px solid var(--hair); border-radius:999px;
+  background:var(--paper-lift);
+  font-size:.8rem; color:var(--sage-deep);
+}
+.howmeet .star{ color:var(--clay); font-size:.8em; }
+
+/* ─────────────────────────────────────────────────── EXISTING CUSTOMERS
+   Quieter than the quote CTA on purpose. Existing customers and new
+   prospects want opposite things and must not compete for one button. */
+
+.svc{
+  padding:clamp(3rem,6vw,4.5rem) 0;
+  margin-top:clamp(3.5rem,7vw,5.5rem);
+  border-top:1px solid var(--hair);
+  background:linear-gradient(180deg, var(--paper-lift), var(--paper));
+}
+.svc__head{ margin-bottom:clamp(1.75rem,4vw,2.5rem); }
+.svc__head .h2{ font-size:clamp(1.7rem,3.2vw,2.4rem); margin-bottom:0; }
+
+/* Explicit column counts, not auto-fit. Six tiles divide evenly into 3 and
+   2; auto-fit would leave orphan cells, and with a gap-and-background grid
+   those empty cells render as a visible filled block. Borders live on the
+   items so a partial row can never show phantom cells. */
+.svc__grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--hair);
+  border-left:1px solid var(--hair);
+}
+.svc__item{
+  background:var(--paper);
+  padding:1.4rem 1.3rem;
+  display:flex; flex-direction:column; gap:.4rem;
+  text-decoration:none; color:inherit;
+  min-height:104px;
+  border-right:1px solid var(--hair);
+  border-bottom:1px solid var(--hair);
+  transition:background .4s var(--ease);
+}
+a.svc__item:hover{ background:var(--paper-lift); }
+a.svc__item:hover .svc__label{ color:var(--clay); }
+
+.svc__label{
+  font-family:var(--disp); font-size:1.05rem; font-weight:600;
+  transition:color .35s var(--ease);
+}
+.svc__meta{ font-size:.82rem; color:var(--sage); display:flex; gap:.9rem; flex-wrap:wrap; }
+.svc__meta a{ color:var(--clay); text-decoration:none; border-bottom:1px solid transparent; }
+.svc__meta a:hover{ border-bottom-color:var(--clay); }
+.svc__needs{ margin-top:.35rem; }
+
+/* ─────────────────────────────────────────────────── REVIEWS (stub)
+   Styled now so enabling the flag needs no CSS work later. */
+
+.revs{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:clamp(1.25rem,3vw,2rem);
+  margin-top:clamp(2rem,4vw,3rem);
+}
+.rev{ margin:0; padding:1.75rem 1.5rem; border:1px solid var(--hair); background:var(--paper-lift); }
+.rev__q{ margin:0 0 1rem; font-family:var(--disp); font-size:1.05rem; color:var(--ink); }
+.rev__q::before{ content:'\201C'; color:var(--clay); }
+.rev__q::after{ content:'\201D'; color:var(--clay); }
+.rev__a{ font-size:.75rem; letter-spacing:.18em; text-transform:uppercase; color:var(--sage); }
+.rev__c{ display:block; letter-spacing:.06em; text-transform:none; color:var(--sage-soft); margin-top:.3rem; }
+
+/* ─────────────────────────────────────────────────── PULL QUOTE
+   Used by the life-insurance statement once it is approved. */
+
+.pull{ padding:clamp(3rem,6vw,5rem) 0; text-align:center; }
+.pull__lead{
+  font-family:var(--disp); font-weight:600;
+  font-size:clamp(1.5rem,3.2vw,2.3rem); line-height:1.2;
+  margin:0 0 1.2rem;
+}
+.pull__body{ margin:0 auto; max-width:52ch; color:var(--sage-deep); }
+
 /* ─────────────────────────────────────────────────── SPECIALTY BAND
    A sage field breaks the cream run and gives the page a second dark beat
    between the marquee and the footer, so the specialty coverage reads as a
@@ -591,6 +682,7 @@ a{ color:inherit; }
 .mail:hover{ color:var(--clay); border-bottom-color:var(--clay); }
 
 address{ font-style:normal; color:var(--sage-deep); font-size:.95rem; }
+.contact__area{ margin:0; color:var(--sage-deep); font-size:.95rem; max-width:34ch; }
 [data-hours] div{ color:var(--sage-deep); font-size:.95rem; padding:.15rem 0; }
 [data-hours] div + div{ border-top:1px solid var(--hair); margin-top:.5rem; padding-top:.65rem; }
 address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(--hair); }
@@ -643,12 +735,14 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
 /* ─────────────────────────────────────────────────── RESPONSIVE */
 
 @media (max-width:900px){
+  .svc__grid{ grid-template-columns:repeat(2,1fr); }
   .crew{ grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1.5rem; }
 }
 
 /* One card per row on phones, but cap the arch so three people don't turn
    into three screens of scrolling. */
 @media (max-width:620px){
+  .svc__grid{ grid-template-columns:1fr; }
   .mate__arch{ max-width:228px; margin-inline:auto; margin-bottom:1rem; }
 }
 

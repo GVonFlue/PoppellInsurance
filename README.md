@@ -12,7 +12,7 @@ assets/
   js/main.js             ← hydration, artwork, motion
   brand/                 her banner, card, and treated headshot
 GO-LIVE.md               19 steps to GitHub + Vercel + domain
-BRANDING-SWAP.md         read this before the carrier change
+CARRIERS.md         carrier list, adding carriers, compliance holds
 ```
 
 ## SEO — what's in and what isn't
@@ -31,12 +31,22 @@ address, all team members and every coverage term.
 |---|---|
 | `InsuranceAgency` JSON-LD | Static in `<head>`. NAP, hours, `areaServed`, `hasMap` via the Google CID, three employees, 7-item offer catalog, `knowsAbout` |
 | Title & description | Service and city front-loaded, not brand-first |
-| H1 | Carries "Colorado Springs insurance" naturally |
+| H1 | Carries "Colorado insurance" naturally |
+| Service area | Statewide Colorado in copy and schema; Colorado Springs kept as the physical anchor |
 | Section copy | Location and service terms woven into ledes, not stuffed |
 | Open Graph + Twitter | Full set; absolute URLs injected once `site.domain` is set |
 | `robots.txt` | Allows all |
 | `sitemap.xml` | Template — **contains `REPLACE-WITH-DOMAIN`, must be edited before submitting** |
 | Semantics | One H1, `<address>`, `<article>`, real heading hierarchy |
+
+**On the statewide change.** She is licensed across Colorado, and the copy
+and schema now say so — `areaServed` is the State of Colorado, not the city.
+But Colorado Springs was deliberately kept as the physical anchor in the
+title, the address, the JSON-LD locality and the contact block. Local ranking
+is driven by the verified address and searcher proximity; scrubbing the city
+to sound bigger tends to lose the local rankings you had without winning the
+statewide ones you wanted. Statewide is the service area, layered on top of
+the local anchor, not a replacement for it.
 
 **Deliberately omitted:** a `geo` block. Precise coordinates were never
 supplied and inventing them is worse than omitting them — search engines
@@ -44,9 +54,11 @@ geocode from `address` and `hasMap`.
 
 **Still missing, in priority order:**
 
-1. **Service pages.** One page ranks for roughly one query. Local insurance
-   is won with service-plus-city pages: home, auto, life, business, umbrella,
-   renters. Six real pages. This is the largest remaining gap.
+1. **Service pages.** One page ranks for roughly one query. Six real pages —
+   home, auto, life, business, umbrella, renters — each targeting a distinct
+   service query. Now that she is statewide these should target
+   service-plus-Colorado, with Colorado Springs as a secondary term, rather
+   than city-only. Largest remaining gap.
 2. **Canonical.** Commented out in `index.html` — uncomment once the domain
    is live.
 3. **Search Console + Bing Webmaster.** Submit the sitemap.
@@ -176,8 +188,8 @@ section added with a published direct line per person, specialty band added
 | About copy | **Draft in place.** Contains zero biographical facts by design — approach only, so nothing can be wrong. Needs her approval or rewrite. |
 | Office hours | **Done.** Mon–Fri 8:30–5:30, weekends closed. Source: her Farmers page, 2026-08-15. |
 | **Domain** | Still open — `site.domain`. |
-| **Phone number** | Two conflicting numbers on file. See BRANDING-SWAP.md. |
-| **Email** | Still a carrier address that dies on transition. See BRANDING-SWAP.md. |
+| **Phone number** | Two conflicting numbers on file. See CARRIERS.md. |
+| **Email** | Still a carrier address that dies on transition. See CARRIERS.md. |
 
 Her Farmers About section is carrier boilerplate with Education, Awards and
 Licenses all blank, so there was nothing there worth reusing.
@@ -205,22 +217,34 @@ Coverage sub-pages, blog, testimonials/reviews, LocalBusiness JSON-LD,
 sitemap, OG image, analytics, anything financial-services. All but the last
 are straightforward additions once the content gaps above are closed.
 
+## Staged but NOT live
+
+| Item | State | To enable |
+|---|---|---|
+| **Life insurance statement** | Markup written, wrapped in an HTML comment in `index.html` | **Get Alyssa's written approval first.** The wording is a reconstruction of her dictation, not her verbatim words. Then delete the two comment markers. |
+| **Reviews section** | Component built, CSS written, `hidden` | Set `reviews.enabled: true` and populate `reviews.items` in config |
+| **Payment / claims links** | Tiles render, degrade to a phone link, show NEEDS markers | Add `customer.paymentUrl` and `customer.claimsUrl` in config |
+
 ## Open with Alyssa
 
-1. Carrier agent website/marketing guidelines — does the site need approval?
-2. Is she a registered rep? Does anything need broker-dealer sign-off?
-3. **Phone reconciliation.** Four numbers now exist: her direct line
-   (719-657-1212), Charlene's, Jean's, the number printed on her **business
-   card** (719-306-1894, not on the team list), and the one her carrier page
-   publishes (719-563-9712). The card is physically in circulation. Also
-   worth updating the carrier profile and Google listing to match the site —
-   a name/address/phone mismatch across listings weakens local search.
-4. **Email.** Three carrier-domain addresses are now published and will be
-   indexed. All three die on transition. A domain with three forwarding
+1. **Approve the life insurance wording** before it ships. It is staged in
+   `index.html` behind a comment. Publishing a reconstructed quote on a life
+   insurance page is not something to guess at.
+2. **Payment and claims URLs.** Those run on the carrier's systems and must
+   never be rebuilt here — an agent site handling either directly is a
+   compliance problem as much as a technical one. The URLs may be
+   agent-specific.
+3. Carrier agent website/marketing guidelines — does the site need approval?
+4. Is she a registered rep? Does anything need broker-dealer sign-off?
+5. **Phone — mostly resolved.** The main number is now 719-563-9712, which
+   matches her carrier agent page. That NAP inconsistency is fixed and it was
+   the highest-ROI item on the SEO list. Still outstanding: her **business
+   card** prints 719-306-1894, a number that appears nowhere else. Confirm it
+   forwards or reprint.
+6. **Email.** Carrier-domain addresses are published and indexed. All three die on transition. A domain with three forwarding
    addresses fixes this permanently.
-5. Last names and job titles for Charlene and Jean; headshots for both.
-6. Confirm the specialty list — it is inferred from her appointments, not
-   her words.
-7. A real paragraph in her voice for About. Her carrier bio is the identical
+7. Last names and job titles for Charlene and Jean; headshots for both.
+8. Confirm the specialty list — inferred from her appointments, not her words.
+9. A real paragraph in her voice for About. Her carrier bio is the identical
    boilerplate every agent on that platform gets, and her Education,
    Licenses and Awards fields are all empty.

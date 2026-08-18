@@ -21,7 +21,7 @@ Budget about 25 minutes, most of it waiting on DNS.
 **3.** On the empty repo page click **uploading an existing file**.
 
 **4.** Open the `poppell` folder and drag **everything inside it** into the
-browser — `index.html`, `vercel.json`, `README.md`, `BRANDING-SWAP.md`,
+browser — `index.html`, `vercel.json`, `README.md`, `CARRIERS.md`,
 `GO-LIVE.md`, and the whole `assets` folder.
 
 > **Drag the contents, not the folder itself.** If you drag the `poppell`
@@ -117,7 +117,7 @@ Hours are set to Mon–Fri 8:30 AM – 5:30 PM, weekends closed, taken from her
 Farmers page. If she actually takes Saturday appointments, add that line.
 
 **17.** Resolve the two open decisions, both documented in
-`BRANDING-SWAP.md`:
+`CARRIERS.md`:
 - **Phone** — card says 719-306-1894, her Farmers page says 719-563-9712
 - **Email** — `apoppell@farmersagent.com` dies with the appointment; she needs
   a domain address forwarding wherever she wants today
