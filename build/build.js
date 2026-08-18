@@ -119,7 +119,7 @@ ${COVERAGE.map(c => `
 }
 
 function specialtyBand() {
-  return `  <section class="band panel" id="specialty">
+  return `  <section class="band" id="specialty">
     <div class="wrap">
       <p class="eyebrow eyebrow--inv reveal"><span class="star">&#10022;</span> Beyond the basics</p>
       <h2 class="h2 h2--inv reveal" data-d="1">The coverage most<br>people never ask about.</h2>
@@ -193,6 +193,10 @@ function home() {
   <div class="marquee" aria-hidden="true"><div class="marquee__track" data-marquee></div></div>
   <p class="sr-only">${AGENT.creed}</p>
 
+  <!-- The stack ends at Ally. Coverage pins and Ally slides up over it —
+       then Ally is simply a normal section and NOTHING ever scrolls over the
+       chat panel. A page moving over a text input is unusable, so Ally is
+       the last thing to arrive and it stays put. -->
   <div class="stack">
   <section class="sec panel" id="coverage">
     <div class="wrap">
@@ -209,10 +213,10 @@ ${coverageRows()}
     </div>
   </section>
 
-${ally('panel')}
+${ally('stack__last')}
+  </div><!-- /stack -->
 
 ${specialtyBand()}
-  </div><!-- /stack -->
 
   <section class="sec" id="team">
     <div class="wrap">

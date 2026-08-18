@@ -214,8 +214,15 @@
       var onPage = $('#ally');
       if (onPage) {
         e.preventDefault();
-        onPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        setTimeout(function () { if (inline) { inline.focus(); } }, 700);
+        // Aim at the chat panel, not the section. The section starts far
+        // above the box (heading column, plus the room Alyssa rises into),
+        // so scrolling to its top buries the panel header off-screen.
+        // Computed rather than scrollIntoView + scroll-margin, which was
+        // landing 48px past the top of the panel.
+        var box = $('.ally__box', onPage) || onPage;
+        var y = box.getBoundingClientRect().top + window.pageYOffset - 96;
+        window.scrollTo({ top: Math.max(y, 0), behavior: 'smooth' });
+        setTimeout(function () { if (inline) { inline.focus({ preventScroll: true }); } }, 800);
       }
       // On pages without the inline widget the link is a normal /#ally
       // navigation home. Simple beats a second widget instance to keep in sync.

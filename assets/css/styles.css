@@ -28,6 +28,10 @@
 
 *,*::before,*::after{ box-sizing:border-box; }
 html{ scroll-behavior:smooth; }
+/* The header is fixed, so an anchor jump would land content underneath it.
+   Scoped to sections — applying it to every element with an id is broader
+   than needed and affects things it should not. */
+section[id], article[id], aside[id]{ scroll-margin-top:88px; }
 
 body{
   margin:0;
@@ -968,10 +972,16 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
       padding-bottom:var(--dwell);   /* border-box, so content still gets 100vh */
       display:flex; flex-direction:column; justify-content:center;
     }
-    .stack .panel#coverage{ z-index:1; box-shadow:0 -30px 44px -30px rgba(47,53,43,.16); }
-    .stack .panel#ally{ z-index:2; box-shadow:0 -30px 44px -30px rgba(47,53,43,.16); }
-    .stack .panel#specialty{ z-index:3; box-shadow:0 -30px 44px -30px rgba(47,53,43,.2); }
-    .stack .panel#specialty{ background:var(--sage-deep); }
+    .stack .panel#coverage{ z-index:1; }
+
+    /* Ally is NOT sticky. It rides up over the pinned Coverage panel on a
+       higher layer, and once it lands nothing is behind it pushing and
+       nothing above it covering. A chat panel that the page scrolls over is
+       unusable — you cannot read a reply or hit an input that is sliding. */
+    .stack__last{
+      position:relative; z-index:2;
+      box-shadow:0 -30px 44px -30px rgba(47,53,43,.18);
+    }
     /* Panels are opaque or you see straight through the stack. */
     .stack .panel > *{ position:relative; }
   }

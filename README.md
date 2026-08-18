@@ -128,8 +128,16 @@ losing the lead is not. The visitor is never shown a delivery failure.
 
 ## Stacking panels
 
-Coverage → Ally → Specialty scroll over one another, then normal flow.
-Desktop only (>860px), off under `prefers-reduced-motion`.
+**Coverage pins, Ally slides up over it, and the stack ends there.** Specialty
+and everything after scroll normally. Desktop only (>860px), off under
+`prefers-reduced-motion`.
+
+**Ally is the last thing to arrive and nothing ever covers it.** A page
+sliding over a chat panel makes it unusable — you cannot read a reply or hit
+an input that is moving. So Ally rides up on a higher layer (`.stack__last`)
+and is not sticky itself. Asserted in test, not assumed: with Ally on screen,
+`document.elementFromPoint` over the chat input returns the input at rest and
+through 600px of further scrolling.
 
 **`--dwell` is the whole feel of it.** Each panel occupies `100vh + dwell` of
 document height but only ever shows its top 100vh, because it is pinned. The
@@ -138,6 +146,11 @@ of scrolling with the panel pinned and nothing sliding over it before the
 handover starts. Currently 62vh — about 70% of a screen between handovers.
 Set it to 0 and the next panel starts covering the instant you touch the
 wheel, which reads as far too aggressive. One value, in `.stack`.
+
+The nav link scrolls to the **chat panel**, not the section — the section
+starts far above the box and scrolling to its top buried the panel header
+off-screen. Position is computed directly; `scrollIntoView` plus
+`scroll-margin-top` was landing 48px past.
 
 **The hero is deliberately not a panel.** Its content runs ~1230px tall at a
 900px viewport, and a pinned panel only ever shows its top 100vh — which cut
