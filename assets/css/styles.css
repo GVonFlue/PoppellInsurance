@@ -162,7 +162,30 @@ a{ color:inherit; }
 .hero{ padding-top:5.5rem; }
 
 .hero__art{ overflow:hidden; position:relative; }
-.hero__art picture{ display:block; position:relative; z-index:1; }
+
+/* Plate and sway share one box so parallax moves the scene as a unit and
+   the sway rides on top of it. */
+.hero__scene{ position:relative; z-index:1; will-change:transform; }
+.hero__scene picture{ display:block; }
+
+/* The seam sits at y=470 of an 809px-tall image → 58.1%. skewX about that
+   line means points ON it never move: dx grows linearly with height above
+   the origin and is exactly 0 at the origin. That is why the cut is
+   invisible, and why this is a shear and not a translate. */
+.hero__sway{
+  position:absolute; inset:0;
+  background:url("/assets/brand/hero-sway.webp") no-repeat 0 0 / 100% 100%;
+  transform-origin:50% 58.1%;
+  animation:windSway 11s ease-in-out infinite;
+  will-change:transform;
+  pointer-events:none;
+}
+@keyframes windSway{
+  0%   { transform:skewX(-0.28deg); }
+  38%  { transform:skewX(0.55deg); }
+  64%  { transform:skewX(0.12deg); }
+  100% { transform:skewX(-0.28deg); }
+}
 .hero__art img{
   width:100%; transform:scale(1.06); opacity:0;
   animation:heroSettle 1.6s .15s var(--ease-out) forwards;
@@ -902,7 +925,8 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
   .mate:focus-within .mate__arch{ transform:none; }
   .signature span{ clip-path:none; }
   .marquee__track{ animation:none; }
-  .sky__glow, .bird-g, .bird-flap, .mote{ animation:none; }
+  .sky__glow, .bird-g, .bird-flap, .mote, .hero__sway{ animation:none; }
+  .hero__sway{ transform:none; }
   .mote{ opacity:0; }
   .hero__sky, .hero__motes{ transform:none !important; }
   .arch__sun svg{ animation:none; }

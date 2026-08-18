@@ -17,12 +17,13 @@ CARRIERS.md         carrier list, adding carriers, compliance holds
 
 ## The living hero — how it works
 
-Her banner ships twice:
+Her banner ships as three files:
 
-| File | Ground | Role |
-|---|---|---|
-| `poppell-banner.webp` | **cream keyed to transparent** | primary |
-| `poppell-banner.jpg` | opaque cream | fallback |
+| File | What it is |
+|---|---|
+| `hero-plate.webp` | cream keyed transparent, upper-left planting removed |
+| `hero-sway.webp` | the cactus, pampas and upper florals, on transparency |
+| `poppell-banner.jpg` | untouched original — fallback for no-WebP browsers |
 
 Keying the cream lets an animated sky sit **behind** her artwork: a sun glow
 breathing on an 11-second cycle where her painted sun already is, and three
@@ -31,10 +32,27 @@ front. Over the page's cream the composite is pixel-indistinguishable from
 the original JPEG — the key is forgiving precisely because the background it
 keys against is the same cream the page is painted in.
 
-**The artwork is never cut apart.** The whole banner stays one image. Slicing
-the cactus from the wordmark from the mountains would break the logo lockup
-the moment the layers moved at different rates, and soft watercolour edges
-would halo. Only the environment moves; her lockup is the anchor.
+### The wind sway, and why it's a shear
+
+The planting is cut out and sways. The cut runs at y=470, **above the sage
+band**, so the region behind it was pure sky — nothing had to be
+reconstructed.
+
+The layer is **sheared, never translated.** `skewX` about a transform-origin
+on the seam means horizontal displacement is exactly zero at the cut and
+grows linearly with height. The join physically cannot show. It is also how
+wind actually bends a plant: the base holds, the tips move.
+
+**This was the second attempt.** The first tried to lift the whole cluster,
+band and all, and clone band texture in behind it. That failed — every
+candidate donor column in the band contains an icon, a label, or the creed
+line, so the reconstruction dragged the word "LIFE" into the hole. There is
+no clean 356px of band anywhere in the image. Cutting above the band avoids
+the problem entirely instead of solving it badly.
+
+**The logo lockup is never split.** The wordmark, her mountain range and the
+script stay welded into the plate. Separating them and moving them at
+different rates would pull the mark apart the instant anything scrolled.
 
 Three parallax rates on scroll — sky 0.10, artwork 0.22, motes 0.34 — plus a
 few pixels of pointer parallax behind `(hover:hover) and (pointer:fine)`. The
@@ -43,7 +61,9 @@ artwork deliberately moves *less* than the sky and motes.
 All of it off under `prefers-reduced-motion` — verified, motes render zero
 elements rather than sitting invisible.
 
-**Still worth doing, needs her design files:** the four coverage-row icons are
+**What still needs her design files:** the right-side pines could sway with
+the same shear, but they're embedded in photographic mountains with no clean
+seam. And the four coverage-row icons are
 my line drawings, not hers. Her banner has a hand-drawn house, pickup,
 heart-wreath and boots. Extract those four as transparent PNGs and the rows
 use her actual illustrations.

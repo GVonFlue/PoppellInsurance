@@ -443,7 +443,7 @@
      Three rates on scroll, plus a few pixels of pointer parallax on
      devices that actually have a pointer. The banner moves LEAST of the
      three — her artwork is the anchor; the environment moves around it. */
-  var art    = $('#heroArt img');
+  var art    = $('#heroScene') || $('#heroArt img');
   var skyEl  = $('[data-sky]');
   var moteEl = $('[data-motes]');
 

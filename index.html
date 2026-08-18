@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Jost:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/assets/css/styles.css?v=8">
+<link rel="stylesheet" href="/assets/css/styles.css?v=9">
 
 <!-- ════════════════════════════════════════════════════════════════════
      STRUCTURED DATA
@@ -162,12 +162,27 @@
            Her logo lockup is never split or distorted — it stays one image.
            The .jpg fallback is opaque, which simply hides the sky layer. -->
       <div class="hero__sky" data-sky aria-hidden="true"></div>
-      <picture>
-        <source srcset="/assets/brand/poppell-banner.webp" type="image/webp">
-        <img src="/assets/brand/poppell-banner.jpg"
-             alt="Poppell Insurance Agency, Colorado — Protect what matters. Property, auto, life and business insurance."
-             width="1942" height="809" fetchpriority="high">
-      </picture>
+
+      <div class="hero__scene" id="heroScene">
+        <!-- PLATE: her banner with the cream keyed transparent AND the
+             upper-left planting removed. That region was pure sky, so
+             nothing had to be reconstructed. -->
+        <picture>
+          <source srcset="/assets/brand/hero-plate.webp" type="image/webp">
+          <img src="/assets/brand/poppell-banner.jpg"
+               alt="Poppell Insurance Agency, Colorado — Protect what matters. Property, auto, life and business insurance."
+               width="1942" height="809" fetchpriority="high">
+        </picture>
+
+        <!-- SWAY: the cactus, pampas and upper florals. Sheared about the
+             seam, never translated — displacement at the cut is exactly
+             zero and grows with height, so the join cannot show. It is
+             also how wind actually bends a plant.
+             No WebP support → this fails to load and the <picture> above
+             falls back to the intact JPEG. Nothing looks broken. -->
+        <div class="hero__sway" aria-hidden="true"></div>
+      </div>
+
       <div class="hero__motes" data-motes aria-hidden="true"></div>
     </div>
 
@@ -511,7 +526,7 @@
   </div>
 </footer>
 
-<script src="/assets/js/config.js?v=8"></script>
-<script src="/assets/js/main.js?v=8"></script>
+<script src="/assets/js/config.js?v=9"></script>
+<script src="/assets/js/main.js?v=9"></script>
 </body>
 </html>
