@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const { AGENT, TEAM, BOT } = require('../src/site.js');
+const { AGENT, TEAM, SOCIAL, ABOUT, IDEAL, BOT } = require('../src/site.js');
 const { COVERAGE, SPECIALTY } = require('../src/content.js');
 const { head, header, footer, contact, V } = require('../src/partials/shell.js');
 const { ally } = require('../src/partials/ally.js');
@@ -137,8 +137,8 @@ ${SPECIALTY.map((s, i) => `        <a class="spec__item reveal" data-d="${i + 1}
 function teamGrid() {
   return `      <div class="crew">
 ${TEAM.map((m, i) => `        <article class="mate reveal" data-d="${i + 1}">
-          <div class="mate__arch">${m.portrait
-            ? `<img src="${m.portrait}" alt="${m.name}, ${m.title || 'Poppell Insurance Agency'}" width="800" height="800" loading="lazy">`
+          <div class="mate__arch">${m.portrait && fs.existsSync(path.join(ROOT, m.portrait.replace(/^\//, '')))
+            ? `<img src="${m.portrait}" alt="${m.name}, ${m.title || AGENT.agency}" width="800" height="800" loading="lazy">`
             : `<span class="mate__ph"><span class="needs">Needs headshot</span></span>`}</div>
           <h3 class="mate__name">${m.name}</h3>
           <p class="mate__title">${m.title || '<span class="needs">Needs job title</span>'}</p>
@@ -216,6 +216,18 @@ ${coverageRows()}
 ${ally('stack__last')}
   </div><!-- /stack -->
 
+  <!-- Approved by Alyssa in onboarding, 18 Aug 2026: "Use as-is". -->
+  <aside class="pull" id="life-statement">
+    <div class="wrap wrap--narrow">
+      <p class="pull__lead reveal">Life insurance isn't really about you. It's about the people who depend on you.</p>
+      <p class="pull__body reveal" data-d="1">I'll help you understand your options and build protection that makes sense for your family, your budget, and the life you're building.</p>
+      <p class="pull__who reveal" data-d="2"><span class="star">&#10022;</span> Alyssa Poppell, Owner</p>
+      <p class="reveal" data-d="3" style="margin-top:1.6rem">
+        <a class="btn btn--solid" href="/life-insurance">More on life coverage</a>
+      </p>
+    </div>
+  </aside>
+
 ${specialtyBand()}
 
   <section class="sec" id="team">
@@ -248,9 +260,7 @@ ${ridge()}
         <p class="eyebrow reveal"><span class="star">&#10022;</span> Who you're working with</p>
         <h2 class="h2 reveal" data-d="1">The team,<br>not the call center.</h2>
         <div class="prose reveal" data-d="2">
-          <p>Most people buy insurance once, file it away, and never look at it again until something goes wrong. That is usually the worst possible time to find out what a policy actually covers.</p>
-          <p>We work the other way around. We go through what you own, what you owe, and who depends on you, then tell you plainly where you are covered and where you are exposed. Sometimes that means adding coverage. Sometimes it means telling you that you are paying for something you do not need.</p>
-          <p>And wherever in Colorado you are calling from, you reach the person you meant to reach. Every one of us has a direct line published on this site.</p>
+${ABOUT.map(t => `          <p>${t}</p>`).join('\n')}
         </div>
         <p class="signature" data-sign><span>${AGENT.tagline}</span></p>
       </div>
@@ -304,12 +314,20 @@ function svcSection() {
             <a href="sms:${AGENT.telHref}">Text</a>
           </span>
         </div>
-        <div class="svc__item reveal" data-d="2" data-svc="payment">
+        <!-- She asked for both of these to route through the office rather
+             than straight out to the carrier: "I want them to call us first
+             so we can advise around the claim." That is a deliberate service
+             decision, not a missing URL. -->
+        <div class="svc__item reveal" data-d="2">
           <span class="svc__label">Make a payment</span>
+          <span class="svc__meta">Pay in your carrier account, or
+            <a href="tel:${AGENT.telHref}">call ${AGENT.phone}</a></span>
         </div>
-        <div class="svc__item reveal" data-d="2" data-svc="claims">
+        <a class="svc__item svc__item--flag reveal" data-d="2" href="tel:${AGENT.telHref}">
           <span class="svc__label">File a claim</span>
-        </div>
+          <span class="svc__meta">Call us first — ${AGENT.phone}</span>
+          <span class="svc__fine">We will walk you through it before anything is filed.</span>
+        </a>
         <a class="svc__item reveal" data-d="3" href="${mail('Policy change request', F)}">
           <span class="svc__label">Request a policy change</span>
           <span class="svc__meta">Email the office</span>
@@ -497,10 +515,7 @@ function aboutPage() {
       </figure>
       <div class="about__txt">
         <div class="prose reveal" data-d="1">
-          <p>Most people buy insurance once, file it away, and never look at it again until something goes wrong. That is usually the worst possible time to find out what a policy actually covers.</p>
-          <p>We work the other way around. We go through what you own, what you owe, and who depends on you, then tell you plainly where you are covered and where you are exposed. Sometimes that means adding coverage. Sometimes it means telling you that you are paying for something you do not need.</p>
-          <p>The office is in Colorado Springs and we write coverage throughout Colorado. Whether that happens across a desk, over the phone, or on a video call is entirely up to you.</p>
-          <p>And wherever you are calling from, you reach the person you meant to reach. No queue, no routing, no explaining your file from the beginning to somebody new.</p>
+${ABOUT.map(t => `          <p>${t}</p>`).join('\n')}
         </div>
         <p class="signature" data-sign><span>${AGENT.tagline}</span></p>
       </div>
@@ -511,6 +526,16 @@ function aboutPage() {
   </section>
 
 ${ridge()}
+
+  <section class="sec">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow reveal"><span class="star">&#10022;</span> ${IDEAL.heading}</p>
+      <h2 class="h2 reveal" data-d="1">The people we do<br>our best work for.</h2>
+      <div class="prose reveal" data-d="2">
+${IDEAL.body.map(t => `        <p>${t}</p>`).join('\n')}
+      </div>
+    </div>
+  </section>
 
 ${contact()}`;
   return page({

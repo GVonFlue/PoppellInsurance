@@ -485,6 +485,17 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
   margin:0 0 1.2rem;
 }
 .pull__body{ margin:0 auto; max-width:52ch; color:var(--sage-deep); }
+.pull__who{
+  margin:1.4rem 0 0; font-size:.7rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--sage);
+  display:flex; align-items:center; justify-content:center; gap:.6rem;
+}
+.pull__who .star{ color:var(--clay); font-size:.8em; }
+.pull{ background:var(--paper-lift); border-block:1px solid var(--hair); }
+
+/* claims tile — the "call us first" one is the deliberate outlier */
+.svc__item--flag{ background:var(--paper-lift); }
+.svc__fine{ font-size:.76rem; color:var(--sage-soft); margin-top:.15rem; }
 
 /* ─────────────────────────────────────────────────── SPECIALTY BAND
    A sage field breaks the cream run and gives the page a second dark beat
@@ -1382,3 +1393,7 @@ a.spec__item:hover .spec__go{ transform:translateX(5px); }
   }
   .stack__last{ box-shadow:none; }
 }
+
+.ftr__social{ margin-top:.5rem !important; }
+.ftr__social a{ color:var(--blush); text-decoration:none; }
+.ftr__social a:hover{ color:var(--paper); }

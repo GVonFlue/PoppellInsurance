@@ -79,18 +79,20 @@
   "employee": [
     {
       "@type": "Person",
-      "name": "Alyssa L Poppell",
+      "name": "Alyssa Poppell",
       "jobTitle": "Owner",
       "telephone": "+1-719-657-1212"
     },
     {
       "@type": "Person",
       "name": "Charlene",
+      "jobTitle": "Insurance Advisor",
       "telephone": "+1-719-679-5050"
     },
     {
       "@type": "Person",
       "name": "Jean",
+      "jobTitle": "Client Care Specialist",
       "telephone": "+1-719-657-1201"
     }
   ],
@@ -145,6 +147,27 @@
         "itemOffered": {
           "@type": "Service",
           "name": "Recreational insurance in Colorado"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Landlord & rental insurance in Colorado"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Flood insurance in Colorado"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Classic & collector insurance in Colorado"
         }
       }
     ]
@@ -261,12 +284,20 @@
             <a href="sms:+17195639712">Text</a>
           </span>
         </div>
-        <div class="svc__item reveal" data-d="2" data-svc="payment">
+        <!-- She asked for both of these to route through the office rather
+             than straight out to the carrier: "I want them to call us first
+             so we can advise around the claim." That is a deliberate service
+             decision, not a missing URL. -->
+        <div class="svc__item reveal" data-d="2">
           <span class="svc__label">Make a payment</span>
+          <span class="svc__meta">Pay in your carrier account, or
+            <a href="tel:+17195639712">call 719-563-9712</a></span>
         </div>
-        <div class="svc__item reveal" data-d="2" data-svc="claims">
+        <a class="svc__item svc__item--flag reveal" data-d="2" href="tel:+17195639712">
           <span class="svc__label">File a claim</span>
-        </div>
+          <span class="svc__meta">Call us first — 719-563-9712</span>
+          <span class="svc__fine">We will walk you through it before anything is filed.</span>
+        </a>
         <a class="svc__item reveal" data-d="3" href="mailto:apoppell@farmersagent.com?subject=Policy%20change%20request&body=Name%3A%0APolicy%20number%3A%0APhone%3A%0A%0ADetails%3A%0A">
           <span class="svc__label">Request a policy change</span>
           <span class="svc__meta">Email the office</span>
@@ -295,6 +326,7 @@
         <p><a href="/coverage">Coverage</a> · <a href="/team">Team</a> · <a href="/about">About</a> · <a href="/contact">Contact</a></p>
         <p>Alyssa L Poppell &middot; License #640903</p>
         <p>Licensed in Colorado</p>
+        <p class="ftr__social"><a href="https://www.facebook.com/share/1J3CWdPjt2/" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/poppellagency" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/in/alyssapoppell" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://agents.farmers.com/co/colorado-springs/alyssa-poppell/" target="_blank" rel="noopener">Google</a></p>
         <div data-carrier-logo></div>
       </div>
     </div>

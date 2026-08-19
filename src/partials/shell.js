@@ -1,5 +1,5 @@
 /* Shared chrome. One definition, every page. */
-const { AGENT, NAV, BOT } = require('../site.js');
+const { AGENT, NAV, BOT, SOCIAL } = require('../site.js');
 
 const V = 10;   // cache-bust token, bumped by the build
 
@@ -125,6 +125,7 @@ function footer() {
         <p><a href="/coverage">Coverage</a> · <a href="/team">Team</a> · <a href="/about">About</a> · <a href="/contact">Contact</a></p>
         <p>${AGENT.legalName} &middot; License #${AGENT.license}</p>
         <p>Licensed in Colorado</p>
+        <p class="ftr__social">${SOCIAL.map(x => `<a href="${x.url}" target="_blank" rel="noopener">${x.label}</a>`).join(' · ')}</p>
         <div data-carrier-logo></div>
       </div>
     </div>

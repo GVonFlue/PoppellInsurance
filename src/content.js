@@ -177,25 +177,13 @@ const SPECIALTY = [
     h1: 'Umbrella insurance in Colorado.',
     intro: 'Every liability limit you carry has a ceiling. An umbrella sits above all of them and keeps going after they run out.',
     sections: [
-      {
-        h: 'Who it is actually for',
-        p: [
-          'The instinct is that umbrella coverage is for wealthy people. The more useful way to think about it is that it is for anyone with more to lose than their liability limit covers — and that includes future earnings, not just current assets.',
-          'A young professional with a long career ahead can be more exposed than someone with a paid-off house and no income left to garnish.'
-        ]
-      },
-      {
-        h: 'What tends to trigger it',
-        p: [
-          'A serious at-fault car accident is the common one. After that: a dog bite, a guest injured on your property, a teenage driver, a pool, a short-term rental. Anything that puts other people in contact with your household.'
-        ]
-      },
-      {
-        h: 'How it works with what you already have',
-        p: [
-          'An umbrella sits on top of your existing home and auto liability, which means those underlying policies usually have to carry certain limits before an umbrella will attach. Getting those right is part of the same conversation.'
-        ]
-      }
+      { h: 'Who it is actually for', p: [
+        'The instinct is that umbrella coverage is for wealthy people. The more useful way to think about it is that it is for anyone with more to lose than their liability limit covers — and that includes future earnings, not just current assets.',
+        'A young professional with a long career ahead can be more exposed than someone with a paid-off house and no income left to garnish.' ] },
+      { h: 'What tends to trigger it', p: [
+        'A serious at-fault car accident is the common one. After that: a dog bite, a guest injured on your property, a teenage driver, a pool, a short-term rental. Anything that puts other people in contact with your household.' ] },
+      { h: 'How it works with what you already have', p: [
+        'An umbrella sits on top of your existing home and auto liability, which means those underlying policies usually have to carry certain limits before an umbrella will attach. Getting those right is part of the same conversation.' ] }
     ],
     also: ['Personal umbrella liability', 'Coordinating underlying home and auto limits', 'Landlord and rental property exposure']
   },
@@ -210,26 +198,14 @@ const SPECIALTY = [
     h1: 'Renters and condo insurance in Colorado.',
     intro: 'The single most common misunderstanding in insurance: the building being insured has nothing to do with your things being insured.',
     sections: [
-      {
-        h: 'What the landlord policy actually covers',
-        p: [
-          'The structure. That is it. Your landlord insures the building because the building is theirs. Everything you moved in is yours to insure, and if it is destroyed the landlord policy does not replace it.',
-          'Renters coverage also carries liability, which is the part people never think about — if something starting in your unit damages the units around it, that is pointed at you.'
-        ]
-      },
-      {
-        h: 'Condo owners have a seam to watch',
-        p: [
-          'An HOA master policy covers the building to some defined point, and your HO-6 covers from that point inward. Exactly where that line falls is written in the HOA documents and it is not standard from one association to the next.',
-          'Reading the master policy before choosing your limits is the whole job. Guessing at that line is how people end up paying for drywall twice or not at all.'
-        ]
-      },
-      {
-        h: 'Loss assessment, the one nobody knows about',
-        p: [
-          'When an HOA has a loss bigger than its master policy covers, it can assess the owners for the difference. Loss assessment coverage on your HO-6 responds to that. It is inexpensive and most people have never heard of it.'
-        ]
-      }
+      { h: 'What the landlord policy actually covers', p: [
+        'The structure. That is it. Your landlord insures the building because the building is theirs. Everything you moved in is yours to insure, and if it is destroyed the landlord policy does not replace it.',
+        'Renters coverage also carries liability, which is the part people never think about — if something starting in your unit damages the units around it, that is pointed at you.' ] },
+      { h: 'Condo owners have a seam to watch', p: [
+        'An HOA master policy covers the building to some defined point, and your HO-6 covers from that point inward. Exactly where that line falls is written in the HOA documents and it is not standard from one association to the next.',
+        'Reading the master policy before choosing your limits is the whole job. Guessing at that line is how people end up paying for drywall twice or not at all.' ] },
+      { h: 'Loss assessment, the one nobody knows about', p: [
+        'When an HOA has a loss bigger than its master policy covers, it can assess the owners for the difference. Loss assessment coverage on your HO-6 responds to that. It is inexpensive and most people have never heard of it.' ] }
     ],
     also: ['Renters (HO-4)', 'Condo (HO-6)', 'Loss assessment coverage', 'Scheduled valuables']
   },
@@ -244,28 +220,85 @@ const SPECIALTY = [
     h1: 'Recreational insurance in Colorado.',
     intro: 'Colorado owns a lot of toys. Most of them spend nine months parked and three months in places where help is a long way off, and that combination is not what a standard policy is built for.',
     sections: [
-      {
-        h: 'Parked is not the same as safe',
-        p: [
-          'A stored RV or boat is still exposed to hail, theft, fire and the slow damage of sitting. Owners often assume a homeowners policy picks that up. Coverage for a vehicle stored on your property is narrower than most people expect, and often capped well below what the thing is worth.'
-        ]
-      },
-      {
-        h: 'The RV question is really two questions',
-        p: [
-          'A motor home is a vehicle and a residence at once, and coverage has to answer both. Liability while driving is one thing. What happens when you are living in it, or when your possessions inside it are stolen, is another.',
-          'Full-timers need something different again from someone who takes it out four weekends a year.'
-        ]
-      },
-      {
-        h: 'Where you use it matters',
-        p: [
-          'Boats and personal watercraft have navigational limits. Off-road vehicles have coverage that changes depending on whether you are on your own land, public trails, or a road. Worth knowing which side of those lines you spend your time on.'
-        ]
-      }
+      { h: 'Parked is not the same as safe', p: [
+        'A stored RV or boat is still exposed to hail, theft, fire and the slow damage of sitting. Owners often assume a homeowners policy picks that up. Coverage for a vehicle stored on your property is narrower than most people expect, and often capped well below what the thing is worth.' ] },
+      { h: 'The RV question is really two questions', p: [
+        'A motor home is a vehicle and a residence at once, and coverage has to answer both. Liability while driving is one thing. What happens when you are living in it, or when your possessions inside it are stolen, is another.',
+        'Full-timers need something different again from someone who takes it out four weekends a year.' ] },
+      { h: 'Where you use it matters', p: [
+        'Boats and personal watercraft have navigational limits. Off-road vehicles have coverage that changes depending on whether you are on your own land, public trails, or a road. Worth knowing which side of those lines you spend your time on.' ] }
     ],
     also: ['Boats and personal watercraft', 'ATVs, UTVs and off-road', 'RVs, motor homes and travel trailers', 'Motorcycles', 'Classic and collector vehicles']
+  },
+  {
+    slug: 'landlord-insurance',
+    id: 'landlord',
+    label: 'Landlord',
+    navLabel: 'Landlord & rental',
+    short: 'A rented-out property is a different risk from a lived-in one, and a homeowners policy is usually the wrong tool for it. Lost rent is the part owners forget until they need it.',
+    title: 'Landlord & Rental Property Insurance in Colorado — Poppell Insurance',
+    description: 'Landlord and rental dwelling insurance across Colorado. Lost rent, liability and tenant risk, explained by a Colorado Springs agent.',
+    h1: 'Landlord insurance in Colorado.',
+    intro: 'The moment a property stops being where you live and starts being where someone else lives, the coverage it needs changes — and a homeowners policy is not built for the difference.',
+    sections: [
+      { h: 'Lost rent is the piece owners forget', p: [
+        'If a fire or a burst pipe makes the property unlivable, the repairs are one problem and the months of missing rent are another. Fair rental value coverage responds to the second one, and it is the part most owners have never checked the limit on.' ] },
+      { h: 'Liability follows the property', p: [
+        'A tenant\u2019s guest falls on the steps. A dog bites someone in the yard. The claim comes at the owner, not the tenant, and the limits on a landlord policy are what stand between that and your other assets. This is where an umbrella earns its place.' ] },
+      { h: 'Tenants insure their own belongings, and often do not', p: [
+        'Your policy covers the building, not their furniture. Requiring renters coverage in the lease protects them and removes an argument later — and most tenants are surprised how little it costs.' ] }
+    ],
+    also: ['Rental dwelling policies', 'Fair rental value / lost rent', 'Landlord liability', 'Short-term rental exposure', 'Coordinating with an umbrella']
+  },
+  {
+    slug: 'flood-insurance',
+    id: 'flood',
+    label: 'Flood',
+    navLabel: 'Flood',
+    short: 'A homeowners policy does not cover flood. Not partially, not sometimes. It is a separate policy, and in Colorado the risk is burn scars and snowmelt as much as rivers.',
+    title: 'Flood Insurance in Colorado — Poppell Insurance Agency',
+    description: 'Flood insurance across Colorado. Why homeowners policies exclude it, and how burn scars change the risk. Colorado Springs based.',
+    h1: 'Flood insurance in Colorado.',
+    intro: 'Almost everyone assumes their homeowners policy covers flooding. It does not — flood is excluded from standard homeowners policies everywhere in the country, and it always has been.',
+    sections: [
+      { h: 'Colorado floods differently', p: [
+        'People picture rivers. Here it is more often burn scars and terrain. Ground stripped by wildfire cannot absorb water, so a storm that would have been nothing sends it downhill fast, sometimes into neighbourhoods miles from the fire and years afterwards.',
+        'Spring snowmelt on top of a hard rain does the same thing. Neither needs you to live near water.' ] },
+      { h: 'Being outside a flood zone is not the same as being safe', p: [
+        'Flood maps describe historical probability, not certainty, and they lag behind changes on the ground — including recent burn scars. A meaningful share of flood claims come from properties nobody considered at risk.' ] },
+      { h: 'There is usually a waiting period', p: [
+        'Flood policies generally do not take effect the day you buy them. Which means the time to look at it is a clear afternoon, not when there is a storm in the forecast.' ] }
+    ],
+    also: ['Residential flood coverage', 'Contents coverage', 'Burn scar and runoff exposure', 'Reviewing your flood zone']
+  },
+  {
+    slug: 'classic-car-insurance',
+    id: 'classic',
+    label: 'Classic & Collector',
+    navLabel: 'Classic & collector',
+    short: 'A standard auto policy values a car by depreciation, which is exactly backwards for something you have spent years making worth more.',
+    title: 'Classic & Collector Car Insurance in Colorado — Poppell Insurance',
+    description: 'Classic and collector vehicle insurance across Colorado. Agreed value, limited use and storage, from a Colorado Springs agent.',
+    h1: 'Classic and collector car insurance in Colorado.',
+    intro: 'A regular auto policy is built around depreciation. It assumes the car is worth less every year. For a vehicle you have spent a decade improving, that assumption is the whole problem.',
+    sections: [
+      { h: 'Agreed value versus actual cash value', p: [
+        'On a standard policy, a total loss pays what the insurer decides the car was worth on that day. On a collector policy you agree the value up front, in writing, and that is the number.',
+        'Establishing it usually means photographs, receipts and sometimes an appraisal. Worth doing once, properly.' ] },
+      { h: 'The trade is how you use it', p: [
+        'Collector policies cost less than standard ones largely because they come with limits — mileage caps, storage requirements, no daily commuting. If the car is a weekend and show-season car, that is a good trade. If it is your Tuesday driver, it is the wrong policy.' ] },
+      { h: 'Parts and restorations in progress', p: [
+        'A car mid-restoration is a moving target and the value changes as you go. So do the spare parts on the shelf. Both are worth naming rather than assuming.' ] }
+    ],
+    also: ['Agreed value coverage', 'Vehicles under restoration', 'Spare parts', 'Show and transport coverage']
   }
 ];
 
-module.exports = { COVERAGE, SPECIALTY };
+/* Written but NOT on the site yet. She ticked these in onboarding as
+   "Home Warranty Plans and Pet Insurance" under specialty notes. They are
+   different products from the rest of the list and neither is a Farmers
+   P&C line in the same way, so they need her confirmation on how they are
+   offered before they get a page. Listed here so they are not lost. */
+const PENDING = ['Home warranty plans', 'Pet insurance'];
+
+module.exports = { COVERAGE, SPECIALTY, PENDING };
