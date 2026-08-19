@@ -173,6 +173,33 @@ far more per message than a short one, which is why the turn cap and the
 | `ANTHROPIC_API_KEY` | Ally says she isn't connected and gives the phone number |
 | `SHEETS_WEBHOOK_URL` | Leads log to Vercel only — **a net, not a floor** |
 
+## Portraits
+
+All four on the site come from one pipeline: cut to transparency, then
+framed so the **head is 53% of the frame in every one**. Without that they
+do not read as a set — Jean was photographed further back than Charlene, and
+matching on bounding box rather than head size would have made her tiny.
+
+Two different cutting methods, on purpose:
+
+| | Method | Why |
+|---|---|---|
+| Charlene, Jean | `rembg` u2net_human_seg with alpha matting | Charlene's background is a working office — ceiling tiles, a doorway, a monitor. No colour key survives that. |
+| Alyssa | luminance key + de-fringe | Her source is 500px on flat studio grey. The model left a grey halo it could not resolve at that resolution; a colour key is better at exactly this. |
+
+Both paths then run a despeckle pass that drops small floating islands — a
+ceiling light behind someone's head comes through the matte as a blob that
+reads as a smudge.
+
+**The frame is sized to the tightest source.** A first attempt scaled off
+Charlene's roomy 2000px shot and left Alyssa floating in empty space, because
+her 500px original is cropped much closer. The multiplier is now derived from
+whichever source constrains hardest.
+
+Images ship pre-cropped to the arch aspect, so the CSS uses
+`object-position: 50% 0%` — top-aligned. Re-cropping in CSS would undo the
+head matching.
+
 ## Diagnosing a lead that never arrived
 
 `/api/lead` swallows delivery failures on purpose — a visitor must never see

@@ -563,7 +563,9 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
 .mate:hover .mate__name{ color:var(--clay); }
 .mate__arch img{
   width:100%; height:100%;
-  object-fit:cover; object-position:50% 26%;
+  /* Already cropped to the arch aspect with matched head scale — contain,
+     not cover, or the CSS re-crops them and the matching is lost. */
+  object-fit:cover; object-position:50% 0%;
   transform:scale(1);
   transform-origin:50% 30%;
   transition:transform .7s var(--ease-out);

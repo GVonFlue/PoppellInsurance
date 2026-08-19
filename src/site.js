@@ -51,15 +51,15 @@ const AGENT = {
 const TEAM = [
   { name: 'Alyssa Poppell', title: 'Owner', phone: '719-657-1212',
     tel: '+17196571212', email: 'apoppell@farmersagent.com',
-    portrait: '/assets/brand/alyssa-poppell.jpg' },
+    portrait: '/assets/brand/alyssa.webp' },
   // First names only — that is how she submitted them, and it matches how a
   // small agency actually answers the phone.
   { name: 'Charlene', title: 'Insurance Advisor', phone: '719-679-5050',
     tel: '+17196795050', email: 'Charlene.apoppell@farmersagent.com',
-    portrait: '/assets/brand/charlene.jpg' },
+    portrait: '/assets/brand/charlene.webp' },
   { name: 'Jean', title: 'Client Care Specialist', phone: '719-657-1201',
     tel: '+17196571201', email: 'Jean.apoppell@farmersagent.com',
-    portrait: '/assets/brand/jean.jpg' }
+    portrait: '/assets/brand/jean.webp' }
 ];
 
 /* Social — from onboarding. */
