@@ -196,9 +196,22 @@ Charlene's roomy 2000px shot and left Alyssa floating in empty space, because
 her 500px original is cropped much closer. The multiplier is now derived from
 whichever source constrains hardest.
 
-Images ship pre-cropped to the arch aspect, so the CSS uses
-`object-position: 50% 0%` — top-aligned. Re-cropping in CSS would undo the
-head matching.
+Images ship pre-cropped to the arch aspect, and **the arch aspect must never
+change**. Short-viewport rules originally reshaped the box to 1:1 and 1:0.86
+to save height; with a fixed 1:1.14 image, `object-fit: cover` then trimmed
+the difference off the bottom — which landed on their chins. Those rules now
+scale the arch down via `max-width` and leave the shape alone. Verified: box
+and image aspect agree to three decimals at every breakpoint, so cover has
+nothing to crop.
+
+## A specificity trap worth knowing
+
+Anything that carries `.reveal` **and** transforms on hover will silently
+lose. `.reveal.is-in{transform:none}` is two classes, so it ties with
+`.spec__item:hover` and wins on source order — the specialty tiles' hover was
+computing to `none` and doing nothing at all. Fixed with a three-class
+selector rather than by moving rules around, which would break again the next
+time the file is reordered. Same failure mode as the sticky panels earlier.
 
 ## Diagnosing a lead that never arrived
 

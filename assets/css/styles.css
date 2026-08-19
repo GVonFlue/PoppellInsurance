@@ -512,24 +512,44 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
 .eyebrow--inv .star{ color:var(--clay-light); }
 .h2--inv{ color:var(--paper); margin-bottom:clamp(2.5rem,5vw,3.5rem); }
 
+/* Six tiles, 3 x 2. auto-fit gave 5 + 1 orphan at desktop, and an orphan in
+   a gap-and-background grid renders as a visible empty block. Explicit
+   columns, and the gap is real space so each tile can lift independently
+   without tearing a shared hairline. */
 .spec{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:1px;
-  background:rgba(245,241,236,.2);
-  border-block:1px solid rgba(245,241,236,.2);
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(.7rem,1.4vw,1.1rem);
+  perspective:1000px;
 }
 .spec__item{
-  background:var(--sage-deep);
-  padding:2rem 1.6rem 2.2rem;
-  transition:background .45s var(--ease);
+  background:rgba(245,241,236,.055);
+  border:1px solid rgba(245,241,236,.16);
+  border-radius:14px;
+  padding:1.7rem 1.5rem 1.5rem;
+  transform:translateZ(0);
+  transition:transform .42s var(--ease-out),
+             background .42s var(--ease),
+             border-color .42s var(--ease),
+             box-shadow .42s var(--ease-out);
 }
-.spec__item:hover{ background:#454C40; }
+/* Pops off the page: lifts, grows a touch, and drops a real shadow onto the
+   band behind it. */
+.spec__item:hover,
+.spec__item:focus-visible{
+  transform:translateY(-10px) scale(1.025);
+  background:rgba(245,241,236,.11);
+  border-color:var(--clay-light);
+  box-shadow:0 26px 44px -20px rgba(0,0,0,.55);
+}
+.spec__item:active{ transform:translateY(-4px) scale(1.01); }
 .spec__label{
   font-family:var(--disp); font-weight:600;
-  font-size:1.45rem; letter-spacing:.01em;
-  margin:0 0 .9rem; color:var(--paper);
+  font-size:1.4rem; letter-spacing:.01em;
+  margin:0 0 .8rem; color:var(--paper);
+  transition:color .42s var(--ease);
 }
+.spec__item:hover .spec__label{ color:var(--blush); }
 .spec__body{ margin:0; font-size:.95rem; color:rgba(245,241,236,.78); }
 
 /* ─────────────────────────────────────────────────── TEAM
@@ -563,9 +583,9 @@ a.svc__item:hover .svc__label{ color:var(--clay); }
 .mate:hover .mate__name{ color:var(--clay); }
 .mate__arch img{
   width:100%; height:100%;
-  /* Already cropped to the arch aspect with matched head scale — contain,
-     not cover, or the CSS re-crops them and the matching is lost. */
-  object-fit:cover; object-position:50% 0%;
+  /* Cut to exactly this box's aspect with matched head scale, so cover has
+     nothing to crop. Do not change the box aspect anywhere — see below. */
+  object-fit:cover; object-position:50% 50%;
   transform:scale(1);
   transform-origin:50% 30%;
   transition:transform .7s var(--ease-out);
@@ -869,6 +889,7 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
 /* ─────────────────────────────────────────────────── RESPONSIVE */
 
 @media (max-width:900px){
+  .spec{ grid-template-columns:repeat(2,1fr); }
   .svc__grid{ grid-template-columns:repeat(2,1fr); }
   .crew{ grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1.5rem; }
 }
@@ -876,8 +897,10 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
 /* One card per row on phones, but cap the arch so three people don't turn
    into three screens of scrolling. */
 @media (max-width:620px){
+  .spec{ grid-template-columns:1fr; }
   .svc__grid{ grid-template-columns:1fr; }
   .mate__arch{ max-width:228px; margin-inline:auto; margin-bottom:1rem; }
+  .mate__arch{ aspect-ratio:1/1.14; }
 }
 
 @media (max-width:980px){
@@ -943,6 +966,7 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
   .signature span{ clip-path:none; }
   .marquee__track{ animation:none; }
   .sky__glow, .bird-g, .bird-flap, .mote, .hero__sway{ animation:none; }
+  .spec__item:hover{ transform:none; box-shadow:none; }
   .hero__sway{ transform:none; }
   .mote{ opacity:0; }
   .hero__sky, .hero__motes{ transform:none !important; }
@@ -1291,10 +1315,11 @@ a.row{ text-decoration:none; color:inherit; }
 a.row:hover .row__go{ opacity:1; transform:translateY(-50%) translateX(-4px); }
 a.spec__item{ text-decoration:none; color:inherit; position:relative; display:block; }
 .spec__go{
-  display:inline-block; margin-top:1rem; color:var(--clay-light);
-  transition:transform .4s var(--ease-out);
+  display:inline-block; margin-top:1.1rem; color:var(--clay-light);
+  transition:transform .42s var(--ease-out), opacity .42s var(--ease);
+  opacity:.65;
 }
-a.spec__item:hover .spec__go{ transform:translateX(5px); }
+a.spec__item:hover .spec__go{ transform:translateX(7px); opacity:1; }
 
 .ftr__meta a{ color:var(--blush); text-decoration:none; }
 .ftr__meta a:hover{ color:var(--paper); }
@@ -1354,15 +1379,19 @@ a.spec__item:hover .spec__go{ transform:translateX(5px); }
 
   /* Team arches were 390px tall before a single line of text. */
   .crew{ gap:clamp(1.25rem,3vw,2.25rem); }
-  .mate__arch{ aspect-ratio:1/1; margin-bottom:.85rem; }
+  /* Scale the arch DOWN, never reshape it. The portraits are cut to
+     1:1.14; changing the box aspect makes object-fit:cover crop the
+     difference off the bottom, which lands on their chins. */
+  .mate__arch{ max-width:230px; margin:0 auto .85rem; }
   .mate__name{ font-size:1.15rem; }
   .mate__title{ margin-bottom:.65rem; }
   .mate__tel{ font-size:1.15rem; }
   .mate__mail{ font-size:.72rem; margin-top:.5rem; }
 
   .band{ padding:clamp(2.5rem,5vh,4rem) 0; margin-top:clamp(2.5rem,5vh,4.5rem); }
-  .spec__item{ padding:1.4rem 1.3rem 1.6rem; }
-  .spec__body{ font-size:.9rem; }
+  .spec__item{ padding:1.35rem 1.25rem 1.3rem; }
+  .spec__body{ font-size:.89rem; }
+  .spec__label{ font-size:1.25rem; margin-bottom:.6rem; }
 
   .arch{ max-width:290px; }
   .creed li{ padding:1.1rem 1.4rem 1.1rem 2.4rem; font-size:1rem; }
@@ -1379,7 +1408,7 @@ a.spec__item:hover .spec__go{ transform:translateX(5px); }
   .ally__stage{ --her:38%; }
   .ally__log{ min-height:130px; max-height:30vh; }
   .ally__pts li{ font-size:.86rem; padding:.35rem 0 .35rem 1.6rem; }
-  .mate__arch{ aspect-ratio:1/.86; margin-bottom:.7rem; }
+  .mate__arch{ max-width:196px; margin:0 auto .7rem; }
   .crew{ grid-template-columns:repeat(3,1fr); }
   .mate__name{ font-size:1.08rem; }
   .mate__tel{ font-size:1.08rem; }
@@ -1399,3 +1428,23 @@ a.spec__item:hover .spec__go{ transform:translateX(5px); }
 .ftr__social{ margin-top:.5rem !important; }
 .ftr__social a{ color:var(--blush); text-decoration:none; }
 .ftr__social a:hover{ color:var(--paper); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SPEC TILE HOVER — specificity fix
+   The tiles carry .reveal, and `.reveal.is-in{transform:none}` is two
+   classes, so it ties with `.spec__item:hover` and wins on source order.
+   The hover was computing to `none` and doing nothing at all. Three classes
+   settles it outright rather than relying on where in the file this sits.
+   ═══════════════════════════════════════════════════════════════════════ */
+.spec .spec__item.is-in:hover,
+.spec .spec__item.is-in:focus-visible{
+  transform:translateY(-10px) scale(1.025);
+  background:rgba(245,241,236,.11);
+  border-color:var(--clay-light);
+  box-shadow:0 26px 44px -20px rgba(0,0,0,.55);
+}
+.spec .spec__item.is-in:active{ transform:translateY(-4px) scale(1.01); }
+
+@media (prefers-reduced-motion:reduce){
+  .spec .spec__item.is-in:hover{ transform:none; box-shadow:none; }
+}
