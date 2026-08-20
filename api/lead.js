@@ -82,10 +82,11 @@ module.exports = async function handler(req, res) {
   // them to change tactics.
   if (limited(req)) { return res.status(200).json({ ok: true, delivered: false }); }
 
-  let lead;
+  let lead, formType = 'chat';
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     lead = body && body.lead;
+    if (body && body.formType === 'quote') { formType = 'quote'; }
   } catch (e) { lead = null; }
   if (!lead || !lead.name) { return res.status(400).json({ ok: false }); }
 
@@ -98,7 +99,16 @@ module.exports = async function handler(req, res) {
     interest:  String(lead.interest || '').slice(0, 80),
     notes:     String(lead.notes || '').slice(0, 600),
     summary:   String(lead.summary || '').slice(0, 1500),
-    page:      String(lead.page || '/').slice(0, 200)
+    page:      String(lead.page || '/').slice(0, 200),
+    formType:  formType,
+    // Free-form extras from the quote form. Capped so a crafted request
+    // cannot post a novel into her spreadsheet.
+    fields:    lead.fields && typeof lead.fields === 'object'
+                 ? Object.keys(lead.fields).slice(0, 40).reduce(function (o, k) {
+                     o[String(k).slice(0, 40)] = String(lead.fields[k] || '').slice(0, 1200);
+                     return o;
+                   }, {})
+                 : null
   };
 
   const url = process.env.SHEETS_WEBHOOK_URL;

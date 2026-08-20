@@ -17,8 +17,9 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const { AGENT, TEAM, SOCIAL, ABOUT, IDEAL, BOT } = require('../src/site.js');
 const { COVERAGE, SPECIALTY } = require('../src/content.js');
-const { head, header, footer, contact, V } = require('../src/partials/shell.js');
+const { head, header, footer, contact, frontRange, V } = require('../src/partials/shell.js');
 const { ally } = require('../src/partials/ally.js');
+const { quoteForm } = require('../src/partials/quote.js');
 
 const ALL = COVERAGE.concat(SPECIALTY);
 
@@ -280,7 +281,7 @@ ${ridge()}
         sequence, no one else calling you afterward.
       </p>
       <p class="howmeet reveal" data-d="2"><span class="star">&#10022;</span> In person, by phone, or on video — your call.</p>
-      <div class="formwrap reveal" data-d="3" data-jotform></div>
+${quoteForm()}
     </div>
   </section>
 
@@ -354,6 +355,7 @@ function servicePage(c) {
   ]);
   const body = `
   <section class="lede-sec">
+${frontRange()}
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
@@ -416,6 +418,7 @@ ${contact()}`;
 function coverageIndex() {
   const body = `
   <section class="lede-sec">
+${frontRange()}
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
@@ -459,6 +462,7 @@ ${contact()}`;
 function teamPage() {
   const body = `
   <section class="lede-sec">
+${frontRange()}
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
@@ -493,6 +497,7 @@ ${contact()}`;
 function aboutPage() {
   const body = `
   <section class="lede-sec">
+${frontRange()}
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
@@ -549,6 +554,7 @@ ${contact()}`;
 function contactPage() {
   const body = `
   <section class="lede-sec">
+${frontRange()}
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
@@ -570,7 +576,7 @@ ${ridge()}
     <div class="wrap wrap--narrow">
       <p class="eyebrow reveal"><span class="star">&#10022;</span> Start here</p>
       <h2 class="h2 reveal" data-d="1">Tell us what you need covered.</h2>
-      <div class="formwrap reveal" data-d="2" data-jotform></div>
+${quoteForm()}
     </div>
   </section>
 

@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Jost:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/assets/css/styles.css?v=10">
+<link rel="stylesheet" href="/assets/css/styles.css?v=24">
 <script type="application/ld+json" id="ld-business">
 {
   "@context": "https://schema.org",
@@ -500,7 +500,96 @@
         sequence, no one else calling you afterward.
       </p>
       <p class="howmeet reveal" data-d="2"><span class="star">&#10022;</span> In person, by phone, or on video — your call.</p>
-      <div class="formwrap reveal" data-d="3" data-jotform></div>
+      <form class="qf" data-quote novalidate>
+        <div class="qf__grid">
+      <div class="qf__f qf__f--half">
+        <label class="qf__lab" for="q_firstName">First name <span class="req">*</span></label>
+        <input type="text" id="q_firstName" name="firstName" data-key="firstName" data-req autocomplete="given-name">
+        <p class="qf__err">We need this one.</p>
+      </div>
+      <div class="qf__f qf__f--half">
+        <label class="qf__lab" for="q_lastName">Last name <span class="req">*</span></label>
+        <input type="text" id="q_lastName" name="lastName" data-key="lastName" data-req autocomplete="family-name">
+        <p class="qf__err">We need this one.</p>
+      </div>
+      <div class="qf__f qf__f--half">
+        <label class="qf__lab" for="q_phone">Phone <span class="req">*</span></label>
+        <input type="tel" id="q_phone" name="phone" data-key="phone" data-req autocomplete="tel">
+        <p class="qf__err">We need this one.</p>
+      </div>
+      <div class="qf__f qf__f--half">
+        <label class="qf__lab" for="q_email">Email <span class="req">*</span></label>
+        <input type="email" id="q_email" name="email" data-key="email" data-req autocomplete="email">
+        <p class="qf__err">We need this one.</p>
+      </div>
+      <div class="qf__f qf__f--half">
+        <label class="qf__lab" for="q_zip">ZIP code <span class="req">*</span></label><span class="qf__help">So we know which of your rules apply — rates and coverage vary by county.</span>
+        <input type="text" id="q_zip" name="zip" data-key="zip" data-req autocomplete="postal-code">
+        <p class="qf__err">We need this one.</p>
+      </div>
+      <div class="qf__f qf__f--half">
+        <label class="qf__lab" for="q_currentCarrier">Who are you with now?</label><span class="qf__help">Optional. Helps us see what you already have.</span>
+        <input type="text" id="q_currentCarrier" name="currentCarrier" data-key="currentCarrier">
+        <p class="qf__err">We need this one.</p>
+      </div>
+      <fieldset class="qf__f" data-group="coverage" data-req>
+        <legend class="qf__lab">What do you need covered? <span class="req">*</span></legend>
+        
+        <div class="qf__checks">
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Home"><span>Home</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Auto"><span>Auto</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Life"><span>Life</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Business"><span>Business</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Umbrella"><span>Umbrella</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Condo or renters"><span>Condo or renters</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Recreational (boat, ATV, RV, motorcycle)"><span>Recreational (boat, ATV, RV, motorcycle)</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Landlord / rental"><span>Landlord / rental</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Flood"><span>Flood</span></label>
+          <label class="qf__opt"><input type="checkbox" name="coverage" value="Something else"><span>Something else</span></label>
+        </div>
+        <p class="qf__err">Pick at least one so we know where to start.</p>
+      </fieldset>
+      <div class="qf__f">
+        <label class="qf__lab" for="q_bestTime">Best time to reach you</label>
+        <select id="q_bestTime" name="bestTime" data-key="bestTime">
+          <option value="Anytime">Anytime</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Evening">Evening</option>
+        </select>
+      </div>
+      <div class="qf__f">
+        <label class="qf__lab" for="q_notes">Anything we should know?</label><span class="qf__help">A renewal date, a claim you are dealing with, a deadline — whatever matters.</span>
+        <textarea id="q_notes" name="notes" data-key="notes" rows="4"></textarea>
+        <p class="qf__err">We need this one.</p>
+      </div>
+        </div>
+
+        <!-- Consent is required and unchecked by default. A pre-ticked box is
+             not consent, and this is the record that we were permitted to
+             call. The submitted value and its exact wording are both written
+             to the sheet, because "they agreed" is worth nothing without
+             what they agreed to. -->
+        <label class="qf__consent" data-consent-wrap>
+          <input type="checkbox" id="q_consent" data-consent required>
+          <span>I agree to be contacted by Poppell Agency LLC regarding my insurance inquiry.</span>
+        </label>
+        <p class="qf__err qf__err--consent">Please tick this so we know we may contact you.</p>
+
+        <div class="qf__foot">
+          <button class="btn btn--solid" type="submit" data-quote-send>Send it over</button>
+          <span class="qf__note">Or call <a href="tel:+17195639712">719-563-9712</a>.</span>
+        </div>
+
+        <p class="qf__status" data-quote-status role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="qf__done" data-quote-done hidden>
+        <div class="qf__tick">✓</div>
+        <h3>Got it.</h3>
+        <p>Someone from the office will be in touch. If you would rather not
+        wait, call <a href="tel:+17195639712">719-563-9712</a>.</p>
+      </div>
     </div>
   </section>
 
@@ -602,8 +691,9 @@
   </div>
 </footer>
 
-<script src="/assets/js/config.js?v=10"></script>
-<script src="/assets/js/main.js?v=10"></script>
-<script src="/assets/js/ally.js?v=10"></script>
+<script src="/assets/js/config.js?v=24"></script>
+<script src="/assets/js/main.js?v=24"></script>
+<script src="/assets/js/ally.js?v=24"></script>
+<script src="/assets/js/quote.js?v=24"></script>
 </body>
 </html>

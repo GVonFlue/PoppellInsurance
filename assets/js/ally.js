@@ -12,6 +12,7 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
   var PHONE = '719-563-9712', TEL = '+17195639712';
+  var CONSENT = 'I agree to be contacted by Poppell Agency LLC regarding my insurance inquiry.';
   var GREETING = "Hi — I'm Ally. Ask me about home, auto, life, business or umbrella coverage and I'll give you a straight answer. If you'd rather talk to a person, say so and I'll take your details so someone can reach out.";
   var CHIPS = [
     'What does umbrella insurance actually do?',
@@ -47,7 +48,18 @@
     { key: 'name',  ask: "Great — what's your first name?",
       ok: function (v) { return v.length > 1 && v.length < 60; },
       no: "Sorry, I didn't catch that — what should I call you?" },
-    { key: 'phone', ask: function (d) { return 'Thanks ' + d.name + '. Best number to reach you on?'; },
+    /* Consent is asked BEFORE the number, not after. Collecting a phone
+       number and then asking whether we may call it has the order backwards
+       — by then we already have it. Answering anything but yes ends the
+       capture and hands over the office number instead. */
+    { key: 'consent',
+      ask: function (d) {
+        return 'Before I take your number, ' + d.name + ' — ' + CONSENT +
+               '\nReply YES if that\'s okay.';
+      },
+      ok: function (v) { return /^(y|yes|yeah|yep|sure|ok|okay|agree|i agree|correct)\b/i.test(v.trim()); },
+      no: null },
+    { key: 'phone', ask: 'Thanks. Best number to reach you on?',
       ok: function (v) { return (v.replace(/\D/g, '').length >= 10); },
       no: "That doesn't look like a full number — could you give me all ten digits?" },
     { key: 'email', ask: 'And an email? Type skip if you\'d rather not.',
@@ -103,6 +115,18 @@
     }
     function captureNext(text) {
       var st = STEPS[cap.step];
+
+      // A declined consent is not a validation error to retry — it is an
+      // answer. Stop asking, drop what was collected, offer the phone.
+      if (st.key === 'consent' && !st.ok(text)) {
+        cap = null;
+        input.placeholder = 'Ask about coverage…';
+        say("No problem — I won't pass anything along. You can reach the office " +
+            "directly on " + PHONE + " whenever suits you.");
+        drawChips(['What does umbrella insurance actually do?', 'What are your hours?']);
+        return;
+      }
+
       if (!st.ok(text)) { say(st.no); return; }
       cap.data[st.key] = /^skip$/i.test(text) ? '' : text;
       cap.step++;
@@ -130,7 +154,11 @@
           name: d.name, phone: d.phone, email: d.email,
           interest: d.interest, notes: d.notes,
           source: 'Poppell — Ally chat',
-          summary: summary, page: location.pathname
+          summary: summary, page: location.pathname,
+          // The wording they agreed to, kept with the answer. "They
+          // consented" is worth nothing later without what to.
+          fields: { consent: 'Yes', consentText: CONSENT,
+                    consentAt: new Date().toISOString(), consentReply: d.consent || '' }
         } })
       }).then(function (r) { return r.json(); })
         .then(function (j) {

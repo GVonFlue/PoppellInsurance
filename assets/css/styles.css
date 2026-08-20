@@ -1250,7 +1250,7 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
    INTERIOR PAGES
    ═══════════════════════════════════════════════════════════════════════ */
 
-.lede-sec{ padding:clamp(7rem,12vw,10rem) 0 clamp(2rem,4vw,3rem); }
+.lede-sec{ padding:clamp(7rem,12vw,10rem) 0 clamp(7rem,11vw,9.5rem); }
 .crumbs{
   font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
   color:var(--sage); margin-bottom:1.4rem;
@@ -1447,4 +1447,153 @@ a.spec__item:hover .spec__go{ transform:translateX(7px); opacity:1; }
 
 @media (prefers-reduced-motion:reduce){
   .spec .spec__item.is-in:hover{ transform:none; box-shadow:none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FRONT RANGE — interior page headers
+   Drawn, not photographed. A stock Pikes Peak shot would sit badly against
+   hand-illustrated brand artwork, and this shares the ridgeline's line
+   language so the whole site reads as one hand.
+   ═══════════════════════════════════════════════════════════════════════ */
+.lede-sec{ position:relative; overflow:hidden; }
+.lede-sec > .wrap{ position:relative; z-index:1; }
+
+.frontrange{
+  position:absolute; inset:auto 0 0 0; z-index:0;
+  height:clamp(120px,15vw,190px);
+  pointer-events:none;
+  /* Gone well before it reaches the copy. A backdrop that crosses a headline
+     stops being a backdrop and starts being noise. */
+  -webkit-mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.5) 38%, #000 72%);
+          mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.5) 38%, #000 72%);
+}
+.frontrange svg{ width:100%; height:100%; display:block; }
+.frontrange path, .frontrange line{
+  fill:none; stroke-linecap:round; stroke-linejoin:round;
+}
+.fr__far { stroke:var(--sage-soft); stroke-width:1.1; opacity:.38; }
+.fr__near{ stroke:var(--sage);      stroke-width:1.4; opacity:.6; }
+.fr__fin { stroke:var(--clay);      stroke-width:1.3; opacity:.45; }
+.fr__pine{ stroke:var(--sage-soft); stroke-width:1.1; opacity:.5; }
+.fr__base{ stroke:var(--hair);      stroke-width:1;   opacity:.9; }
+
+/* Draws itself once on load, same gesture as the ridgeline divider. */
+.frontrange path{ stroke-dasharray:2600; stroke-dashoffset:2600;
+  animation:frDraw 2.4s var(--ease-out) forwards; }
+.fr__near{ animation-delay:.18s; }
+.fr__fin { animation-delay:.5s; }
+.fr__pine{ animation-delay:.85s; animation-duration:1.2s; }
+@keyframes frDraw{ to{ stroke-dashoffset:0; } }
+.frontrange line{ transform:scaleX(0); transform-origin:center;
+  animation:frRule 1.4s .1s var(--ease-out) forwards; }
+@keyframes frRule{ to{ transform:scaleX(1); } }
+
+@media (prefers-reduced-motion:reduce){
+  .frontrange path{ stroke-dashoffset:0; animation:none; }
+  .frontrange line{ transform:none; animation:none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SPECIALTY — alternating tiles
+   Cream on positions 2, 4 and 6 so the grid reads as a checkerboard:
+   top-middle, bottom-left, bottom-right.
+
+   The pattern has to be redeclared per column count. At three columns
+   `:nth-child(even)` gives exactly 2,4,6. At two columns the same selector
+   would light up the entire right-hand column instead of alternating, so
+   two columns needs 4n+2 and 4n+3.
+   ═══════════════════════════════════════════════════════════════════════ */
+.spec .spec__item.alt{
+  background:var(--paper-lift);
+  border-color:var(--hair);
+}
+.spec .spec__item.alt .spec__label{ color:var(--ink); }
+.spec .spec__item.alt .spec__body { color:var(--sage-deep); }
+.spec .spec__item.alt .spec__go   { color:var(--clay); }
+
+.spec .spec__item.alt.is-in:hover,
+.spec .spec__item.alt.is-in:focus-visible{
+  background:#fff;
+  border-color:var(--clay);
+  box-shadow:0 26px 44px -20px rgba(0,0,0,.42);
+}
+.spec .spec__item.alt.is-in:hover .spec__label{ color:var(--clay); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   QUOTE FORM
+   ═══════════════════════════════════════════════════════════════════════ */
+.qf{ margin-top:clamp(1.5rem,3vw,2.25rem); }
+.qf__grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.1rem 1.25rem; }
+.qf__f{ display:flex; flex-direction:column; grid-column:1/-1; border:0; padding:0; margin:0; }
+.qf__f--half{ grid-column:auto; }
+
+.qf__lab{
+  font-family:var(--disp); font-weight:600; font-size:.95rem;
+  margin:0 0 .3rem; padding:0; color:var(--ink);
+}
+.req{ color:var(--clay); }
+.qf__help{ color:var(--sage); font-size:.84rem; margin:0 0 .45rem; line-height:1.5; }
+
+.qf input[type=text],.qf input[type=tel],.qf input[type=email],
+.qf select,.qf textarea{
+  width:100%; font:inherit; font-size:.96rem; color:var(--ink);
+  padding:.72rem .9rem; min-height:48px;
+  border:1px solid var(--hair); border-radius:10px; background:var(--paper-lift);
+  transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.qf textarea{ min-height:104px; resize:vertical; line-height:1.6; }
+.qf input:focus,.qf select:focus,.qf textarea:focus{
+  border-color:var(--clay); box-shadow:0 0 0 3px rgba(169,123,82,.14); outline:none;
+}
+
+.qf__checks{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.45rem; }
+.qf__opt{
+  display:flex; align-items:center; gap:.6rem; cursor:pointer;
+  padding:.6rem .8rem; border:1px solid var(--hair); border-radius:10px;
+  background:var(--paper-lift); font-size:.9rem;
+  transition:border-color .2s var(--ease), background .2s var(--ease);
+}
+.qf__opt:hover{ border-color:var(--clay); }
+.qf__opt input{ accent-color:var(--clay); width:17px; height:17px; flex:0 0 auto; }
+.qf__opt:has(input:checked){ border-color:var(--clay); background:#fff; }
+
+.qf__err{
+  display:none; margin:.35rem 0 0; font-size:.83rem; color:var(--clay);
+}
+.is-bad .qf__err{ display:block; }
+.is-bad input,.is-bad textarea,.is-bad select{ border-color:var(--clay); }
+.qf__err--consent{ margin:.2rem 0 0; }
+.qf__err--consent.is-on{ display:block; }
+
+/* Consent — visually weighted, never pre-ticked. */
+.qf__consent{
+  display:flex; gap:.8rem; align-items:flex-start; cursor:pointer;
+  margin:1.4rem 0 0; padding:.95rem 1.1rem;
+  border:1px solid var(--hair); border-left:3px solid var(--clay);
+  border-radius:0 10px 10px 0; background:var(--paper-lift);
+  font-size:.9rem; line-height:1.55; color:var(--sage-deep);
+}
+.qf__consent input{ accent-color:var(--clay); width:19px; height:19px; margin-top:.1rem; flex:0 0 auto; }
+.qf__consent.is-bad{ border-color:var(--clay); background:#FBF3EC; }
+
+.qf__foot{ display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap; margin-top:1.5rem; }
+.qf__note{ font-size:.88rem; color:var(--sage); }
+.qf__note a{ color:var(--clay); }
+.qf__status{ margin:.9rem 0 0; font-size:.9rem; }
+.qf__status.is-bad{ color:var(--clay); }
+.qf__status a{ color:var(--clay); }
+
+.qf__done{ text-align:center; padding:2.5rem 1rem; }
+.qf__tick{
+  width:58px; height:58px; border-radius:50%; background:var(--sage);
+  color:var(--paper); display:grid; place-items:center;
+  margin:0 auto 1rem; font-size:1.6rem;
+}
+.qf__done h3{ font-family:var(--disp); font-weight:600; font-size:1.6rem; margin:0 0 .5rem; }
+.qf__done p{ color:var(--sage-deep); max-width:44ch; margin:0 auto; }
+.qf__done a{ color:var(--clay); }
+
+@media (max-width:640px){
+  .qf__grid{ grid-template-columns:1fr; }
+  .qf__f--half{ grid-column:1/-1; }
 }

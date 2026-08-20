@@ -204,6 +204,29 @@ scale the arch down via `max-width` and leave the shape alone. Verified: box
 and image aspect agree to three decimals at every breakpoint, so cover has
 nothing to crop.
 
+## The Front Range backdrop
+
+Interior page headers carry a drawn Pikes Peak with Garden of the Gods fins
+in front — the two things that actually say Colorado Springs. **Authored, not
+sourced.** A photograph would fight her hand-illustrated identity and carry
+licensing baggage; this shares the ridgeline divider's line language so the
+whole site reads as one hand. It draws itself on load and is off under
+`prefers-reduced-motion`.
+
+A first pass ran too tall and the peaks crossed the headline. A backdrop that
+cuts through type stops being a backdrop. It is now flattened, dropped, and
+masked out well above the copy, with the section given real padding below so
+the range has its own space.
+
+## Specialty checkerboard
+
+Cream on the diagonal — top-middle plus both bottom outsides at three
+columns. The `alt` class is assigned in JS from the grid's **real** computed
+column count, not hard-coded, because the pattern differs per layout: at
+three columns `nth-child(even)` happens to give 2/4/6, but at two columns the
+same rule lights the entire right-hand column instead of alternating. CSS
+cannot see how many columns a grid resolved to; the script can.
+
 ## A specificity trap worth knowing
 
 Anything that carries `.reveal` **and** transforms on hover will silently
@@ -212,6 +235,36 @@ lose. `.reveal.is-in{transform:none}` is two classes, so it ties with
 computing to `none` and doing nothing at all. Fixed with a three-class
 selector rather than by moving rules around, which would break again the next
 time the file is reordered. Same failure mode as the sticky panels earlier.
+
+## Quote form
+
+Built into the site — the Jotform embed is gone. A third-party iframe that
+could fail to load, could not be styled, and delivered leads somewhere else
+was the weakest thing on the page.
+
+Fields live in a config array in `src/partials/quote.js`. Add, remove or
+reorder there and the markup, the validation and the sheet column all follow.
+`key` becomes the column name, so **append rather than rename** once the sheet
+has data in it.
+
+Posts to `/api/lead` with `formType: 'quote'`, which routes it to the
+**Quote Requests** tab rather than mixing it with chat leads.
+
+### Consent
+
+`I agree to be contacted by Poppell Agency LLC regarding my insurance inquiry.`
+
+- **Never pre-ticked.** A pre-ticked box is not consent.
+- Submit is blocked without it, on the same footing as a missing phone number.
+- The **exact wording shown on screen** is stored alongside the answer, with a
+  timestamp. "They consented" is worth nothing a year later without a record
+  of what they consented to — so if that sentence ever changes, old rows still
+  carry the sentence they actually saw.
+
+**Ally asks before taking the number, not after.** Collecting a phone number
+and then asking whether you may call it has the order backwards. Declining is
+treated as an answer rather than a validation error: the capture stops, nothing
+is sent, and she hands over the office number instead. Both paths are tested.
 
 ## Diagnosing a lead that never arrived
 

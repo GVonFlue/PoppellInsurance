@@ -10,7 +10,6 @@
      1b. Customer actions  — payment/claims link-outs, with safe fallbacks
      1c. Reviews           — off until switched on in config
      2. Domain injection   — url/@id into JSON-LD, absolute OG URLs
-     3. Jotform embed
      4. Signature artwork  — ridgeline, arch sun, coverage icons
      5. Motion             — split headline, marquee, reveals, parallax
    ==========================================================================*/
@@ -92,6 +91,28 @@
     }
   });
 
+  /* ══════════════════════════════════════════ 1b2. SPECIALTY CHECKERBOARD
+     Read the real column count off the grid rather than assuming three —
+     the alternating pattern is different at two columns, and a CSS-only
+     nth-child rule cannot know how many columns the grid resolved to. */
+  var specGrid = $('.spec');
+  function paintAlt() {
+    if (!specGrid) { return; }
+    var cols = getComputedStyle(specGrid).gridTemplateColumns.split(' ').filter(Boolean).length;
+    $$('.spec__item', specGrid).forEach(function (el, i) {
+      var row = Math.floor(i / cols), col = i % cols;
+      // checkerboard: flip on every step in either direction
+      el.classList.toggle('alt', (row + col) % 2 === 1);
+    });
+  }
+  paintAlt();
+  if (window.matchMedia) {
+    ['(max-width:900px)', '(max-width:620px)'].forEach(function (q) {
+      var mq = window.matchMedia(q);
+      if (mq.addEventListener) { mq.addEventListener('change', paintAlt); }
+    });
+  }
+
   /* ══════════════════════════════════════════ 1c. REVIEWS
      Renders nothing at all unless switched on in config and populated. */
 
@@ -152,67 +173,6 @@
     ogUrl.setAttribute('property', 'og:url');
     ogUrl.setAttribute('content', origin + '/');
     document.head.appendChild(ogUrl);
-  }
-
-  /* ══════════════════════════════════════════ 3. JOTFORM */
-
-  var jf = $('[data-jotform]');
-  if (jf) {
-    if (S.jotformUrl) {
-      jf.classList.add('is-loading');
-      jf.innerHTML =
-        '<p class="formwrap__wait">Loading the quote form\u2026</p>' +
-        '<iframe title="Request an insurance quote" src="' + S.jotformUrl +
-        '" height="760" scrolling="no" allow="geolocation; microphone; camera"></iframe>' +
-        '<p class="formwrap__alt">Trouble with the form? ' +
-        '<a href="' + S.jotformUrl + '" target="_blank" rel="noopener">Open it in a new tab</a>' +
-        ' or call <a href="tel:+17195639712">719-563-9712</a>.</p>';
-
-      var frame = jf.querySelector('iframe');
-      var revealed = false;
-
-      // NEVER destroy the iframe. An earlier version replaced it after a
-      // timeout, which meant a merely-slow form was killed before it could
-      // appear. The timers below only ever reveal or annotate.
-      function reveal() {
-        if (revealed) { return; }
-        revealed = true;
-        jf.classList.remove('is-loading');
-        var w = jf.querySelector('.formwrap__wait');
-        if (w) { w.remove(); }
-      }
-
-      frame.addEventListener('load', function () {
-        reveal();
-        clearTimeout(slowTimer);
-        var n = jf.querySelector('.formwrap__slow');
-        if (n) { n.remove(); }
-      });
-
-      // Show it regardless after 4s so a slow form renders progressively
-      // instead of sitting behind a spinner.
-      setTimeout(reveal, 4000);
-
-      // Non-destructive nudge if it is really dragging.
-      var slowTimer = setTimeout(function () {
-        if (jf.querySelector('.formwrap__slow')) { return; }
-        var d = document.createElement('p');
-        d.className = 'formwrap__slow';
-        d.innerHTML = 'This is taking longer than it should. You can ' +
-          '<a href="' + S.jotformUrl + '" target="_blank" rel="noopener">open the form in a new tab</a>' +
-          ' or call <a href="tel:+17195639712">719-563-9712</a> and we will take it over the phone.';
-        jf.insertBefore(d, jf.firstChild);
-      }, 12000);
-
-      window.addEventListener('message', function (e) {
-        if (typeof e.data !== 'string' || e.data.indexOf('setHeight') === -1) { return; }
-        var h = parseInt(e.data.split(':')[1], 10);
-        var f = jf.querySelector('iframe');
-        if (f && h > 0) { f.style.height = h + 'px'; }
-      });
-    } else {
-      jf.innerHTML = '<div class="ph">' + needs('Jotform URL') + '</div>';
-    }
   }
 
   /* ══════════════════════════════════════════ 4. COVERAGE ICONS

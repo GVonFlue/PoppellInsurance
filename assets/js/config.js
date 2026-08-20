@@ -103,12 +103,10 @@ window.SITE = {
     items: []   // { quote: '', author: '', context: '' }
   },
 
-  /* ---------------------------------------------------------------------
-     QUOTE FORM
-     ------------------------------------------------------------------ */
-  // utm_id stripped — those params were dashboard tracking and would have
-  // tagged every site visitor as arriving from that campaign.
-  jotformUrl: 'https://form.jotform.com/261545367737063',
+  /* The quote form is built into the site now — see src/partials/quote.js.
+     The Jotform embed is gone: a third-party iframe that can fail to load,
+     cannot be styled, and sends leads somewhere else was the weakest part
+     of the page. */
 
   /* ---------------------------------------------------------------------
      SITE

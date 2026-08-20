@@ -1,7 +1,7 @@
 /* Shared chrome. One definition, every page. */
 const { AGENT, NAV, BOT, SOCIAL } = require('../site.js');
 
-const V = 10;   // cache-bust token, bumped by the build
+const V = 24;   // cache-bust token, bumped by the build
 
 function head(p) {
   const title = p.title;
@@ -136,7 +136,44 @@ function footer() {
 
 <script src="/assets/js/config.js?v=${V}"></script>
 <script src="/assets/js/main.js?v=${V}"></script>
-<script src="/assets/js/ally.js?v=${V}"></script>`;
+<script src="/assets/js/ally.js?v=${V}"></script>
+<script src="/assets/js/quote.js?v=${V}"></script>`;
 }
 
-module.exports = { head, header, footer, contact, V };
+/* ── The Front Range, drawn ───────────────────────────────────────────
+   Pikes Peak with Garden of the Gods fins in the foreground — the two
+   things that actually say Colorado Springs. Authored rather than sourced:
+   a photograph would fight her hand-illustrated identity and carry
+   licensing baggage, and this way it uses the same line language as the
+   ridgeline divider already on the site.
+   Purely decorative, so aria-hidden and no alt text. */
+function frontRange() {
+  const pine = (x, base, h) =>
+    `<path class="fr__pine" d="M${x} ${base} V${base - h}` +
+    ` M${x - h * .30} ${base - h * .30} L${x} ${base - h * .55} L${x + h * .30} ${base - h * .30}` +
+    ` M${x - h * .22} ${base - h * .52} L${x} ${base - h * .72} L${x + h * .22} ${base - h * .52}"/>`;
+
+  let pines = '';
+  [[262, 282, 26], [292, 283, 19], [318, 282, 23],
+   [905, 283, 21], [934, 282, 28], [966, 283, 17], [992, 283, 24]]
+    .forEach(([x, b, h]) => { pines += pine(x, b, h); });
+
+  return `<div class="frontrange" aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" role="presentation" focusable="false">
+      <!-- far range -->
+      <path class="fr__far" d="M-20 226 L96 200 L168 212 L256 182 L330 196 L432 162
+        L512 178 L610 134 L688 154 L772 176 L864 160 L956 188 L1064 170 L1220 198"/>
+      <!-- Pikes Peak, the near massif -->
+      <path class="fr__near" d="M-20 250 L74 232 L150 242 L244 218 L318 230 L410 200
+        L498 216 L596 174 L668 194 L744 214 L830 200 L918 224 L1010 210 L1120 232 L1220 222"/>
+      <!-- Garden of the Gods — angular fins, not peaks -->
+      <path class="fr__fin" d="M62 284 L80 232 L98 246 L106 284"/>
+      <path class="fr__fin" d="M110 284 L132 216 L150 240 L162 284"/>
+      <path class="fr__fin" d="M166 284 L180 248 L192 258 L200 284"/>
+      ${pines}
+      <line class="fr__base" x1="-20" y1="284" x2="1220" y2="284"/>
+    </svg>
+  </div>`;
+}
+
+module.exports = { head, header, footer, contact, frontRange, V };
