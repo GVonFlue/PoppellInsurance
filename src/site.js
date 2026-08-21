@@ -88,7 +88,7 @@ const NAV = [
    ------------------------------------------------------------------ */
 const ABOUT = [
   'Poppell Agency didn\u2019t start overnight. It grew out of years of experience, a lot of relationships, and a genuine love for helping people.',
-  'I started my insurance career in 2020 and worked out quickly that this job is about far more than policies and premiums. It is about being someone people can call when life changes, when something goes wrong, or when they just need help understanding what they are actually protecting.',
+  'I started my insurance career in 2020 and learned quickly that this job is about far more than policies and premiums. It is about being someone people can call when life changes, when something goes wrong, or when they just need help understanding what they are actually protecting.',
   'In 2024 I got the chance to help launch and build an agency from the ground up \u2014 customer relationships, a book of business, a team, and a culture built around taking care of people. In August 2026 all of that came under one name.',
   'We are trying to do this a little differently: build real relationships, educate instead of sell, show up for our community, and make sure our customers always feel like people rather than policy numbers.',
   'The name is new. The experience and the relationships are not.'

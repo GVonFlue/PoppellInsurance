@@ -54,7 +54,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN/renters-insurance</loc>
+    <loc>https://REPLACE-WITH-DOMAIN/home-warranty</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -75,6 +75,11 @@
   </url>
   <url>
     <loc>https://REPLACE-WITH-DOMAIN/classic-car-insurance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://REPLACE-WITH-DOMAIN/renters-insurance</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

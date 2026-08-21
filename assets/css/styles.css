@@ -917,10 +917,28 @@ address a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(
   .hdr__cta{ padding:.6rem; }
   .hero{ padding-top:4.5rem; }
 
-  /* Her banner is a wide letterbox — crop the flanking artwork at phone
-     width so the wordmark still carries. */
-  .hero__art{ display:grid; place-items:center; }
-  .hero__art img{ width:142%; max-width:none; }
+  /* Her banner is a wide letterbox. At phone width the wordmark shrinks to
+     nothing, so zoom in and crop the flanking artwork.
+
+     ZOOM THE SCENE, NOT THE IMAGE. The sway layer is sized to .hero__scene;
+     scaling only the <img> left the plate at 554px and the cactus at 391px —
+     the same artwork at two different scales, which is exactly the seam the
+     shear was designed to avoid.
+
+     -13.5% rather than the -21% that would simply centre the scene: her
+     wordmark sits 5.3% left of the image's own centre (measured, not
+     guessed), so a centred crop pushes it off the right edge. */
+  .hero__art{ overflow:hidden; }
+  .hero__scene{ width:142%; margin-left:-13.5%; }
+  .hero__art img{ width:100%; max-width:none; }
+
+  /* Tighter vertical rhythm — the banner is short at this width and the copy
+     was sitting a long way from it. */
+  .hero__body{ margin-top:1.6rem; }
+  .hero__h1{ font-size:clamp(1.85rem,7.4vw,2.3rem); line-height:1.08; margin-bottom:1rem; }
+  .hero__lede{ font-size:1rem; margin-bottom:1.1rem; }
+  .hero__reach{ margin:-.2rem auto 1.6rem; font-size:.7rem; line-height:1.6; }
+  .hero__acts{ gap:.7rem; }
 
   /* Rows stack: icon and label on one line, copy beneath. */
   .row{ grid-template-columns:56px minmax(0,1fr); gap:.2rem 1rem; }

@@ -59,7 +59,7 @@ const COVERAGE = [
     id: 'auto',
     label: 'Auto',
     navLabel: 'Auto',
-    lede: 'Cars, trucks, motorcycles, RVs and boats',
+    lede: 'Cars, trucks and motorcycles',
     short: 'Liability limits, deductibles, uninsured motorist coverage. Plain answers on what each one does, and an honest read on whether you are carrying too much or not nearly enough.',
     title: 'Auto Insurance in Colorado — Poppell Insurance Agency',
     description: 'Car, truck and motorcycle insurance across Colorado. Liability limits, uninsured motorist and hail coverage explained by a Colorado Springs agent.',
@@ -188,26 +188,40 @@ const SPECIALTY = [
     also: ['Personal umbrella liability', 'Coordinating underlying home and auto limits', 'Landlord and rental property exposure']
   },
   {
-    slug: 'renters-insurance',
-    id: 'condorenters',
-    label: 'Condo & Renters',
-    navLabel: 'Condo & renters',
-    short: 'The building is insured. Everything inside it is your problem. Renters coverage in particular costs less than most people guess and is the easiest gap in this list to close.',
-    title: 'Renters & Condo Insurance in Colorado — Poppell Insurance Agency',
-    description: 'Renters and condo (HO-6) insurance across Colorado. What your landlord or HOA policy does not cover, explained by a Colorado Springs agent.',
-    h1: 'Renters and condo insurance in Colorado.',
-    intro: 'The single most common misunderstanding in insurance: the building being insured has nothing to do with your things being insured.',
+    slug: 'home-warranty',
+    id: 'warranty',
+    label: 'Home Warranty',
+    navLabel: 'Home warranty',
+    short: 'Insurance covers the storm that damages your roof. A home warranty covers the furnace that simply stops working one January morning. Different problems, different products.',
+    title: 'Home Warranty Coverage in Colorado \u2014 Poppell Insurance Agency',
+    description: 'Home warranty service contracts in Colorado. What they cover, how they differ from homeowners insurance, and when they are worth it.',
+    h1: 'Home warranty coverage in Colorado.',
+    intro: 'A home warranty is not insurance, and the difference is the entire point of it. Insurance responds to something happening to your home \u2014 hail, fire, a burst pipe. A home warranty responds to something in your home wearing out.',
     sections: [
-      { h: 'What the landlord policy actually covers', p: [
-        'The structure. That is it. Your landlord insures the building because the building is theirs. Everything you moved in is yours to insure, and if it is destroyed the landlord policy does not replace it.',
-        'Renters coverage also carries liability, which is the part people never think about — if something starting in your unit damages the units around it, that is pointed at you.' ] },
-      { h: 'Condo owners have a seam to watch', p: [
-        'An HOA master policy covers the building to some defined point, and your HO-6 covers from that point inward. Exactly where that line falls is written in the HOA documents and it is not standard from one association to the next.',
-        'Reading the master policy before choosing your limits is the whole job. Guessing at that line is how people end up paying for drywall twice or not at all.' ] },
-      { h: 'Loss assessment, the one nobody knows about', p: [
-        'When an HOA has a loss bigger than its master policy covers, it can assess the owners for the difference. Loss assessment coverage on your HO-6 responds to that. It is inexpensive and most people have never heard of it.' ] }
+      {
+        h: 'The line between the two',
+        p: [
+          'Your homeowners policy is built around sudden, accidental damage. A hailstorm takes the roof, a pipe bursts, a tree comes through the window. What it deliberately does not cover is age. A twelve-year-old water heater that finally gives up has not been damaged \u2014 it has simply reached the end, and every homeowners policy in the country excludes that.',
+          'A home warranty is a service contract that picks up exactly there: the systems and appliances that break down through normal use.'
+        ]
+      },
+      {
+        h: 'What that usually means in practice',
+        p: [
+          'Heating and cooling, water heaters, electrical and plumbing systems, and the major appliances \u2014 the things that are expensive, unglamorous, and always fail at the worst time of year.',
+          'How it works is different from a claim, too. You call the warranty company, they send an approved contractor, and you pay a set service fee per visit rather than a deductible. Contracts run annually.'
+        ]
+      },
+      {
+        h: 'When it earns its keep, and when it does not',
+        p: [
+          'It tends to be worth most on an older home, on a house you have just bought where the age of everything is a mystery, or for anyone who would rather pay a predictable annual figure than face an unpredictable four-figure one.',
+          'It is worth least on a new build still under builder warranty, or where the major systems have all been recently replaced.',
+          'Every contract has its own list of what is covered, what is excluded, and what the caps are, and those lists differ more than people expect. Reading it before you need it is the whole exercise \u2014 which is a conversation, not a web page.'
+        ]
+      }
     ],
-    also: ['Renters (HO-4)', 'Condo (HO-6)', 'Loss assessment coverage', 'Scheduled valuables']
+    also: ['Heating and cooling systems', 'Water heaters', 'Electrical and plumbing', 'Kitchen and laundry appliances', 'Coverage for a home you are about to buy']
   },
   {
     slug: 'recreational-insurance',
@@ -294,11 +308,41 @@ const SPECIALTY = [
   }
 ];
 
+/* Condo & renters keeps its page \u2014 it is real search traffic and it is
+   genuinely something she writes \u2014 but it is no longer a "beyond the
+   basics" tile, because it is already named in the Property row. It still
+   appears in the coverage index and in the cross-links at the foot of every
+   service page. */
+const EXTRA = [
+  {
+    slug: 'renters-insurance',
+    id: 'condorenters',
+    label: 'Condo & Renters',
+    navLabel: 'Condo & renters',
+    short: 'The building is insured. Everything inside it is your problem. Renters coverage in particular costs less than most people guess and is the easiest gap in this list to close.',
+    title: 'Renters & Condo Insurance in Colorado — Poppell Insurance Agency',
+    description: 'Renters and condo (HO-6) insurance across Colorado. What your landlord or HOA policy does not cover, explained by a Colorado Springs agent.',
+    h1: 'Renters and condo insurance in Colorado.',
+    intro: 'The single most common misunderstanding in insurance: the building being insured has nothing to do with your things being insured.',
+    sections: [
+      { h: 'What the landlord policy actually covers', p: [
+        'The structure. That is it. Your landlord insures the building because the building is theirs. Everything you moved in is yours to insure, and if it is destroyed the landlord policy does not replace it.',
+        'Renters coverage also carries liability, which is the part people never think about — if something starting in your unit damages the units around it, that is pointed at you.' ] },
+      { h: 'Condo owners have a seam to watch', p: [
+        'An HOA master policy covers the building to some defined point, and your HO-6 covers from that point inward. Exactly where that line falls is written in the HOA documents and it is not standard from one association to the next.',
+        'Reading the master policy before choosing your limits is the whole job. Guessing at that line is how people end up paying for drywall twice or not at all.' ] },
+      { h: 'Loss assessment, the one nobody knows about', p: [
+        'When an HOA has a loss bigger than its master policy covers, it can assess the owners for the difference. Loss assessment coverage on your HO-6 responds to that. It is inexpensive and most people have never heard of it.' ] }
+    ],
+    also: ['Renters (HO-4)', 'Condo (HO-6)', 'Loss assessment coverage', 'Scheduled valuables']
+  }
+];
+
 /* Written but NOT on the site yet. She ticked these in onboarding as
    "Home Warranty Plans and Pet Insurance" under specialty notes. They are
    different products from the rest of the list and neither is a Farmers
    P&C line in the same way, so they need her confirmation on how they are
    offered before they get a page. Listed here so they are not lost. */
-const PENDING = ['Home warranty plans', 'Pet insurance'];
+const PENDING = ['Pet insurance'];
 
-module.exports = { COVERAGE, SPECIALTY, PENDING };
+module.exports = { COVERAGE, SPECIALTY, EXTRA, PENDING };

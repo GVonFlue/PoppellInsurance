@@ -120,6 +120,25 @@ silent ones — a lead that reports delivered and isn't, a model inventing a
 price, a bot handing out a phone number instead of taking details. None of
 those throw.
 
+## Mobile hero
+
+Two bugs lived here, both found by printing element geometry rather than
+looking at a screenshot.
+
+**The scene was zoomed by scaling the `<img>`, not `.hero__scene`.** The sway
+layer is sized to the scene, so the plate rendered 554px wide and the cactus
+391px — the same artwork at two different scales. The whole point of the
+shear was that the seam can never show; scaling one half of it broke that
+outright. Both now scale together.
+
+**The crop was centred on the image, not on the wordmark.** Her wordmark sits
+5.3% left of the banner's own centre (measured off the pixels), so a centred
+crop pushed POPPELL off the right edge. The offset is `-13.5%`, derived from
+that measurement rather than nudged until it looked right.
+
+Type and spacing tightened alongside: the headline is three lines instead of
+four and both CTAs are reachable without scrolling at 360, 390, 430 and 768.
+
 ## Short viewports
 
 Everything was authored against a 900px viewport and overflowed on a 13"
@@ -235,6 +254,35 @@ lose. `.reveal.is-in{transform:none}` is two classes, so it ties with
 computing to `none` and doing nothing at all. Fixed with a three-class
 selector rather than by moving rules around, which would break again the next
 time the file is reordered. Same failure mode as the sticky panels earlier.
+
+## Content lists
+
+Three, and the difference matters:
+
+| List | Homepage rows | Specialty tiles | Own page | Coverage index |
+|---|---|---|---|---|
+| `COVERAGE` | yes | — | yes | yes |
+| `SPECIALTY` | — | yes | yes | yes |
+| `EXTRA` | — | **no** | yes | yes |
+
+`EXTRA` exists because condo & renters was removed from the specialty tiles
+(it is already named in the Property row) but the page is real search traffic
+and worth keeping. Deleting it from `SPECIALTY` would have deleted the page
+with it.
+
+**`SPECIALTY` must stay at six.** The alternating cream pattern only reads as
+a checkerboard on a 3x2 grid.
+
+### Home warranty is not insurance
+
+It is a service contract, and the page says so in its first sentence. That is
+not a stylistic choice — describing a service contract as insurance is wrong
+on the facts and in a regulated context it is the kind of wrong that matters.
+The page draws the line explicitly: insurance answers sudden accidental
+damage, a warranty answers things wearing out.
+
+Pet insurance is still in `PENDING` — she listed it but it is a genuinely
+different product line and needs a word from her on how she offers it.
 
 ## Quote form
 

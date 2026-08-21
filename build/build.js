@@ -16,12 +16,15 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const { AGENT, TEAM, SOCIAL, ABOUT, IDEAL, BOT } = require('../src/site.js');
-const { COVERAGE, SPECIALTY } = require('../src/content.js');
+const { COVERAGE, SPECIALTY, EXTRA } = require('../src/content.js');
 const { head, header, footer, contact, frontRange, V } = require('../src/partials/shell.js');
 const { ally } = require('../src/partials/ally.js');
 const { quoteForm } = require('../src/partials/quote.js');
 
-const ALL = COVERAGE.concat(SPECIALTY);
+// ALL drives the coverage index, the sitemap, the cross-links and the
+// offer catalog. EXTRA is in here but deliberately not in the specialty
+// tiles — the page exists, the tile does not.
+const ALL = COVERAGE.concat(SPECIALTY, EXTRA);
 
 /* ── structured data ──────────────────────────────────────────────────── */
 function businessLD() {
@@ -175,7 +178,7 @@ function home() {
       <div class="hero__motes" data-motes aria-hidden="true"></div>
     </div>
     <div class="hero__body">
-      <h1 class="hero__h1" data-split>Colorado Springs insurance you can <em>actually get someone</em> on the phone about.</h1>
+      <h1 class="hero__h1" data-split>Colorado insurance you can <em>actually get someone</em> on the phone about.</h1>
       <p class="hero__lede reveal" data-d="2">
         Poppell Insurance Agency covers homes, vehicles, families and
         businesses with a local team, direct lines to real people, and a
