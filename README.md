@@ -131,10 +131,15 @@ layer is sized to the scene, so the plate rendered 554px wide and the cactus
 shear was that the seam can never show; scaling one half of it broke that
 outright. Both now scale together.
 
-**The crop was centred on the image, not on the wordmark.** Her wordmark sits
-5.3% left of the banner's own centre (measured off the pixels), so a centred
-crop pushed POPPELL off the right edge. The offset is `-13.5%`, derived from
-that measurement rather than nudged until it looked right.
+**The banner is not zoomed on mobile at all.** Two attempts at cropping both
+failed for the same reason: the banner is 2.4:1, so any zoom has to eat the
+sides, and the sides are her four coverage icons and the creed line. The
+second attempt centred the wordmark correctly and still chopped BUSINESS in
+half, which reads as broken rather than as a deliberate crop.
+
+At full width the wordmark is ~175px across on a 390px screen, which is
+perfectly legible. Nothing is cut. Verified: rendered image width never
+exceeds the container at 360, 390 or 430.
 
 Type and spacing tightened alongside: the headline is three lines instead of
 four and both CTAs are reachable without scrolling at 360, 390, 430 and 768.
